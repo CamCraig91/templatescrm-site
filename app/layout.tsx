@@ -10,15 +10,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Templates",
-  description: "Method:CRM Templates Website",
-};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -28,8 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <CookieBanner />
-      <body>
-          {children}
       </body>
     </html>
   );
