@@ -1,0 +1,172 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Updating Your Record...</title>
+    <style>
+      /* Global Reset */
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: Inter, Arial, sans-serif;
+        color: white;
+        overflow: hidden;
+      }
+
+      /* Background: Google Maps style */
+      body {
+        background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=Toronto,ON&zoom=10&size=1200x800&maptype=roadmap&key=YOUR_GOOGLE_MAPS_KEY');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      /* Dark fade overlay */
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          rgba(0,0,0,0.65),
+          rgba(0,0,0,0.85)
+        );
+        z-index: 1;
+      }
+
+      /* Templates Banner */
+      .banner {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 1.5rem 0;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: white;
+        background: rgba(0,0,0,0.35);
+        backdrop-filter: blur(6px);
+      }
+
+      /* Content Card */
+      .content {
+        position: relative;
+        z-index: 3;
+        max-width: 600px;
+        margin: 4rem auto;
+        padding: 2rem 2.5rem;
+        background: rgba(0,0,0,0.55);
+        border-radius: 12px;
+        backdrop-filter: blur(8px);
+        text-align: center;
+      }
+
+      h1 {
+        margin-top: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+      }
+
+      pre {
+        background: rgba(255,255,255,0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: left;
+        color: #e0e0e0;
+        font-family: "Courier New", monospace;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="overlay"></div>
+
+    <div class="banner">
+      Templates CRM
+    </div>
+
+    <div class="content">
+      <h1>Acquiring Your Location...</h1>
+      <p id="status">Please wait while we update your record.</p>
+
+      <h3>Your Location Details:</h3>
+      <pre id="location-output"></pre>
+
+      <h3>JSON Payload Sent:</h3>
+      <pre id="json-output"></pre>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const recordId = params.get('recordId');
+      const authCode = params.get('authCode');
+
+      if (!recordId || !authCode) {
+        document.getElementById('status').innerText = 'Error: Missing required parameters.';
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const latitude = position.coords.latitude.toFixed(6);
+            const longitude = position.coords.longitude.toFixed(6);
+
+            document.getElementById('location-output').innerText =
+              `Latitude: ${latitude}\nLongitude: ${longitude}`;
+
+            const updateEndpoint =
+              `https://rest.method.me/api/v1/tables/CustomSchedule/${recordId}`;
+
+            const payload = {
+              data: {
+                ActualStartLatitude: latitude.toString(),
+                ActualStartLongitude: longitude.toString()
+              }
+            };
+
+            document.getElementById('json-output').innerText =
+              JSON.stringify(payload, null, 2);
+
+            fetch(updateEndpoint, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `APIKey ${authCode}`
+              },
+              body: JSON.stringify(payload)
+            })
+            .then(response => {
+              if (response.status === 204) {
+                window.close();
+              } else {
+                return response.json()
+                  .then(data => {
+                    document.getElementById('status').innerText = 'Error updating record.';
+                  })
+                  .catch(() => {
+                    response.text().then(text => {
+                      document.getElementById('status').innerText =
+                        'Error updating record: ' + text;
+                    });
+                  });
+              }
+            })
+            .catch(error => {
+              document.getElementById('status').innerText = 'Error updating record.';
+            });
+          },
+          (error) => {
+            document.getElementById('status').innerText =
+              'Error obtaining location: ' + error.message;
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          }
+        );
+      } else {
+        document.getElementById('status').innerText =
+          'Geolocation is not supported by your browser.';
+      }
+    </script>
+  </body>
+</html>
