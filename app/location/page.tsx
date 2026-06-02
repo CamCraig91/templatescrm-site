@@ -11,7 +11,7 @@ export default function LocationPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
-    // Support both uppercase and lowercase
+    // Support uppercase + lowercase
     const recordId =
       params.get("RecordID") ||
       params.get("recordId") ||
@@ -55,6 +55,7 @@ export default function LocationPage() {
         setLat(latitude);
         setLng(longitude);
 
+        // Build payload for Render proxy
         const proxyPayload = {
           recordId,
           authCode,
@@ -68,7 +69,7 @@ export default function LocationPage() {
         setPayload(proxyPayload);
 
         try {
-          const response = await fetch("https://your-render-proxy-url-here", {
+          const response = await fetch("https://YOUR-RENDER-URL.onrender.com/", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -81,8 +82,8 @@ export default function LocationPage() {
             setTimeout(() => window.close(), 1500);
           } else {
             const error = await response.json().catch(() => null);
-            setStatus("Error updating record.");
             console.error("Proxy error:", error);
+            setStatus("Error updating record.");
           }
         } catch (err) {
           console.error("Network error:", err);
@@ -101,9 +102,19 @@ export default function LocationPage() {
   }, []);
 
   return (
-    <div style={{ height: "100vh", width: "100vw", background: "#fff", position: "relative" }}>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        position: "relative",
+        overflow: "hidden",
+        background: "#fff",
+      }}
+    >
+      {/* Background Map */}
       <img
         src="/googlemaps.png"
+        alt="Map Background"
         style={{
           position: "absolute",
           inset: 0,
@@ -111,21 +122,67 @@ export default function LocationPage() {
           height: "100%",
           objectFit: "cover",
           filter: "brightness(0.55)",
+          zIndex: 1,
         }}
       />
 
-      <div style={{ position: "relative", zIndex: 3, padding: "2rem", textAlign: "center", color: "white" }}>
-        <h1>Acquiring Your Location...</h1>
-        <p>{status}</p>
+      {/* Header */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 3,
+          height: "70px",
+          background: "#0A1A2F",
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: "24px",
+        }}
+      >
+        <img
+          src="/TemplatesLogoWhite.png"
+          alt="Templates CRM Logo"
+          style={{ height: "38px", pointerEvents: "none", userSelect: "none" }}
+        />
+      </div>
+
+      {/* Centered Text */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 3,
+          height: "calc(100vh - 70px)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          padding: "2rem",
+          color: "white",
+        }}
+      >
+        <h1 style={{ fontSize: "2.4rem", fontWeight: 700, marginBottom: "1rem" }}>
+          Acquiring Your Location...
+        </h1>
+
+        <p style={{ fontSize: "1.2rem", marginBottom: "1.5rem" }}>
+          {status}
+        </p>
 
         {lat && lng && (
-          <pre>{`Latitude: ${lat}\nLongitude: ${lng}`}</pre>
+          <div style={{ marginBottom: "1rem", fontSize: "1.1rem" }}>
+            <strong>Your Location:</strong><br />
+            {lat}, {lng}
+          </div>
         )}
 
         {payload && (
-          <pre>{JSON.stringify(payload, null, 2)}</pre>
+          <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>
+            <strong>Payload Sent:</strong>
+            <pre>{JSON.stringify(payload, null, 2)}</pre>
+          </div>
         )}
       </div>
     </div>
   );
 }
+ 
