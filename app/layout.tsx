@@ -4,7 +4,6 @@ import "./globals.css";
 import NavBarWrapper from "./components/NavBarWrapper";
 import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
-import ClientLayout from "./ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
