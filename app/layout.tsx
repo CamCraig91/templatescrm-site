@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBarWrapper from "./components/NavBarWrapper";
 import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
+import ClientLayout from "./ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +24,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <NavBarWrapper />
-        {children}
-        <Footer />
-        <CookieBanner />
+      <body>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
