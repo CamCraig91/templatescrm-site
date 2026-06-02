@@ -9,72 +9,73 @@ export default function LocationPage() {
   const [payload, setPayload] = useState<any>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
 
-    const recordId = params.get("RecordID");
-    const authCode = params.get("AuthCode");
-    const tableName = params.get("TableName");
-    const latField = params.get("LatitudeFieldName");
-    const lngField = params.get("LongitudeFieldName");
+  const recordId = params.get("RecordID");
+  const authCode = params.get("AuthCode");
+  const tableName = params.get("TableName");
+  const latField = params.get("LatitudeFieldName");
+  const lngField = params.get("LongitudeFieldName");
 
-    if (!recordId || !authCode || !tableName || !latField || !lngField) {
-      setStatus("Error: Missing required parameters.");
-      return;
-    }
+  if (!recordId || !authCode || !tableName || !latField || !lngField) {
+    setStatus("Error: Missing required parameters.");
+    return;
+  }
 
-    if (!navigator.geolocation) {
-      setStatus("Geolocation is not supported by your browser.");
-      return;
-    }
+  if (!navigator.geolocation) {
+    setStatus("Geolocation is not supported by your browser.");
+    return;
+  }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const latitude = position.coords.latitude.toFixed(6);
-        const longitude = position.coords.longitude.toFixed(6);
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitude = position.coords.latitude.toFixed(6);
+      const longitude = position.coords.longitude.toFixed(6);
 
-        setLat(latitude);
-        setLng(longitude);
+      setLat(latitude);
+      setLng(longitude);
 
-        const updateEndpoint = `https://rest.method.me/api/v1/tables/${tableName}/${recordId}`;
+      const updateEndpoint = `https://rest.method.me/api/v1/tables/${tableName}/${recordId}`;
 
-        const payloadData = {
-          data: {
-            [latField]: latitude.toString(),
-            [lngField]: longitude.toString(),
-          },
-        };
+      const payloadData = {
+        data: {
+          [latField]: latitude.toString(),
+          [lngField]: longitude.toString(),
+        },
+      };
 
-        setPayload(payloadData);
+      setPayload(payloadData);
 
-        fetch(updateEndpoint, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `APIKey ${authCode}`,
-          },
-          body: JSON.stringify(payloadData),
-        })
-          .then((response) => {
-            if (response.status === 204) {
-              window.close();
-            } else {
-              setStatus("Error updating record.");
-            }
-          })
-          .catch(() => {
+      fetch(updateEndpoint, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `APIKey ${authCode}`,
+        },
+        body: JSON.stringify(payloadData),
+      })
+        .then((response) => {
+          if (response.status === 204) {
+            window.close();
+          } else {
             setStatus("Error updating record.");
-          });
-      },
-      (error) => {
-        setStatus("Error obtaining location: " + error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
-    );
-  }, []);
+          }
+        })
+        .catch(() => {
+          setStatus("Error updating record.");
+        });
+    },
+    (error) => {
+      setStatus("Error obtaining location: " + error.message);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    }
+  );
+}, []);
+
 
   return (
     <div
