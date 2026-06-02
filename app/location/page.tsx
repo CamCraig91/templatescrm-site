@@ -55,7 +55,7 @@ export default function LocationPage() {
         setLat(latitude);
         setLng(longitude);
 
-        // Build payload for Render proxy
+        // Build payload for Render prox
         const proxyPayload = {
           recordId,
           authCode,
