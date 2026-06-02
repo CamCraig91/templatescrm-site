@@ -10,8 +10,8 @@ export default function LocationPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const recordId = params.get("recordId");
-    const authCode = params.get("authCode");
+    const recordId = params.get("RecordID");
+    const authCode = params.get("AuthCode");
 
     if (!recordId || !authCode) {
       setStatus("Error: Missing required parameters.");
