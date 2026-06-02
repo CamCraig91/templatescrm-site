@@ -8,73 +8,38 @@ export default function LocationPage() {
   const [lng, setLng] = useState<string | null>(null);
   const [payload, setPayload] = useState<any>(null);
 
-  useEffect(() => {
   const params = new URLSearchParams(window.location.search);
 
-  const recordId = params.get("RecordID");
-  const authCode = params.get("AuthCode");
-  const tableName = params.get("TableName");
-  const latField = params.get("LatitudeFieldName");
-  const lngField = params.get("LongitudeFieldName");
+const recordId =
+  params.get("RecordID") ||
+  params.get("recordId") ||
+  params.get("recordid");
 
-  if (!recordId || !authCode || !tableName || !latField || !lngField) {
-    setStatus("Error: Missing required parameters.");
-    return;
-  }
+const authCode =
+  params.get("AuthCode") ||
+  params.get("authCode") ||
+  params.get("authcode");
 
-  if (!navigator.geolocation) {
-    setStatus("Geolocation is not supported by your browser.");
-    return;
-  }
+const tableName =
+  params.get("TableName") ||
+  params.get("tableName") ||
+  params.get("tablename");
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const latitude = position.coords.latitude.toFixed(6);
-      const longitude = position.coords.longitude.toFixed(6);
+const latField =
+  params.get("LatitudeFieldName") ||
+  params.get("latitudeFieldName") ||
+  params.get("latitudefieldname");
 
-      setLat(latitude);
-      setLng(longitude);
+const lngField =
+  params.get("LongitudeFieldName") ||
+  params.get("longitudeFieldName") ||
+  params.get("longitudefieldname");
 
-      const updateEndpoint = `https://rest.method.me/api/v1/tables/${tableName}/${recordId}`;
+if (!recordId || !authCode || !tableName || !latField || !lngField) {
+  setStatus("Error: Missing required parameters.");
+  return;
+}
 
-      const payloadData = {
-        data: {
-          [latField]: latitude.toString(),
-          [lngField]: longitude.toString(),
-        },
-      };
-
-      setPayload(payloadData);
-
-      fetch(updateEndpoint, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `APIKey ${authCode}`,
-        },
-        body: JSON.stringify(payloadData),
-      })
-        .then((response) => {
-          if (response.status === 204) {
-            window.close();
-          } else {
-            setStatus("Error updating record.");
-          }
-        })
-        .catch(() => {
-          setStatus("Error updating record.");
-        });
-    },
-    (error) => {
-      setStatus("Error obtaining location: " + error.message);
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
-    }
-  );
-}, []);
 
 
   return (
