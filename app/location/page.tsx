@@ -69,7 +69,7 @@ export default function LocationPage() {
         setPayload(proxyPayload);
 
         try {
-          const response = await fetch("https://YOUR-RENDER-URL.onrender.com/", {
+          const response = await fetch("https://location-api-mkpl.onrender.com", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
