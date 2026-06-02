@@ -10,10 +10,14 @@ export default function LocationPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+
     const recordId = params.get("RecordID");
     const authCode = params.get("AuthCode");
+    const tableName = params.get("TableName");
+    const latField = params.get("LatitudeFieldName");
+    const lngField = params.get("LongitudeFieldName");
 
-    if (!recordId || !authCode) {
+    if (!recordId || !authCode || !tableName || !latField || !lngField) {
       setStatus("Error: Missing required parameters.");
       return;
     }
@@ -31,12 +35,12 @@ export default function LocationPage() {
         setLat(latitude);
         setLng(longitude);
 
-        const updateEndpoint = `https://rest.method.me/api/v1/tables/CustomSchedule/${recordId}`;
+        const updateEndpoint = `https://rest.method.me/api/v1/tables/${tableName}/${recordId}`;
 
         const payloadData = {
           data: {
-            ActualStartLatitude: latitude.toString(),
-            ActualStartLongitude: longitude.toString(),
+            [latField]: latitude.toString(),
+            [lngField]: longitude.toString(),
           },
         };
 
@@ -92,7 +96,7 @@ export default function LocationPage() {
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          filter: "brightness(0.55)", // greys/darkens the map
+          filter: "brightness(0.55)",
           zIndex: 1,
         }}
       />
