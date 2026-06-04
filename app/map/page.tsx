@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 import { useEffect, useRef, useState } from "react";
 
-const MAPBOX_TOKEN = "pk.eyJ1IjoiY2FtZXJvbmNyYWlnY29uc3VsdGluZyIsImEiOiJjbTdzMWtqd28xY2Q5MmpvaDFmdHc0bHowIn0.KhWD9yj4e9h3K0UgSelWTw";
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
 
 export default function MapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -68,13 +68,14 @@ export default function MapPage() {
 
       // ⭐ Mapbox tile layer
       L.tileLayer(
-        `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`,
-        {
-          maxZoom: 19,
-          tileSize: 512,
-          zoomOffset: -1,
-        }
-      ).addTo(mapInstance.current);
+  `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`,
+  {
+    maxZoom: 19,
+    tileSize: 512,
+    zoomOffset: -1,
+  }
+).addTo(mapInstance.current);
+
     }
 
     const map = mapInstance.current;
