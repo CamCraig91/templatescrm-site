@@ -1,12 +1,12 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-
-export const dynamic = "force-dynamic";
 
 export default function MapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
