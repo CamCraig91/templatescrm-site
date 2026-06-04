@@ -1,25 +1,29 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet-defaulticon-compatibility";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
+
 
 export default function MapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const [entries, setEntries] = useState<any[]>([]);
 
-  // Read entries from URL param: ?entries=[{...}]
-  const entries = (() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const param = new URLSearchParams(window.location.search).get("entries");
-      return param ? JSON.parse(param) : [];
-    } catch {
-      return [];
-    }
-  })();
-
+  // Load session data from API
   useEffect(() => {
-    if (!mapRef.current) return;
+    const session = new URLSearchParams(window.location.search).get("session");
+    if (!session) return;
+
+    fetch(`/api/map-session?session=${session}`)
+      .then((res) => res.json())
+      .then((data) => setEntries(data));
+  }, []);
+
+  // Render map once entries are loaded
+  useEffect(() => {
+    if (!mapRef.current || entries.length === 0) return;
 
     const map = L.map(mapRef.current).setView([0, 0], 2);
 
@@ -47,7 +51,7 @@ export default function MapPage() {
     }
 
     return () => map.remove();
-  }, []);
+  }, [entries]);
 
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
@@ -70,7 +74,7 @@ export default function MapPage() {
         ref={mapRef}
         style={{
           width: "100%",
-          height: "calc(100vh - 56px)" // subtract banner height
+          height: "calc(100vh - 56px)"
         }}
       />
     </div>
