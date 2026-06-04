@@ -85,6 +85,7 @@ export default function MapPage() {
 
       marker.bindPopup(`
         <strong>${entry.name}</strong><br>
+        Type: ${entry.type}<br>
         Time: ${entry.time}<br>
         Lat: ${entry.lat}<br>
         Lng: ${entry.lng}
