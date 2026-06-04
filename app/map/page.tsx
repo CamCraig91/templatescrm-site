@@ -12,14 +12,17 @@ export default function MapPage() {
   const [entries, setEntries] = useState<any[]>([]);
 
   // Load session data from API
-  useEffect(() => {
-    const session = new URLSearchParams(window.location.search).get("session");
-    if (!session) return;
+useEffect(() => {
+  if (typeof window === "undefined") return;
 
-    fetch(`/api/map-session?session=${session}`)
-      .then((res) => res.json())
-      .then((data) => setEntries(data));
-  }, []);
+  const session = new URLSearchParams(window.location.search).get("session");
+  if (!session) return;
+
+  fetch(`/api/map-session?session=${session}`)
+    .then((res) => res.json())
+    .then((data) => setEntries(data));
+}, []);
+
 
   // Render map once entries are loaded
   useEffect(() => {
