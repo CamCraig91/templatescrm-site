@@ -6,9 +6,9 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
-
 export default function MapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstance = useRef<L.Map | null>(null);
   const [entries, setEntries] = useState<any[]>([]);
 
   // Load session data from API
@@ -25,16 +25,28 @@ export default function MapPage() {
   useEffect(() => {
     if (!mapRef.current || entries.length === 0) return;
 
-    const map = L.map(mapRef.current).setView([0, 0], 2);
+    // Prevent re‑initializing the map
+    if (!mapInstance.current) {
+      mapInstance.current = L.map(mapRef.current).setView([0, 0], 2);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19
-    }).addTo(map);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+      }).addTo(mapInstance.current);
+    }
+
+    const map = mapInstance.current;
+
+    // Clear existing markers before adding new ones
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) map.removeLayer(layer);
+    });
 
     const bounds: L.LatLngExpression[] = [];
 
     entries.forEach((entry: any) => {
-      const marker = L.marker([entry.lat, entry.lng]).addTo(map);
+      const pos: L.LatLngExpression = [entry.lat, entry.lng];
+
+      const marker = L.marker(pos).addTo(map);
 
       marker.bindPopup(`
         <strong>${entry.name}</strong><br>
@@ -43,14 +55,23 @@ export default function MapPage() {
         Lng: ${entry.lng}
       `);
 
-      bounds.push([entry.lat, entry.lng]);
+      bounds.push(pos);
     });
 
-    if (bounds.length > 0) {
-      map.fitBounds(bounds);
+    // Only fit bounds if we have at least 2 points
+    if (bounds.length > 1) {
+      map.fitBounds(bounds as L.LatLngBoundsExpression);
+    } else if (bounds.length === 1) {
+      map.setView(bounds[0], 14);
     }
 
-    return () => map.remove();
+    return () => {
+      // Cleanup only when component unmounts
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+        mapInstance.current = null;
+      }
+    };
   }, [entries]);
 
   return (
@@ -63,7 +84,7 @@ export default function MapPage() {
           background: "#111",
           color: "#fff",
           fontSize: "20px",
-          fontWeight: 600
+          fontWeight: 600,
         }}
       >
         Templates — Time Entry Map
@@ -74,7 +95,7 @@ export default function MapPage() {
         ref={mapRef}
         style={{
           width: "100%",
-          height: "calc(100vh - 56px)"
+          height: "calc(100vh - 56px)",
         }}
       />
     </div>
