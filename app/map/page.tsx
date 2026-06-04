@@ -60,10 +60,12 @@ export default function MapPage() {
 
     // Only fit bounds if we have at least 2 points
     if (bounds.length > 1) {
-      map.fitBounds(bounds as L.LatLngBoundsExpression);
-    } else if (bounds.length === 1) {
-      map.setView(bounds[0], 14);
-    }
+  const leafletBounds = L.latLngBounds(bounds);
+  map.fitBounds(leafletBounds);
+} else if (bounds.length === 1) {
+  map.setView(bounds[0], 14);
+}
+
 
     return () => {
       // Cleanup only when component unmounts
