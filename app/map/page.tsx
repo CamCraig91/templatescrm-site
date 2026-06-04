@@ -3,34 +3,44 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useRef, useState } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
 export default function MapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<L.Map | null>(null);
+  const mapInstance = useRef<any>(null);
   const [entries, setEntries] = useState<any[]>([]);
+  const [L, setL] = useState<any>(null);
+
+  // Load Leaflet ONLY in the browser
+  useEffect(() => {
+    async function loadLeaflet() {
+      const leaflet = await import("leaflet");
+      await import("leaflet/dist/leaflet.css");
+      await import("leaflet-defaulticon-compatibility");
+      await import("leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css");
+
+      setL(leaflet);
+    }
+
+    loadLeaflet();
+  }, []);
 
   // Load session data from API
-useEffect(() => {
-  if (typeof window === "undefined") return;
-
-  const session = new URLSearchParams(window.location.search).get("session");
-  if (!session) return;
-
-  fetch(`/api/map-session?session=${session}`)
-    .then((res) => res.json())
-    .then((data) => setEntries(data));
-}, []);
-
-
-  // Render map once entries are loaded
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const session = new URLSearchParams(window.location.search).get("session");
+    if (!session) return;
+
+    fetch(`/api/map-session?session=${session}`)
+      .then((res) => res.json())
+      .then((data) => setEntries(data));
+  }, []);
+
+  // Render map once entries + Leaflet are loaded
+  useEffect(() => {
+    if (!L) return; // Leaflet not loaded yet
     if (!mapRef.current || entries.length === 0) return;
 
-    // Prevent re‑initializing the map
     if (!mapInstance.current) {
       mapInstance.current = L.map(mapRef.current).setView([0, 0], 2);
 
@@ -41,15 +51,15 @@ useEffect(() => {
 
     const map = mapInstance.current;
 
-    // Clear existing markers before adding new ones
-    map.eachLayer((layer) => {
+    // Remove old markers
+    map.eachLayer((layer: any) => {
       if (layer instanceof L.Marker) map.removeLayer(layer);
     });
 
-    const bounds: L.LatLngExpression[] = [];
+    const bounds: any[] = [];
 
     entries.forEach((entry: any) => {
-      const pos: L.LatLngExpression = [entry.lat, entry.lng];
+      const pos = [entry.lat, entry.lng];
 
       const marker = L.marker(pos).addTo(map);
 
@@ -63,25 +73,22 @@ useEffect(() => {
       bounds.push(pos);
     });
 
-    // Only fit bounds if we have at least 2 points
     if (bounds.length > 1) {
-      map.fitBounds(bounds as L.LatLngBoundsExpression);
+      map.fitBounds(bounds);
     } else if (bounds.length === 1) {
       map.setView(bounds[0], 14);
     }
 
     return () => {
-      // Cleanup only when component unmounts
       if (mapInstance.current) {
         mapInstance.current.remove();
         mapInstance.current = null;
       }
     };
-  }, [entries]);
+  }, [entries, L]);
 
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
-      {/* Simple Templates banner */}
       <div
         style={{
           width: "100%",
@@ -95,7 +102,6 @@ useEffect(() => {
         Templates — Time Entry Map
       </div>
 
-      {/* Map container */}
       <div
         ref={mapRef}
         style={{
