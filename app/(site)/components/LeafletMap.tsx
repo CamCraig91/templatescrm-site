@@ -26,12 +26,10 @@ export default function LeafletMap({ entries }: Props) {
 
     // Tile layer
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19
+      maxZoom: 19,
     }).addTo(map);
 
     // Add markers
-    const bounds: L.LatLngExpression[] = [];
-
     entries.forEach((entry) => {
       const marker = L.marker([entry.lat, entry.lng]).addTo(map);
 
@@ -41,12 +39,13 @@ export default function LeafletMap({ entries }: Props) {
         Lat: ${entry.lat}<br>
         Lng: ${entry.lng}
       `);
-
-      bounds.push([entry.lat, entry.lng]);
     });
 
     // Fit map to markers
-    if (bounds.length > 0) {
+    if (entries.length > 0) {
+      const bounds = L.latLngBounds(
+        entries.map((e) => L.latLng(e.lat, e.lng))
+      );
       map.fitBounds(bounds);
     }
 
