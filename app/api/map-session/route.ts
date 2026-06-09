@@ -1,11 +1,13 @@
+import { NextRequest, NextResponse } from "next/server";
+
 const sessions = new Map<string, any>();
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
     if (!body || typeof body !== "object") {
-      return Response.json(
+      return NextResponse.json(
         { error: "Invalid request body." },
         { status: 400 }
       );
@@ -15,21 +17,21 @@ export async function POST(req: Request) {
 
     sessions.set(id, body);
 
-    return Response.json({ sessionId: id, status: "ok" });
+    return NextResponse.json({ sessionId: id, status: "ok" });
   } catch (err) {
-    return Response.json(
+    return NextResponse.json(
       { error: "Failed to process POST request." },
       { status: 500 }
     );
   }
 }
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     const session = new URL(req.url).searchParams.get("session");
 
     if (!session) {
-      return Response.json(
+      return NextResponse.json(
         { error: "Missing session parameter." },
         { status: 400 }
       );
@@ -38,15 +40,15 @@ export async function GET(req: Request) {
     const data = sessions.get(session);
 
     if (!data) {
-      return Response.json(
+      return NextResponse.json(
         { error: "Session not found or expired.", entries: [] },
         { status: 404 }
       );
     }
 
-    return Response.json(data);
+    return NextResponse.json(data);
   } catch (err) {
-    return Response.json(
+    return NextResponse.json(
       { error: "Failed to process GET request." },
       { status: 500 }
     );
