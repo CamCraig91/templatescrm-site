@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
+type Pin = {
+  id: number | null;
+  lat: number;
+  lng: number;
+  [key: string]: any;
+};
 
 export default function MapPickerPage() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -10,10 +15,30 @@ export default function MapPickerPage() {
   const markersRef = useRef<any[]>([]);
 
   const [L, setL] = useState<any>(null);
-  const [pins, setPins] = useState<any[]>([]);
+  const [pins, setPins] = useState<Pin[]>([]);
   const [fields, setFields] = useState<any[]>([]);
-  const [selectedPin, setSelectedPin] = useState<any | null>(null);
+  const [selectedPin, setSelectedPin] = useState<Pin | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Session data loaded from backend
+  const [sessionData, setSessionData] = useState<any>(null);
+
+  // Read session ID from URL
+  const [sessionId] = useState(() =>
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("session")
+      : null
+  );
+
+  // Status → color mapping
+  const statusColors: Record<string, string> = {
+    "Pending": "#FFD54F",
+    "In Progress": "#42A5F5",
+    "Completed": "#66BB6A",
+    "Not Started": "#B0BEC5",
+    "Closed": "#EF5350",
+  };
 
   // Load Leaflet
   useEffect(() => {
@@ -27,41 +52,33 @@ export default function MapPickerPage() {
     loadLeaflet();
   }, []);
 
-  // Load initial pins + fields from URL
+  // Load session JSON from backend
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!sessionId) return;
 
-    const params = new URLSearchParams(window.location.search);
+    async function loadSession() {
+      const res = await fetch(`/api/map-picker/session/${sessionId}`);
+      const json = await res.json();
+      setSessionData(json);
 
-    const urlPins = params.get("pins");
-    const urlFields = params.get("fields");
-
-    if (urlPins) {
-      try {
-        setPins(JSON.parse(urlPins));
-      } catch {
-        console.warn("Invalid pins JSON");
-      }
+      setPins(json.pins || []);
+      setFields(json.fields || []);
     }
 
-    if (urlFields) {
-      try {
-        setFields(JSON.parse(urlFields));
-      } catch {
-        console.warn("Invalid fields JSON");
-      }
-    }
-  }, []);
+    loadSession();
+  }, [sessionId]);
 
   // Initialize map + render pins
   useEffect(() => {
-    if (!L || !mapRef.current) return;
+    if (!L || !mapRef.current || !sessionData) return;
+
+    const mapboxKey = sessionData.mapboxKey;
 
     if (!mapInstance.current) {
       mapInstance.current = L.map(mapRef.current).setView([44.0, -79.0], 10);
 
       L.tileLayer(
-        `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`,
+        `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxKey}`,
         {
           maxZoom: 19,
           tileSize: 512,
@@ -69,17 +86,42 @@ export default function MapPickerPage() {
         }
       ).addTo(mapInstance.current);
 
-      // Add click handler to create new pins
-      mapInstance.current.on("click", (e: any) => {
-        const newPin: any = {
+      // Click handler: create new pin with reverse geocoding
+      mapInstance.current.on("click", async (e: any) => {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        let geoData: any = {};
+        try {
+          const res = await fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxKey}`
+          );
+          const json = await res.json();
+
+          if (json.features?.length > 0) {
+            const place = json.features[0];
+            geoData = {
+              address: place.place_name || "",
+              businessName: place.text || "",
+              category: place.properties?.category || "",
+            };
+          }
+        } catch (err) {
+          console.warn("Reverse geocoding failed", err);
+        }
+
+        const newPin: Pin = {
           id: null,
-          lat: e.latlng.lat,
-          lng: e.latlng.lng,
+          lat,
+          lng,
         };
 
-        // Add dynamic fields with default values
         fields.forEach((f) => {
-          newPin[f.key] = f.default ?? "";
+          if (geoData[f.key]) {
+            newPin[f.key] = geoData[f.key];
+          } else {
+            newPin[f.key] = f.default ?? "";
+          }
         });
 
         setPins((prev) => [...prev, newPin]);
@@ -94,9 +136,29 @@ export default function MapPickerPage() {
     markersRef.current.forEach((m) => map.removeLayer(m));
     markersRef.current = [];
 
-    // Add markers
+    // Add markers with colored icons
     pins.forEach((pin) => {
-      const marker = L.marker([pin.lat, pin.lng], { draggable: true }).addTo(map);
+      const status = (pin[sessionData.statusField] || "").toString();
+      const color = statusColors[status] || "#607D8B";
+
+      const icon = L.divIcon({
+        className: "custom-pin-icon",
+        html: `<div style="
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: ${color};
+          border: 2px solid #fff;
+          box-shadow: 0 0 4px rgba(0,0,0,0.4);
+        "></div>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      });
+
+      const marker = L.marker([pin.lat, pin.lng], {
+        draggable: true,
+        icon,
+      }).addTo(map);
 
       marker.on("click", () => {
         setSelectedPin(pin);
@@ -110,10 +172,10 @@ export default function MapPickerPage() {
 
       markersRef.current.push(marker);
     });
-  }, [L, pins, fields]);
+  }, [L, pins, sessionData]);
 
   // Update pin helper
-  function updatePin(pin: any, updates: any) {
+  function updatePin(pin: Pin, updates: Partial<Pin>) {
     setPins((prev) =>
       prev.map((p) => (p === pin ? { ...p, ...updates } : p))
     );
@@ -121,22 +183,43 @@ export default function MapPickerPage() {
   }
 
   // Delete pin (only if id = null)
-  function deletePin(pin: any) {
+  function deletePin(pin: Pin) {
     setPins((prev) => prev.filter((p) => p !== pin));
     setSelectedPin(null);
     setSidebarOpen(false);
   }
 
-  // Save & close → return JSON to Method
-  function saveAndClose() {
-    window.parent.postMessage(
-      {
-        type: "mapPickerResult",
-        pins,
-      },
-      "*"
-    );
+  // Save & Close → send final JSON to backend
+  async function saveAndClose() {
+    await fetch(`/api/map-picker/session/${sessionId}/result`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pins }),
+    });
+
     window.close();
+  }
+
+  // Search (forward geocoding)
+  async function handleSearch() {
+    if (!searchQuery.trim() || !sessionData) return;
+
+    const mapboxKey = sessionData.mapboxKey;
+
+    try {
+      const res = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+          searchQuery
+        )}.json?access_token=${mapboxKey}`
+      );
+      const json = await res.json();
+      if (json.features?.length > 0) {
+        const [lng, lat] = json.features[0].center;
+        mapInstance.current.setView([lat, lng], 14);
+      }
+    } catch (err) {
+      console.warn("Search failed", err);
+    }
   }
 
   // Render dynamic fields
@@ -146,45 +229,41 @@ export default function MapPickerPage() {
         return (
           <input
             type="text"
-            value={value}
+            value={value ?? ""}
             onChange={(e) => onChange(e.target.value)}
             style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
           />
         );
-
       case "textarea":
         return (
           <textarea
-            value={value}
+            value={value ?? ""}
             onChange={(e) => onChange(e.target.value)}
             style={{ width: "100%", height: "80px", padding: "8px", marginBottom: "12px" }}
           />
         );
-
       case "number":
         return (
           <input
             type="number"
-            value={value}
+            value={value ?? ""}
             onChange={(e) => onChange(Number(e.target.value))}
             style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
           />
         );
-
       case "datetime":
         return (
           <input
             type="datetime-local"
-            value={value}
+            value={value ?? ""}
             onChange={(e) => onChange(e.target.value)}
             style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
           />
         );
-
       case "dropdown":
         return (
           <select
-            value={value}
+            value={value ?? ""}
             onChange={(e) => onChange(e.target.value)}
             style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
           >
@@ -196,20 +275,22 @@ export default function MapPickerPage() {
             ))}
           </select>
         );
-
       case "checkbox":
         return (
           <input
             type="checkbox"
-            checked={value}
+            checked={!!value}
             onChange={(e) => onChange(e.target.checked)}
             style={{ marginBottom: "12px" }}
           />
         );
-
       default:
         return null;
     }
+  }
+
+  if (!sessionData) {
+    return <div style={{ padding: 20 }}>Loading map session…</div>;
   }
 
   return (
@@ -231,6 +312,61 @@ export default function MapPickerPage() {
         }}
       />
 
+      {/* Top bar: search + Save */}
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          left: "10px",
+          right: "10px",
+          display: "flex",
+          gap: "8px",
+          zIndex: 40,
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Search address or place..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            flex: 1,
+            padding: "8px 10px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            fontSize: "14px",
+          }}
+        />
+        <button
+          onClick={handleSearch}
+          style={{
+            background: "#1976D2",
+            color: "#fff",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          Search
+        </button>
+        <button
+          onClick={saveAndClose}
+          style={{
+            background: "#0A1A2F",
+            color: "#fff",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          Save & Close
+        </button>
+      </div>
+
       {/* Slide-in Sidebar */}
       <div
         style={{
@@ -243,12 +379,11 @@ export default function MapPickerPage() {
           boxShadow: "-2px 0 8px rgba(0,0,0,0.15)",
           padding: "20px",
           transition: "right 0.25s ease",
-          zIndex: 20,
+          zIndex: 30,
           overflowY: "auto",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <div
           style={{
             fontSize: "20px",
@@ -268,7 +403,6 @@ export default function MapPickerPage() {
           <>
             <h3 style={{ marginTop: 0 }}>Pin Details</h3>
 
-            {/* Dynamic fields */}
             {fields.map((field) => (
               <div key={field.key}>
                 <label style={{ fontWeight: 600 }}>{field.label}</label>
@@ -280,13 +414,11 @@ export default function MapPickerPage() {
               </div>
             ))}
 
-            {/* Coordinates (small + separate) */}
             <div style={{ marginTop: "20px", fontSize: "12px", color: "#666" }}>
               <div>Lat: {selectedPin.lat.toFixed(6)}</div>
               <div>Lng: {selectedPin.lng.toFixed(6)}</div>
             </div>
 
-            {/* Delete only if id = null */}
             {selectedPin.id === null && (
               <button
                 onClick={() => deletePin(selectedPin)}
@@ -306,29 +438,9 @@ export default function MapPickerPage() {
             )}
           </>
         ) : (
-          <p style={{ color: "#666" }}>Click a pin to edit.</p>
+          <p style={{ color: "#666" }}>Click a pin or map to add/edit.</p>
         )}
       </div>
-
-      {/* Save & Close button */}
-      <button
-        onClick={saveAndClose}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          background: "#0A1A2F",
-          color: "#fff",
-          padding: "12px 18px",
-          border: "none",
-          borderRadius: "6px",
-          cursor: "pointer",
-          zIndex: 30,
-          fontSize: "15px",
-        }}
-      >
-        Save & Close
-      </button>
     </div>
   );
 }
