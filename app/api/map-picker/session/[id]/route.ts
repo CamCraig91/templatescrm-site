@@ -6,7 +6,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   const { id } = context.params;
-  const session = sessions[id];
+  const session = sessions.get(id);
 
   if (!session) {
     return NextResponse.json({ error: "Session not found" }, { status: 404 });
