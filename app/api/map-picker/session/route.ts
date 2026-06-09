@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 
 // In-memory session store
 const sessions: Record<string, any> = {};
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const sessionId = randomUUID();
@@ -17,5 +17,4 @@ export async function POST(req: Request) {
   return NextResponse.json({ sessionId });
 }
 
-// Export store for other routes
 export { sessions };
