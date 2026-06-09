@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sessions } from "../../route";
+import { sessions } from "@/app/api/map-picker/sessions";
 
 export async function POST(
   req: Request,
