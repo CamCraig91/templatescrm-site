@@ -3,9 +3,9 @@ import { sessions } from "@/app/api/map-picker/sessions";
 
 export async function POST(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = context.params;
+  const { id } = await context.params;
   const session = sessions.get(id);
 
   if (!session) {
@@ -25,24 +25,20 @@ export async function POST(
     methodApiKey,
   } = session;
 
-  // Update Method
   for (const pin of pins) {
     const body: any = {
       [latField]: pin.lat,
       [lngField]: pin.lng,
     };
 
-    // Attach parent for new records
     if (pin.id === null) {
       body[parentField] = parentId;
     }
 
-    // Dynamic fields
     fields.forEach((f: any) => {
       body[f.key] = pin[f.key];
     });
 
-    // Create or update
     if (pin.id === null) {
       await fetch(`https://rest.method.me/api/v1/tables/${table}`, {
         method: "POST",
@@ -64,9 +60,7 @@ export async function POST(
     }
   }
 
-  // Cleanup session
- sessions.delete(id)
-
+  sessions.delete(id);
 
   return NextResponse.json({ success: true });
 }
