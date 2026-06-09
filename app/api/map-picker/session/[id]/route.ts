@@ -3,9 +3,9 @@ import { sessions } from "@/app/api/map-picker/sessions";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = context.params;
+  const { id } = await context.params;
   const session = sessions.get(id);
 
   if (!session) {
