@@ -26,9 +26,10 @@ export async function POST(
     } = session;
 
     for (const pin of pins) {
+      // lat/lng must be numbers — Method rejects strings
       const body: any = {
-        [latField]: pin.lat,
-        [lngField]: pin.lng,
+        [latField]: parseFloat(pin.lat),
+        [lngField]: parseFloat(pin.lng),
       };
 
       // Only attach parent on new pins
@@ -36,19 +37,22 @@ export async function POST(
         body[parentField] = parentId;
       }
 
-      // Add dynamic fields (skip readonly)
+      // Add editable dynamic fields only (skip readonly)
       fields.forEach((f: any) => {
         if (f.type === "readonly") return;
-        if (pin[f.key] !== undefined) {
+        if (pin[f.key] !== undefined && pin[f.key] !== "") {
           body[f.key] = pin[f.key];
         }
       });
 
-      const url = pin.id === null
+      const isNew = pin.id === null || pin.id === undefined;
+      const url = isNew
         ? `https://rest.method.me/api/v1/tables/${table}`
         : `https://rest.method.me/api/v1/tables/${table}/${pin.id}`;
 
-      const method = pin.id === null ? "POST" : "PATCH";
+      const method = isNew ? "POST" : "PATCH";
+
+      console.log(`${method} pin ${pin.id ?? "new"}:`, JSON.stringify(body));
 
       const response = await fetch(url, {
         method,
@@ -59,14 +63,14 @@ export async function POST(
         body: JSON.stringify(body),
       });
 
+      const responseText = await response.text();
       if (!response.ok) {
-        console.warn(`Method API ${method} failed for pin ${pin.id}:`, await response.text());
+        console.warn(`Method API ${method} failed for pin ${pin.id}:`, responseText);
       } else {
         console.log(`✅ Pin ${pin.id ?? "new"} saved to Method`);
       }
     }
 
-    // Clean up session
     await sessions.delete(id);
     console.log(`✅ Session ${id} completed and deleted`);
 

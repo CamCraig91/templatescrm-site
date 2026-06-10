@@ -20,6 +20,7 @@ export default function MapPickerPage() {
   const [pins, setPins] = useState<Pin[]>([]);
   const [fields, setFields] = useState<any[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [pinBounds, setPinBounds] = useState<[number, number][] | null>(null);
   const [pinListOpen, setPinListOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -89,6 +90,11 @@ export default function MapPickerPage() {
         }));
         setPins(loadedPins);
         pinsRef.current = loadedPins;
+
+        // Fly map to fit all loaded pins once map is ready
+        if (loadedPins.length > 0) {
+          setPinBounds(loadedPins.map((p: any) => [p.lat, p.lng] as [number, number]));
+        }
       } catch (err: any) {
         console.error("Session load failed:", err);
         setError(err.message);
@@ -128,6 +134,16 @@ export default function MapPickerPage() {
     });
   }, [L, sessionData]);
 
+  // ── Fly to pins once map + bounds are both ready ─────────────────────────
+  useEffect(() => {
+    if (!mapInstance.current || !L || !pinBounds || pinBounds.length === 0) return;
+    if (pinBounds.length === 1) {
+      mapInstance.current.setView(pinBounds[0], 14);
+    } else {
+      mapInstance.current.fitBounds(pinBounds, { padding: [60, 60] });
+    }
+  }, [L, pinBounds]);
+
   // ── Render Markers ────────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapInstance.current || !L) return;
@@ -148,6 +164,7 @@ export default function MapPickerPage() {
         html: `<div style="width:18px;height:18px;border-radius:50%;background:${fillColor};${ringStyle}"></div>`,
         iconSize: [18, 18],
         iconAnchor: [9, 9],
+        className: "",  // strips Leaflet's default white box border
       });
 
       const marker = L.marker([pin.lat, pin.lng], { draggable: true, icon })
@@ -241,6 +258,19 @@ export default function MapPickerPage() {
       color: "#1a1a1a",
     };
     switch (field.type) {
+      case "readonly":
+        return (
+          <div style={{
+            ...inputStyle,
+            background: "#f5f5f5",
+            color: "#555",
+            border: "1px solid #eee",
+            cursor: "default",
+            minHeight: "38px",
+          }}>
+            {value ?? "—"}
+          </div>
+        );
       case "textarea":
         return (
           <textarea
