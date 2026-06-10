@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sessions } from "../route";
+import { sessions } from "../../sessions";   // ← Correct relative path
 
 export async function GET(
   req: NextRequest,
@@ -14,7 +14,7 @@ export async function GET(
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
-    console.log(`✅ Session loaded: ${id} with ${session.pins?.length || 0} pins`);
+    console.log(`✅ Loaded session ${id} with ${session.pins?.length || 0} pins`);
     return NextResponse.json(session);
   } catch (error) {
     console.error("Session fetch error:", error);
@@ -22,7 +22,6 @@ export async function GET(
   }
 }
 
-// Accept POST or PUT to populate pins
 export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   return handlePopulate(req, context);
 }
@@ -34,7 +33,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 async function handlePopulate(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-    let session = sessions.get(id);
+    const session = sessions.get(id);
 
     if (!session) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
@@ -55,6 +54,6 @@ async function handlePopulate(req: NextRequest, context: { params: Promise<{ id:
     return NextResponse.json({ success: true, pinCount: normalizedPins.length });
   } catch (error) {
     console.error("Populate error:", error);
-    return NextResponse.json({ error: "Failed to populate" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to populate pins" }, { status: 500 });
   }
 }

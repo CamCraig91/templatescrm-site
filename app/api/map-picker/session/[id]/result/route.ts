@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sessions } from "../../route";   // Correct relative import
+import { sessions } from "../../../sessions";   // Correct relative import
 
 export async function POST(
   req: NextRequest,

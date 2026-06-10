@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-
-const sessions = new Map<string, any>();
+import { sessions } from "../sessions";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +10,7 @@ export async function POST(req: NextRequest) {
     sessions.set(sessionId, {
       ...body,
       createdAt: Date.now(),
-      pins: [], // Start with empty pins
+      pins: [],
     });
 
     console.log(`✅ New session created: ${sessionId}`);
@@ -21,5 +20,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to create session" }, { status: 500 });
   }
 }
-
-export { sessions };
