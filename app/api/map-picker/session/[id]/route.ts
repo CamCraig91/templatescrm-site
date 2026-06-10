@@ -20,30 +20,43 @@ export async function GET(
   }
 }
 
-// NEW: Populate existing pins from Method
+// Populate existing pins - with normalization
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await context.params;
-    const session = sessions.get(id);
+    let session = sessions.get(id);
 
     if (!session) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
-    const { pins } = await req.json();
+    const { pins: rawPins } = await req.json();
 
-    // Update session with pins (merge with existing config)
+    // Normalize pins for the map
+    const normalizedPins = (rawPins || []).map((pin: any) => ({
+      id: pin.id || null,
+      lat: parseFloat(pin[session.latField] || pin.Latitude || pin.lat) || 0,
+      lng: parseFloat(pin[session.lngField] || pin.Longitude || pin.lng) || 0,
+      // Copy all other fields
+      ...pin,
+      // Ensure status and other important fields are present
+      [session.statusField || "Status"]: pin[session.statusField] || pin.Status,
+    }));
+
     sessions.set(id, {
       ...session,
-      pins: pins || [],
+      pins: normalizedPins,
     });
 
-    console.log(`✅ Session ${id} populated with ${pins?.length || 0} pins`);
+    console.log(`✅ Session ${id} populated with ${normalizedPins.length} normalized pins`);
 
-    return NextResponse.json({ success: true, pinCount: pins?.length || 0 });
+    return NextResponse.json({ 
+      success: true, 
+      pinCount: normalizedPins.length 
+    });
   } catch (error) {
     console.error("Populate pins error:", error);
     return NextResponse.json({ error: "Failed to populate pins" }, { status: 500 });
