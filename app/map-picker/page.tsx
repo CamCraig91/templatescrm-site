@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 type Pin = {
   id: number | null;
@@ -13,11 +13,14 @@ export default function MapPickerPage() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
+  const pinsRef = useRef<Pin[]>([]);          // ← always-current ref for closures
+  const fieldsRef = useRef<any[]>([]);         // ← always-current ref for map click
 
   const [L, setL] = useState<any>(null);
   const [pins, setPins] = useState<Pin[]>([]);
   const [fields, setFields] = useState<any[]>([]);
-  const [selectedPin, setSelectedPin] = useState<Pin | null>(null);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [pinListOpen, setPinListOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sessionData, setSessionData] = useState<any>(null);
@@ -25,15 +28,27 @@ export default function MapPickerPage() {
   const [error, setError] = useState<string | null>(null);
 
   const [sessionId] = useState(() =>
-    typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("session") : null
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("session")
+      : null
   );
 
   const statusColors: Record<string, string> = {
-    "Pending": "#FFD54F", "In Progress": "#42A5F5", "Completed": "#66BB6A",
-    "Not Started": "#B0BEC5", "Closed": "#EF5350",
+    "Pending": "#FFD54F",
+    "In Progress": "#42A5F5",
+    "Completed": "#66BB6A",
+    "Not Started": "#B0BEC5",
+    "Closed": "#EF5350",
   };
 
-  // Load Leaflet
+  // Keep refs in sync
+  useEffect(() => { pinsRef.current = pins; }, [pins]);
+  useEffect(() => { fieldsRef.current = fields; }, [fields]);
+
+  // Derived selected pin from index
+  const selectedPin = selectedIdx !== null ? pins[selectedIdx] ?? null : null;
+
+  // ── Load Leaflet ──────────────────────────────────────────────────────────
   useEffect(() => {
     async function loadLeaflet() {
       const leaflet = await import("leaflet");
@@ -45,7 +60,7 @@ export default function MapPickerPage() {
     loadLeaflet();
   }, []);
 
-  // Load Session (should contain both config + existing pins)
+  // ── Load Session ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!sessionId) {
       setError("No session ID in URL");
@@ -57,13 +72,23 @@ export default function MapPickerPage() {
       try {
         const res = await fetch(`/api/map-picker/session/${sessionId}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
         const json = await res.json();
-        console.log("📊 Full Session Data:", json);
+        console.log("📊 Session loaded:", json);
 
         setSessionData(json);
-        setPins(json.pins || []);        // ← Existing pins from Method
-        setFields(json.fields || []);
+
+        const loadedFields = json.fields || [];
+        setFields(loadedFields);
+        fieldsRef.current = loadedFields;
+
+        const loadedPins = (json.pins || []).map((p: any) => ({
+          id: p.id ?? null,
+          lat: parseFloat(p.lat ?? p.Latitude) || 0,
+          lng: parseFloat(p.lng ?? p.Longitude) || 0,
+          ...p,
+        }));
+        setPins(loadedPins);
+        pinsRef.current = loadedPins;
       } catch (err: any) {
         console.error("Session load failed:", err);
         setError(err.message);
@@ -71,10 +96,11 @@ export default function MapPickerPage() {
         setLoading(false);
       }
     }
+
     loadSession();
   }, [sessionId]);
 
-  // Initialize Map
+  // ── Initialize Map (once) ─────────────────────────────────────────────────
   useEffect(() => {
     if (!L || !mapRef.current || !sessionData?.mapboxKey || mapInstance.current) return;
 
@@ -85,71 +111,91 @@ export default function MapPickerPage() {
       { maxZoom: 19, tileSize: 512, zoomOffset: -1 }
     ).addTo(mapInstance.current);
 
-    // Click map to create new pin
+    // Use ref so this closure always sees current fields & pins
     mapInstance.current.on("click", (e: any) => {
       const { lat, lng } = e.latlng;
-      console.log("🖱️ Map clicked:", { lat, lng });
-
       const newPin: Pin = { id: null, lat, lng };
-      fields.forEach(f => newPin[f.key] = f.default ?? "");
+      fieldsRef.current.forEach((f: any) => { newPin[f.key] = f.default ?? ""; });
 
-      setPins(prev => [...prev, newPin]);
-      setSelectedPin(newPin);
-      setSidebarOpen(true);
+      setPins(prev => {
+        const updated = [...prev, newPin];
+        pinsRef.current = updated;
+        const newIdx = updated.length - 1;
+        setSelectedIdx(newIdx);
+        setSidebarOpen(true);
+        return updated;
+      });
     });
-  }, [L, sessionData, fields]);
+  }, [L, sessionData]);
 
-  // Render Markers with hover/click feedback
+  // ── Render Markers ────────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapInstance.current || !L) return;
 
     markersRef.current.forEach(m => mapInstance.current.removeLayer(m));
     markersRef.current = [];
 
-    console.log(`Rendering ${pins.length} pins`);
-
-    pins.forEach((pin) => {
+    pins.forEach((pin, idx) => {
       const status = (pin[sessionData?.statusField] || "").toString();
       const color = statusColors[status] || "#607D8B";
 
       const icon = L.divIcon({
-        html: `<div style="width:20px;height:20px;border-radius:50%;background:${color};border:3px solid #fff;box-shadow:0 0 6px rgba(0,0,0,0.6);"></div>`,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10],
+        html: `<div style="width:18px;height:18px;border-radius:50%;background:${color};border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
       });
 
-      const marker = L.marker([pin.lat, pin.lng], { draggable: true, icon }).addTo(mapInstance.current);
+      const marker = L.marker([pin.lat, pin.lng], { draggable: true, icon })
+        .addTo(mapInstance.current);
 
       marker.on("click", () => {
-        setSelectedPin(pin);
+        setSelectedIdx(idx);
         setSidebarOpen(true);
         mapInstance.current.flyTo([pin.lat, pin.lng], 15);
       });
 
       marker.on("dragend", (e: any) => {
         const { lat, lng } = e.target.getLatLng();
-        updatePin(pin, { lat, lng });
+        setPins(prev => {
+          const updated = prev.map((p, i) =>
+            i === idx ? { ...p, lat, lng, _updated: true } : p
+          );
+          pinsRef.current = updated;
+          return updated;
+        });
+        setSelectedIdx(idx);
       });
 
       markersRef.current.push(marker);
     });
   }, [pins, sessionData, L]);
 
-  const updatePin = (pin: Pin, updates: Partial<Pin>) => {
-    setPins(prev => prev.map(p => p === pin ? { ...p, ...updates, _updated: true } : p));
-    setSelectedPin(prev => prev === pin ? { ...prev, ...updates, _updated: true } : prev);
-  };
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  const updatePin = useCallback((idx: number, updates: Partial<Pin>) => {
+    setPins(prev => {
+      const updated = prev.map((p, i) =>
+        i === idx ? { ...p, ...updates, _updated: true } : p
+      );
+      pinsRef.current = updated;
+      return updated;
+    });
+  }, []);
 
-  const deletePin = (pin: Pin) => {
-    setPins(prev => prev.filter(p => p !== pin));
-    setSelectedPin(null);
+  const deletePin = useCallback((idx: number) => {
+    setPins(prev => {
+      const updated = prev.filter((_, i) => i !== idx);
+      pinsRef.current = updated;
+      return updated;
+    });
+    setSelectedIdx(null);
     setSidebarOpen(false);
-  };
+  }, []);
 
-  const flyToPin = (pin: Pin) => {
+  const flyToPin = (pin: Pin, idx: number) => {
     if (mapInstance.current) mapInstance.current.flyTo([pin.lat, pin.lng], 15);
-    setSelectedPin(pin);
+    setSelectedIdx(idx);
     setSidebarOpen(true);
+    setPinListOpen(false);
   };
 
   const saveAndClose = async () => {
@@ -157,7 +203,7 @@ export default function MapPickerPage() {
     await fetch(`/api/map-picker/session/${sessionId}/result`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pins }),
+      body: JSON.stringify({ pins: pinsRef.current }),
     });
     window.close();
   };
@@ -165,7 +211,9 @@ export default function MapPickerPage() {
   const handleSearch = async () => {
     if (!searchQuery.trim() || !sessionData?.mapboxKey || !mapInstance.current) return;
     try {
-      const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json?access_token=${sessionData.mapboxKey}`);
+      const res = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json?access_token=${sessionData.mapboxKey}`
+      );
       const json = await res.json();
       if (json.features?.length) {
         const [lng, lat] = json.features[0].center;
@@ -174,84 +222,338 @@ export default function MapPickerPage() {
     } catch (e) { console.warn(e); }
   };
 
+  // ── Field Renderer ────────────────────────────────────────────────────────
   const renderField = (field: any, value: any, onChange: (v: any) => void) => {
+    const inputStyle: React.CSSProperties = {
+      width: "100%",
+      padding: "9px 12px",
+      borderRadius: "6px",
+      border: "1px solid #e0e0e0",
+      fontSize: "14px",
+      boxSizing: "border-box",
+      outline: "none",
+      fontFamily: "inherit",
+    };
     switch (field.type) {
-      case "text": return <input type="text" value={value ?? ""} onChange={e => onChange(e.target.value)} style={{width:"100%", padding:"10px", borderRadius:"6px", border:"1px solid #ddd"}} />;
-      case "textarea": return <textarea value={value ?? ""} onChange={e => onChange(e.target.value)} style={{width:"100%", height:"100px", padding:"10px", borderRadius:"6px", border:"1px solid #ddd"}} />;
-      case "number": return <input type="number" value={value ?? ""} onChange={e => onChange(Number(e.target.value))} style={{width:"100%", padding:"10px", borderRadius:"6px", border:"1px solid #ddd"}} />;
-      case "datetime": return <input type="datetime-local" value={value ?? ""} onChange={e => onChange(e.target.value)} style={{width:"100%", padding:"10px", borderRadius:"6px", border:"1px solid #ddd"}} />;
-      case "dropdown": return (
-        <select value={value ?? ""} onChange={e => onChange(e.target.value)} style={{width:"100%", padding:"10px", borderRadius:"6px", border:"1px solid #ddd"}}>
-          <option value="">Select...</option>
-          {field.options?.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
-        </select>
-      );
-      default: return <input type="text" value={value ?? ""} onChange={e => onChange(e.target.value)} style={{width:"100%", padding:"10px", borderRadius:"6px", border:"1px solid #ddd"}} />;
+      case "textarea":
+        return (
+          <textarea
+            value={value ?? ""}
+            onChange={e => onChange(e.target.value)}
+            style={{ ...inputStyle, height: "90px", resize: "vertical" }}
+          />
+        );
+      case "number":
+        return (
+          <input
+            type="number"
+            value={value ?? ""}
+            onChange={e => onChange(Number(e.target.value))}
+            style={inputStyle}
+          />
+        );
+      case "datetime":
+        return (
+          <input
+            type="datetime-local"
+            value={value ?? ""}
+            onChange={e => onChange(e.target.value)}
+            style={inputStyle}
+          />
+        );
+      case "dropdown":
+        return (
+          <select
+            value={value ?? ""}
+            onChange={e => onChange(e.target.value)}
+            style={inputStyle}
+          >
+            <option value="">Select...</option>
+            {field.options?.map((opt: string) => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        );
+      default:
+        return (
+          <input
+            type="text"
+            value={value ?? ""}
+            onChange={e => onChange(e.target.value)}
+            style={inputStyle}
+          />
+        );
     }
   };
 
-  if (error) return <div style={{padding:40, color:"red"}}>Error: {error}</div>;
+  // ── Error ─────────────────────────────────────────────────────────────────
+  if (error) return (
+    <div style={{ padding: 40, color: "#B00020", fontFamily: "sans-serif" }}>
+      Error: {error}
+    </div>
+  );
 
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden" }}>
-      {/* Header */}
-      <div style={{ height: "64px", background: "#0A1A2F", display: "flex", alignItems: "center", padding: "0 16px", gap: "12px", zIndex: 100 }}>
-        <img src="/TemplatesLogoWhite.png" alt="Logo" style={{ height: "36px" }} />
-        <div style={{ flex: 1, display: "flex", gap: "8px", maxWidth: "460px", marginLeft: "auto" }}>
-          <input type="text" placeholder="Search address..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} style={{ flex: 1, padding: "8px 12px", borderRadius: "6px", border: "none" }} />
-          <button onClick={handleSearch} style={{ padding: "8px 20px", background: "#1976D2", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>Search</button>
-          <button onClick={saveAndClose} style={{ padding: "8px 20px", background: "#0A1A2F", color: "white", border: "1px solid #fff", borderRadius: "6px", cursor: "pointer" }}>Save & Close</button>
+    <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden", fontFamily: "system-ui, sans-serif" }}>
+
+      {/* ── Header ── */}
+      <div style={{
+        height: "52px",
+        background: "#0A1A2F",
+        display: "flex",
+        alignItems: "center",
+        padding: "0 14px",
+        gap: "10px",
+        zIndex: 100,
+        position: "relative",
+      }}>
+        <img src="/TemplatesLogoWhite.png" alt="Logo" style={{ height: "30px" }} />
+
+        <div style={{ flex: 1 }} />
+
+        {/* Search */}
+        <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+          <input
+            type="text"
+            placeholder="Search address..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleSearch()}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "5px",
+              border: "none",
+              fontSize: "13px",
+              width: "200px",
+              background: "#fff",
+              outline: "none",
+            }}
+          />
+          <button
+            onClick={handleSearch}
+            style={{
+              padding: "5px 12px",
+              background: "#1976D2",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              fontSize: "12px",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            Search
+          </button>
+          <button
+            onClick={saveAndClose}
+            style={{
+              padding: "5px 12px",
+              background: "transparent",
+              color: "white",
+              border: "1px solid rgba(255,255,255,0.5)",
+              borderRadius: "5px",
+              fontSize: "12px",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            Save & Close
+          </button>
         </div>
       </div>
 
-      <div style={{ display: "flex", height: "calc(100vh - 64px)" }}>
-        {/* Pin List */}
-        <div style={{ width: "280px", background: "#f8f9fa", borderRight: "1px solid #ddd", overflowY: "auto", padding: "16px" }}>
-          <h4>Pins ({pins.length})</h4>
-          {pins.length === 0 ? <p>No pins loaded yet.</p> : pins.map((pin, idx) => (
-            <div key={idx} onClick={() => flyToPin(pin)} style={{ padding: "12px", marginBottom: "8px", background: selectedPin === pin ? "#e3f2fd" : "#fff", border: "1px solid #ddd", borderRadius: "8px", cursor: "pointer" }}>
-              <strong>Pin {idx + 1}</strong><br />
-              {pin[fields[1]?.key] || "Unnamed"}<br />
-              <small>Lat: {pin.lat.toFixed(4)}, Lng: {pin.lng.toFixed(4)}</small>
-              {pin._updated && <span style={{color:"#1976D2"}}> • Updated</span>}
+      {/* ── Body ── */}
+      <div style={{ position: "relative", height: "calc(100vh - 52px)" }}>
+
+        {/* ── Map ── */}
+        <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+
+        {/* ── Pin count chip (floating top-left) ── */}
+        {pins.length > 0 && (
+          <div
+            onClick={() => setPinListOpen(o => !o)}
+            style={{
+              position: "absolute",
+              top: "12px",
+              left: "12px",
+              zIndex: 800,
+              background: "#0A1A2F",
+              color: "#fff",
+              padding: "6px 14px",
+              borderRadius: "20px",
+              fontSize: "13px",
+              fontWeight: 600,
+              cursor: "pointer",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+              userSelect: "none",
+            }}
+          >
+            📍 Pins ({pins.length})
+          </div>
+        )}
+
+        {/* ── Pin List Dropdown ── */}
+        {pinListOpen && pins.length > 0 && (
+          <div style={{
+            position: "absolute",
+            top: "48px",
+            left: "12px",
+            zIndex: 800,
+            background: "#fff",
+            borderRadius: "10px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+            width: "260px",
+            maxHeight: "340px",
+            overflowY: "auto",
+            padding: "8px",
+          }}>
+            {pins.map((pin, idx) => (
+              <div
+                key={idx}
+                onClick={() => flyToPin(pin, idx)}
+                style={{
+                  padding: "10px 12px",
+                  marginBottom: "4px",
+                  background: selectedIdx === idx ? "#e3f2fd" : "#fafafa",
+                  border: `1px solid ${selectedIdx === idx ? "#90caf9" : "#eee"}`,
+                  borderRadius: "7px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                }}
+              >
+                <strong style={{ color: "#0A1A2F" }}>Pin {idx + 1}</strong>
+                <span style={{ color: "#555", marginLeft: "6px" }}>
+                  {pin[fields[1]?.key] || "Unnamed"}
+                </span>
+                <br />
+                <small style={{ color: "#999" }}>
+                  {pin.lat.toFixed(4)}, {pin.lng.toFixed(4)}
+                </small>
+                {pin._updated && (
+                  <span style={{ color: "#1976D2", fontSize: "11px", marginLeft: "6px" }}>• edited</span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ── Sidebar ── */}
+        {sidebarOpen && selectedPin && selectedIdx !== null && (
+          <div style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "360px",
+            height: "100%",
+            background: "#fff",
+            boxShadow: "-4px 0 24px rgba(0,0,0,0.18)",
+            zIndex: 900,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}>
+            {/* Sidebar header */}
+            <div style={{
+              padding: "16px 20px",
+              borderBottom: "1px solid #f0f0f0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              background: "#fff",
+            }}>
+              <span style={{ fontWeight: 700, fontSize: "15px", color: "#0A1A2F" }}>
+                Pin {selectedIdx + 1}
+              </span>
+              <span
+                onClick={() => { setSidebarOpen(false); setSelectedIdx(null); }}
+                style={{
+                  cursor: "pointer",
+                  fontSize: "20px",
+                  color: "#999",
+                  lineHeight: 1,
+                  padding: "2px 6px",
+                }}
+              >
+                ×
+              </span>
             </div>
-          ))}
-        </div>
 
-        {/* Map */}
-        <div style={{ flex: 1, position: "relative" }}>
-          <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
-
-          {/* Sidebar */}
-          {sidebarOpen && selectedPin && (
-            <div style={{ position: "absolute", top: 0, right: 0, width: "400px", height: "100%", background: "#fff", boxShadow: "-4px 0 20px rgba(0,0,0,0.3)", zIndex: 900, padding: "24px", overflowY: "auto" }}>
-              <div style={{ fontSize: "36px", textAlign: "right", cursor: "pointer" }} onClick={() => { setSidebarOpen(false); setSelectedPin(null); }}>×</div>
-              <h2>Pin Details</h2>
-
+            {/* Sidebar body */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
               {fields.map(field => (
-                <div key={field.key} style={{ marginBottom: "20px" }}>
-                  <label style={{ fontWeight: 700, display: "block", marginBottom: "6px" }}>{field.label}</label>
-                  {renderField(field, selectedPin[field.key], (v) => updatePin(selectedPin, { [field.key]: v }))}
+                <div key={field.key} style={{ marginBottom: "18px" }}>
+                  <label style={{
+                    fontWeight: 700,
+                    fontSize: "12px",
+                    color: "#000",
+                    display: "block",
+                    marginBottom: "6px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.04em",
+                  }}>
+                    {field.label}
+                  </label>
+                  {renderField(
+                    field,
+                    selectedPin[field.key],
+                    (v) => updatePin(selectedIdx, { [field.key]: v })
+                  )}
                 </div>
               ))}
 
-              <div style={{ marginTop: "30px", padding: "12px", background: "#f5f5f5", borderRadius: "8px" }}>
-                <strong>📍 Location</strong><br />
-                Lat: {selectedPin.lat.toFixed(6)}<br />
-                Lng: {selectedPin.lng.toFixed(6)}
+              {/* Location */}
+              <div style={{ marginTop: "8px", paddingTop: "16px", borderTop: "1px solid #f0f0f0" }}>
+                <span style={{ fontWeight: 700, fontSize: "12px", color: "#000", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                  Location
+                </span>
+                <div style={{ marginTop: "6px", fontSize: "13px", color: "#444" }}>
+                  <strong>Lat</strong> {selectedPin.lat.toFixed(6)} &nbsp;
+                  <strong>Lng</strong> {selectedPin.lng.toFixed(6)}
+                </div>
               </div>
 
               {selectedPin.id === null && (
-                <button onClick={() => deletePin(selectedPin)} style={{ marginTop: "24px", width: "100%", padding: "14px", background: "#B00020", color: "white", border: "none", borderRadius: "8px", fontWeight: "bold" }}>
+                <button
+                  onClick={() => deletePin(selectedIdx)}
+                  style={{
+                    marginTop: "24px",
+                    width: "100%",
+                    padding: "12px",
+                    background: "#B00020",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    fontWeight: 700,
+                    fontSize: "14px",
+                    cursor: "pointer",
+                  }}
+                >
                   Delete Pin
                 </button>
               )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {loading && <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.95)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 999 }}>Loading session...</div>}
+      {/* ── Loading overlay ── */}
+      {loading && (
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(255,255,255,0.96)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 999,
+          fontSize: "15px",
+          color: "#0A1A2F",
+          fontWeight: 600,
+        }}>
+          Loading session...
+        </div>
+      )}
     </div>
   );
 }
