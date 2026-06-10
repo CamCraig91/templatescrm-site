@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sessions } from "../../../sessions";   // Correct relative import
+import { sessions } from "../../../sessions";
 
 export async function POST(
   req: NextRequest,
@@ -7,7 +7,7 @@ export async function POST(
 ) {
   try {
     const { id } = await context.params;
-    const session = sessions.get(id);
+    const session = await sessions.get(id);
 
     if (!session) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
@@ -21,7 +21,6 @@ export async function POST(
       parentId,
       latField,
       lngField,
-      statusField,
       fields,
       methodApiKey,
     } = session;
@@ -32,13 +31,14 @@ export async function POST(
         [lngField]: pin.lng,
       };
 
-      // Only set parent on new pins
+      // Only attach parent on new pins
       if (pin.id === null && parentField && parentId) {
         body[parentField] = parentId;
       }
 
-      // Add dynamic fields
+      // Add dynamic fields (skip readonly)
       fields.forEach((f: any) => {
+        if (f.type === "readonly") return;
         if (pin[f.key] !== undefined) {
           body[f.key] = pin[f.key];
         }
@@ -60,12 +60,14 @@ export async function POST(
       });
 
       if (!response.ok) {
-        console.warn(`Method API ${method} failed for pin`, await response.text());
+        console.warn(`Method API ${method} failed for pin ${pin.id}:`, await response.text());
+      } else {
+        console.log(`✅ Pin ${pin.id ?? "new"} saved to Method`);
       }
     }
 
     // Clean up session
-    sessions.delete(id);
+    await sessions.delete(id);
     console.log(`✅ Session ${id} completed and deleted`);
 
     return NextResponse.json({ success: true });

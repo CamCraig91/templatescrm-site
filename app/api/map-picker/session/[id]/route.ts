@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sessions } from "../../sessions";   // ← Correct relative path
+import { sessions } from "../../sessions";
 
 export async function GET(
   req: NextRequest,
@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await context.params;
-    const session = sessions.get(id);
+    const session = await sessions.get(id);
 
     if (!session) {
       console.log(`❌ Session not found: ${id}`);
@@ -33,7 +33,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 async function handlePopulate(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-    const session = sessions.get(id);
+    const session = await sessions.get(id);
 
     if (!session) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
@@ -42,13 +42,13 @@ async function handlePopulate(req: NextRequest, context: { params: Promise<{ id:
     const { pins: rawPins } = await req.json();
 
     const normalizedPins = (rawPins || []).map((pin: any) => ({
-      id: pin.id || null,
-      lat: parseFloat(pin.Latitude || pin.lat) || 0,
-      lng: parseFloat(pin.Longitude || pin.lng) || 0,
+      id: pin.id ?? null,
+      lat: parseFloat(pin.Latitude ?? pin.lat) || 0,
+      lng: parseFloat(pin.Longitude ?? pin.lng) || 0,
       ...pin,
     }));
 
-    sessions.set(id, { ...session, pins: normalizedPins });
+    await sessions.set(id, { ...session, pins: normalizedPins });
 
     console.log(`✅ Populated session ${id} with ${normalizedPins.length} pins`);
     return NextResponse.json({ success: true, pinCount: normalizedPins.length });
