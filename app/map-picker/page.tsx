@@ -34,12 +34,31 @@ export default function MapPickerPage() {
       : null
   );
 
+  // Colours keyed on statusField value — extend as needed
   const statusColors: Record<string, string> = {
-    "Pending": "#FFD54F",
-    "In Progress": "#42A5F5",
-    "Completed": "#66BB6A",
-    "Not Started": "#B0BEC5",
-    "Closed": "#EF5350",
+    // Green — done/good
+    "Completed": "#43A047", "Approved": "#43A047", "Accepted": "#43A047",
+    // Blue — active
+    "In Progress": "#1976D2", "Shift Start": "#1976D2", "Started": "#1976D2",
+    // Amber — waiting
+    "Pending": "#FFB300", "Not Started": "#FFB300",
+    // Red — closed/bad
+    "Cancelled": "#E53935", "Closed": "#E53935", "Rejected": "#E53935",
+    // Grey — end of shift / neutral
+    "Shift End": "#78909C",
+  };
+
+  // Resolve the display label for a pin (falls back through sensible keys)
+  const getPinLabel = (pin: Pin): string => {
+    if (!sessionData) return "";
+    // Try each field marked label:true, then Name, then first non-lat/lng value
+    const labelField = fields.find((f: any) => f.pinLabel);
+    if (labelField && pin[labelField.key]) return String(pin[labelField.key]);
+    // Common fallbacks
+    for (const k of ["CustomScheduleRecordIDContactRecordIDName", "Name", "name"]) {
+      if (pin[k]) return String(pin[k]);
+    }
+    return "";
   };
 
   // Keep refs in sync
@@ -460,7 +479,7 @@ export default function MapPickerPage() {
               >
                 <strong style={{ color: "#0A1A2F" }}>Pin {idx + 1}</strong>
                 <span style={{ color: "#555", marginLeft: "6px" }}>
-                  {pin[fields[1]?.key] || "Unnamed"}
+                  {getPinLabel(pin) || "Unnamed"}
                 </span>
                 <br />
                 <small style={{ color: "#999" }}>
@@ -499,7 +518,7 @@ export default function MapPickerPage() {
               background: "#fff",
             }}>
               <span style={{ fontWeight: 700, fontSize: "15px", color: "#0A1A2F" }}>
-                Pin {selectedIdx + 1}
+                {getPinLabel(selectedPin) || `Pin ${(selectedIdx ?? 0) + 1}`}
               </span>
               <span
                 onClick={() => { setSidebarOpen(false); setSelectedIdx(null); }}
@@ -517,7 +536,9 @@ export default function MapPickerPage() {
 
             {/* Sidebar body */}
             <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
-              {fields.map(field => (
+              {fields
+                .filter((f: any) => !f.hidden)
+                .map((field: any) => (
                 <div key={field.key} style={{ marginBottom: "18px" }}>
                   <label style={{
                     fontWeight: 700,
