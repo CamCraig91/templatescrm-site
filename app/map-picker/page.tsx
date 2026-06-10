@@ -136,11 +136,16 @@ export default function MapPickerPage() {
     markersRef.current = [];
 
     pins.forEach((pin, idx) => {
+      const isSelected = idx === selectedIdx;
       const status = (pin[sessionData?.statusField] || "").toString();
-      const color = statusColors[status] || "#607D8B";
+      const statusColor = statusColors[status] || "#607D8B";
+      const fillColor = isSelected ? "#1976D2" : statusColor;
+      const ringStyle = isSelected
+        ? "border:3px solid #fff;box-shadow:0 0 0 3px #1976D2,0 2px 8px rgba(0,0,0,0.4);"
+        : "border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);";
 
       const icon = L.divIcon({
-        html: `<div style="width:18px;height:18px;border-radius:50%;background:${color};border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>`,
+        html: `<div style="width:18px;height:18px;border-radius:50%;background:${fillColor};${ringStyle}"></div>`,
         iconSize: [18, 18],
         iconAnchor: [9, 9],
       });
@@ -168,7 +173,7 @@ export default function MapPickerPage() {
 
       markersRef.current.push(marker);
     });
-  }, [pins, sessionData, L]);
+  }, [pins, sessionData, L, selectedIdx]);
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const updatePin = useCallback((idx: number, updates: Partial<Pin>) => {
@@ -233,6 +238,7 @@ export default function MapPickerPage() {
       boxSizing: "border-box",
       outline: "none",
       fontFamily: "inherit",
+      color: "#1a1a1a",
     };
     switch (field.type) {
       case "textarea":
