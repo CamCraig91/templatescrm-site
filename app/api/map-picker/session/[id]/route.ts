@@ -10,9 +10,11 @@ export async function GET(
     const session = sessions.get(id);
 
     if (!session) {
+      console.log(`❌ Session not found: ${id}`);
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
+    console.log(`✅ Session loaded: ${id} with ${session.pins?.length || 0} pins`);
     return NextResponse.json(session);
   } catch (error) {
     console.error("Session fetch error:", error);
@@ -20,7 +22,7 @@ export async function GET(
   }
 }
 
-// Accept BOTH POST and PUT for populating pins (easier for Method)
+// Accept POST or PUT to populate pins
 export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   return handlePopulate(req, context);
 }
@@ -29,7 +31,6 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
   return handlePopulate(req, context);
 }
 
-// Shared logic
 async function handlePopulate(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
@@ -43,24 +44,17 @@ async function handlePopulate(req: NextRequest, context: { params: Promise<{ id:
 
     const normalizedPins = (rawPins || []).map((pin: any) => ({
       id: pin.id || null,
-      lat: parseFloat(pin.Latitude || pin.lat || pin[session.latField]) || 0,
-      lng: parseFloat(pin.Longitude || pin.lng || pin[session.lngField]) || 0,
-      ...pin, // Keep all original fields
+      lat: parseFloat(pin.Latitude || pin.lat) || 0,
+      lng: parseFloat(pin.Longitude || pin.lng) || 0,
+      ...pin,
     }));
 
-    sessions.set(id, {
-      ...session,
-      pins: normalizedPins,
-    });
+    sessions.set(id, { ...session, pins: normalizedPins });
 
-    console.log(`✅ Session ${id} populated with ${normalizedPins.length} pins`);
-
-    return NextResponse.json({ 
-      success: true, 
-      pinCount: normalizedPins.length 
-    });
+    console.log(`✅ Populated session ${id} with ${normalizedPins.length} pins`);
+    return NextResponse.json({ success: true, pinCount: normalizedPins.length });
   } catch (error) {
-    console.error("Populate pins error:", error);
-    return NextResponse.json({ error: "Failed to populate pins" }, { status: 500 });
+    console.error("Populate error:", error);
+    return NextResponse.json({ error: "Failed to populate" }, { status: 500 });
   }
 }
