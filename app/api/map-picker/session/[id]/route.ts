@@ -20,11 +20,17 @@ export async function GET(
   }
 }
 
-// Populate existing pins - with normalization
-export async function PUT(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
+// Accept BOTH POST and PUT for populating pins (easier for Method)
+export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  return handlePopulate(req, context);
+}
+
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  return handlePopulate(req, context);
+}
+
+// Shared logic
+async function handlePopulate(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
     let session = sessions.get(id);
@@ -35,15 +41,11 @@ export async function PUT(
 
     const { pins: rawPins } = await req.json();
 
-    // Normalize pins for the map
     const normalizedPins = (rawPins || []).map((pin: any) => ({
       id: pin.id || null,
-      lat: parseFloat(pin[session.latField] || pin.Latitude || pin.lat) || 0,
-      lng: parseFloat(pin[session.lngField] || pin.Longitude || pin.lng) || 0,
-      // Copy all other fields
-      ...pin,
-      // Ensure status and other important fields are present
-      [session.statusField || "Status"]: pin[session.statusField] || pin.Status,
+      lat: parseFloat(pin.Latitude || pin.lat || pin[session.latField]) || 0,
+      lng: parseFloat(pin.Longitude || pin.lng || pin[session.lngField]) || 0,
+      ...pin, // Keep all original fields
     }));
 
     sessions.set(id, {
@@ -51,7 +53,7 @@ export async function PUT(
       pins: normalizedPins,
     });
 
-    console.log(`✅ Session ${id} populated with ${normalizedPins.length} normalized pins`);
+    console.log(`✅ Session ${id} populated with ${normalizedPins.length} pins`);
 
     return NextResponse.json({ 
       success: true, 
