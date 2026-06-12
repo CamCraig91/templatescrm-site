@@ -6,51 +6,61 @@ import { useEffect, useRef, useState, useCallback } from "react";
 type FieldType = "text" | "textarea" | "number" | "datetime" | "dropdown" | "readonly" | "linked";
 
 type Field = {
-  key:              string;
-  label:            string;
-  type:             FieldType;
-  options?:         string[];
-  default?:         any;
-  hidden?:          boolean;   // never shown
-  pinLabel?:        boolean;   // used as pin title
-  pinColor?:        boolean;   // drives marker colour
-  geocode?:         string;    // mapbox prop: place_name|address|phone|website|category|city|postcode
-  showOnNew?:       boolean;   // show when creating a new pin       (default: true)
-  showOnExisting?:  boolean;   // show when viewing an existing pin  (default: true)
-  editOnNew?:       boolean;   // editable on new pins               (default: true, unless readonly/linked)
-  editOnExisting?:  boolean;   // editable on existing pins          (default: true, unless readonly/linked)
+  key:             string;
+  label:           string;
+  type:            FieldType;
+  options?:        string[];
+  default?:        any;
+  hidden?:         boolean;
+  pinLabel?:       boolean;
+  pinColor?:       boolean;
+  geocode?:        string;
+  showOnNew?:      boolean;
+  showOnExisting?: boolean;
+  editOnNew?:      boolean;
+  editOnExisting?: boolean;
 };
 
 type Pin = {
-  id:     string | number | null;
-  lat:    number;
-  lng:    number;
+  id:  string | number | null;
+  lat: number;
+  lng: number;
   [key: string]: any;
 };
 
-// ── Status colour map ─────────────────────────────────────────────────────────
-const STATUS_COLORS: Record<string, string> = {
-  "Completed":  "#43A047", "Approved": "#43A047", "Accepted": "#43A047", "Done":      "#43A047",
-  "In Progress":"#1976D2", "Active":   "#1976D2", "Started":  "#1976D2", "Shift Start":"#1976D2",
-  "Pending":    "#FFB300", "Not Started":"#FFB300","Scheduled":"#FFB300",
-  "Cancelled":  "#E53935", "Closed":   "#E53935", "Rejected": "#E53935", "Failed":    "#E53935",
-  "Shift End":  "#78909C", "On Hold":  "#78909C",
+type GeoPopup = {
+  lat:       number;
+  lng:       number;
+  screenX:   number;
+  screenY:   number;
+  props:     Record<string, string>;
+  loading:   boolean;
 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
+// ── Colour map ────────────────────────────────────────────────────────────────
+const STATUS_COLORS: Record<string, string> = {
+  "Completed":   "#43A047", "Approved":  "#43A047", "Accepted":    "#43A047", "Done":        "#43A047",
+  "In Progress": "#1976D2", "Active":    "#1976D2", "Started":     "#1976D2", "Shift Start": "#1976D2",
+  "Pending":     "#FFB300", "Not Started":"#FFB300","Scheduled":   "#FFB300",
+  "Cancelled":   "#E53935", "Closed":    "#E53935", "Rejected":    "#E53935", "Failed":      "#E53935",
+  "Shift End":   "#78909C", "On Hold":   "#78909C",
+};
+
 export default function MapPickerPage() {
-  const mapRef       = useRef<HTMLDivElement>(null);
-  const mapInstance  = useRef<any>(null);
-  const markersRef   = useRef<any[]>([]);
-  const userMarker   = useRef<any>(null);
-  const pinsRef      = useRef<Pin[]>([]);
-  const fieldsRef    = useRef<Field[]>([]);
-  const sessionRef   = useRef<any>(null);
+  const mapRef      = useRef<HTMLDivElement>(null);
+  const mapInstance = useRef<any>(null);
+  const markersRef  = useRef<any[]>([]);
+  const userMarker  = useRef<any>(null);
+  const pinsRef     = useRef<Pin[]>([]);
+  const fieldsRef   = useRef<Field[]>([]);
+  const sessionRef  = useRef<any>(null);
 
   const [L,           setL]           = useState<any>(null);
   const [pins,        setPins]        = useState<Pin[]>([]);
   const [fields,      setFields]      = useState<Field[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [draftPin,    setDraftPin]    = useState<Pin | null>(null);   // unsaved new pin in sidebar
+  const [geoPopup,    setGeoPopup]    = useState<GeoPopup | null>(null);
   const [pinBounds,   setPinBounds]   = useState<[number,number][] | null>(null);
   const [pinListOpen, setPinListOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,8 +68,8 @@ export default function MapPickerPage() {
   const [sessionData, setSessionData] = useState<any>(null);
   const [loading,     setLoading]     = useState(true);
   const [error,       setError]       = useState<string | null>(null);
-  const [geocoding,   setGeocoding]   = useState(false);
   const [userPos,     setUserPos]     = useState<[number,number] | null>(null);
+  const [locationAllowed, setLocationAllowed] = useState(false);
 
   const [sessionId] = useState(() =>
     typeof window !== "undefined"
@@ -67,41 +77,34 @@ export default function MapPickerPage() {
       : null
   );
 
-  // Keep refs current so Leaflet closures always see fresh data
   useEffect(() => { pinsRef.current   = pins;        }, [pins]);
   useEffect(() => { fieldsRef.current = fields;      }, [fields]);
   useEffect(() => { sessionRef.current = sessionData; }, [sessionData]);
 
-  const selectedPin = selectedIdx !== null ? pins[selectedIdx] ?? null : null;
-  const isNewPin    = selectedPin?.id === null || selectedPin?.id === undefined;
+  const selectedPin  = selectedIdx !== null ? pins[selectedIdx] ?? null : null;
+  const allowNewPins = sessionData?.allowNewPins !== false;
+  const viewOnly     = sessionData?.viewOnly === true;
 
-  // Page-level flags from session config
-  const allowNewPins = sessionData?.allowNewPins !== false; // default true
-  const viewOnly     = sessionData?.viewOnly     === true;  // default false
-
-  // ── Field visibility/editability helpers ──────────────────────────────────
-  const isFieldVisible = (f: Field, isNew: boolean): boolean => {
+  // ── Field helpers ─────────────────────────────────────────────────────────
+  const isFieldVisible = (f: Field, isNew: boolean) => {
     if (f.hidden) return false;
-    if (isNew)  return f.showOnNew      !== false;
-    else        return f.showOnExisting !== false;
+    return isNew ? f.showOnNew !== false : f.showOnExisting !== false;
   };
 
-  const isFieldEditable = (f: Field, isNew: boolean): boolean => {
+  const isFieldEditable = (f: Field, isNew: boolean) => {
     if (viewOnly) return false;
     if (f.type === "readonly" || f.type === "linked") return false;
-    if (isNew)  return f.editOnNew      !== false;
-    else        return f.editOnExisting !== false;
+    return isNew ? f.editOnNew !== false : f.editOnExisting !== false;
   };
 
-  // ── Pin label + colour ────────────────────────────────────────────────────
-  const getPinLabel = useCallback((pin: Pin): string => {
+  const getPinLabel = useCallback((pin: Pin) => {
     const f = fieldsRef.current.find(f => f.pinLabel);
     if (f && pin[f.key]) return String(pin[f.key]);
-    for (const k of ["Name", "name", "Title", "title"]) if (pin[k]) return String(pin[k]);
+    for (const k of ["Name","name","Title","title"]) if (pin[k]) return String(pin[k]);
     return "";
   }, []);
 
-  const getPinColor = useCallback((pin: Pin, isSelected: boolean): string => {
+  const getPinColor = useCallback((pin: Pin, isSelected: boolean) => {
     if (isSelected) return "#1976D2";
     const f = fieldsRef.current.find(f => f.pinColor);
     const v = f ? String(pin[f.key] || "") : "";
@@ -120,24 +123,41 @@ export default function MapPickerPage() {
       const feat = json.features?.[0];
       if (!feat) return {};
 
-      const props: Record<string,string> = {
-        place_name: feat.place_name || "",
-        address:    feat.properties?.address || feat.place_name?.split(",")[0] || "",
-        category:   feat.properties?.category || feat.place_type?.[0] || "",
-        phone:      feat.properties?.tel || "",
-        website:    feat.properties?.website || "",
-      };
+      const props: Record<string,string> = {};
+
+      // Business name — only if it's a POI (place_type includes "poi")
+      if (feat.place_type?.includes("poi")) {
+        props.place_name = feat.text || "";
+      }
+
+      // Full formatted address
+      props.full_address = feat.place_name || "";
+
+      // Street address (number + street)
+      props.address = feat.properties?.address || feat.place_name?.split(",")[0] || "";
+
+      // Category
+      props.category = feat.properties?.category || "";
+
+      // Contact
+      props.phone   = feat.properties?.tel     || "";
+      props.website = feat.properties?.website || "";
+
+      // Context: city, region/province, postcode, country
       (feat.context || []).forEach((ctx: any) => {
-        if (ctx.id?.startsWith("place"))    props.city     = ctx.text;
-        if (ctx.id?.startsWith("region"))   props.region   = ctx.text;
-        if (ctx.id?.startsWith("postcode")) props.postcode = ctx.text;
-        if (ctx.id?.startsWith("country"))  props.country  = ctx.text;
+        const id = ctx.id || "";
+        if (id.startsWith("place"))    props.city     = ctx.text || "";
+        if (id.startsWith("district")) props.district = ctx.text || "";
+        if (id.startsWith("region"))   props.province = ctx.text || "";
+        if (id.startsWith("postcode")) props.postcode = ctx.text || "";
+        if (id.startsWith("country"))  props.country  = ctx.text || "";
       });
+
       return props;
     } catch { return {}; }
   }, []);
 
-  // ── Load Leaflet ──────────────────────────────────────────────────────────
+  // ── Leaflet ───────────────────────────────────────────────────────────────
   useEffect(() => {
     (async () => {
       const leaflet = await import("leaflet");
@@ -148,7 +168,7 @@ export default function MapPickerPage() {
     })();
   }, []);
 
-  // ── Load Session ──────────────────────────────────────────────────────────
+  // ── Session ───────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!sessionId) { setError("No session ID in URL"); setLoading(false); return; }
     (async () => {
@@ -156,7 +176,6 @@ export default function MapPickerPage() {
         const res  = await fetch(`/api/map-picker/session/${sessionId}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-
         const loadedFields: Field[] = json.fields || [];
         const loadedPins: Pin[]     = (json.pins || []).map((p: any) => ({
           ...p,
@@ -164,7 +183,6 @@ export default function MapPickerPage() {
           lat: parseFloat(p.lat  ?? p.Latitude)  || 0,
           lng: parseFloat(p.lng  ?? p.Longitude) || 0,
         }));
-
         setSessionData(json);
         setFields(loadedFields);
         fieldsRef.current = loadedFields;
@@ -179,29 +197,53 @@ export default function MapPickerPage() {
     })();
   }, [sessionId]);
 
-  // ── User location ─────────────────────────────────────────────────────────
+  // ── User location — explicit permission request ───────────────────────────
   useEffect(() => {
     if (!navigator.geolocation) return;
-    const watcher = navigator.geolocation.watchPosition(
-      pos => setUserPos([pos.coords.latitude, pos.coords.longitude]),
-      () => {},
-      { enableHighAccuracy: true, maximumAge: 10000 }
-    );
-    return () => navigator.geolocation.clearWatch(watcher);
+    navigator.permissions?.query({ name: "geolocation" }).then(result => {
+      if (result.state === "granted") {
+        startWatching();
+      } else if (result.state === "prompt") {
+        // Will ask when we call watchPosition
+        startWatching();
+      }
+      // If "denied", do nothing — no dot shown
+    }).catch(() => startWatching()); // fallback if permissions API unavailable
+
+    function startWatching() {
+      const id = navigator.geolocation.watchPosition(
+        pos => {
+          setLocationAllowed(true);
+          setUserPos([pos.coords.latitude, pos.coords.longitude]);
+        },
+        () => setLocationAllowed(false),
+        { enableHighAccuracy: true, maximumAge: 10000 }
+      );
+      return () => navigator.geolocation.clearWatch(id);
+    }
   }, []);
 
-  // Render user location dot on map
+  // ── User location marker ──────────────────────────────────────────────────
   useEffect(() => {
-    if (!mapInstance.current || !L || !userPos) return;
+    if (!mapInstance.current || !L || !userPos || !locationAllowed) return;
     if (userMarker.current) mapInstance.current.removeLayer(userMarker.current);
-    const icon = L.divIcon({
-      html: `<div style="width:14px;height:14px;border-radius:50%;background:#1976D2;border:2px solid #fff;box-shadow:0 0 0 3px rgba(25,118,210,0.3);"></div>`,
-      iconSize: [14,14], iconAnchor: [7,7], className: "",
-    });
-    userMarker.current = L.marker(userPos, { icon, zIndexOffset: 1000 }).addTo(mapInstance.current);
-  }, [L, userPos]);
 
-  // ── Init Map ──────────────────────────────────────────────────────────────
+    // Distinct pulsing blue dot clearly different from data pins
+    const icon = L.divIcon({
+      html: `
+        <div style="position:relative;width:20px;height:20px;">
+          <div style="position:absolute;inset:0;border-radius:50%;background:rgba(25,118,210,0.2);animation:pulse 2s infinite;"></div>
+          <div style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#1976D2;border:2px solid #fff;box-shadow:0 0 6px rgba(25,118,210,0.6);"></div>
+        </div>
+        <style>@keyframes pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(2);opacity:0}}</style>
+      `,
+      iconSize: [20,20], iconAnchor: [10,10], className: "",
+    });
+    userMarker.current = L.marker(userPos, { icon, zIndexOffset: 2000, interactive: false })
+      .addTo(mapInstance.current);
+  }, [L, userPos, locationAllowed]);
+
+  // ── Init map ──────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!L || !mapRef.current || !sessionData?.mapboxKey || mapInstance.current) return;
 
@@ -213,40 +255,27 @@ export default function MapPickerPage() {
 
     mapInstance.current.on("click", async (e: any) => {
       if (!sessionRef.current) return;
-      if (sessionRef.current.allowNewPins === false) return; // locked
+      if (sessionRef.current.allowNewPins === false) return;
       if (sessionRef.current.viewOnly === true) return;
 
       const { lat, lng } = e.latlng;
-      const newPin: Pin  = { id: null, lat, lng };
-      fieldsRef.current.forEach(f => { newPin[f.key] = f.default ?? ""; });
 
-      let newIdx = 0;
-      setPins(prev => {
-        const updated = [...prev, newPin];
-        pinsRef.current = updated;
-        newIdx = updated.length - 1;
-        return updated;
-      });
-      setSelectedIdx(newIdx);
-      setSidebarOpen(true);
+      // Get screen position of click for popup placement
+      const point   = mapInstance.current.latLngToContainerPoint([lat, lng]);
+      const mapRect = mapRef.current!.getBoundingClientRect();
 
-      // Reverse geocode if any fields have geocode mapping
+      // Show popup immediately with loading state
+      setGeoPopup({ lat, lng, screenX: point.x, screenY: point.y, props: {}, loading: true });
+      setSelectedIdx(null);
+      setSidebarOpen(false);
+
+      // Fetch geocode in background
       const geoFields = fieldsRef.current.filter(f => f.geocode);
-      if (geoFields.length > 0) {
-        setGeocoding(true);
+      if (geoFields.length > 0 || true) { // always fetch for popup display
         const props = await reverseGeocode(lat, lng);
-        setGeocoding(false);
-        if (Object.keys(props).length) {
-          const updates: Partial<Pin> = {};
-          geoFields.forEach(f => { if (props[f.geocode!]) updates[f.key] = props[f.geocode!]; });
-          if (Object.keys(updates).length) {
-            setPins(prev => {
-              const updated = prev.map((p, i) => i === newIdx ? { ...p, ...updates } : p);
-              pinsRef.current = updated;
-              return updated;
-            });
-          }
-        }
+        setGeoPopup(prev => prev ? { ...prev, props, loading: false } : null);
+      } else {
+        setGeoPopup(prev => prev ? { ...prev, loading: false } : null);
       }
     });
   }, [L, sessionData, reverseGeocode]);
@@ -258,7 +287,7 @@ export default function MapPickerPage() {
     else mapInstance.current.fitBounds(pinBounds, { padding: [60, 60] });
   }, [L, pinBounds]);
 
-  // ── Render markers ────────────────────────────────────────────────────────
+  // ── Markers ───────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapInstance.current || !L) return;
     markersRef.current.forEach(m => mapInstance.current.removeLayer(m));
@@ -266,8 +295,8 @@ export default function MapPickerPage() {
 
     pins.forEach((pin, idx) => {
       const isSelected = idx === selectedIdx;
-      const fill  = getPinColor(pin, isSelected);
-      const ring  = isSelected
+      const fill = getPinColor(pin, isSelected);
+      const ring = isSelected
         ? "border:3px solid #fff;box-shadow:0 0 0 3px #1976D2,0 2px 8px rgba(0,0,0,0.4);"
         : "border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);";
 
@@ -277,14 +306,17 @@ export default function MapPickerPage() {
       });
 
       const marker = L.marker([pin.lat, pin.lng], {
-        draggable: !viewOnly && (pin.id === null), // only new pins draggable
+        draggable: !viewOnly && pin.id === null,
         icon,
       }).addTo(mapInstance.current);
 
       marker.on("click", () => {
+        setGeoPopup(null);
+        setDraftPin(null);
         setSelectedIdx(idx);
         setSidebarOpen(true);
-        mapInstance.current.flyTo([pin.lat, pin.lng], 15);
+        // Pan to pin without changing zoom
+        mapInstance.current.panTo([pin.lat, pin.lng]);
       });
 
       marker.on("dragend", (e: any) => {
@@ -300,7 +332,48 @@ export default function MapPickerPage() {
     });
   }, [pins, L, selectedIdx, getPinColor, viewOnly]);
 
-  // ── Mutations ─────────────────────────────────────────────────────────────
+  // ── Add pin from popup ────────────────────────────────────────────────────
+  const handleAddPin = useCallback(() => {
+    if (!geoPopup) return;
+    const { lat, lng, props } = geoPopup;
+
+    const newPin: Pin = { id: null, lat, lng };
+    fieldsRef.current.forEach(f => {
+      // Default value from field config
+      newPin[f.key] = f.default ?? "";
+      // Auto-fill from geocode if mapped and value exists
+      if (f.geocode && props[f.geocode]) newPin[f.key] = props[f.geocode];
+    });
+
+    setDraftPin(newPin);
+    setGeoPopup(null);
+    setSidebarOpen(true);
+    setSelectedIdx(null); // draft is not yet in pins array
+  }, [geoPopup]);
+
+  // ── Save draft pin to list ────────────────────────────────────────────────
+  const saveDraftPin = useCallback(() => {
+    if (!draftPin) return;
+    setPins(prev => {
+      const updated = [...prev, draftPin];
+      pinsRef.current = updated;
+      setSelectedIdx(updated.length - 1);
+      return updated;
+    });
+    setDraftPin(null);
+  }, [draftPin]);
+
+  // ── Discard draft ─────────────────────────────────────────────────────────
+  const discardDraft = useCallback(() => {
+    setDraftPin(null);
+    setSidebarOpen(false);
+  }, []);
+
+  // ── Update draft or saved pin ─────────────────────────────────────────────
+  const updateDraft = useCallback((updates: Partial<Pin>) => {
+    setDraftPin(prev => prev ? { ...prev, ...updates } : prev);
+  }, []);
+
   const updatePin = useCallback((idx: number, updates: Partial<Pin>) => {
     setPins(prev => {
       const updated = prev.map((p, i) => i === idx ? { ...p, ...updates, _updated: true } : p);
@@ -316,7 +389,9 @@ export default function MapPickerPage() {
   }, []);
 
   const flyToPin = (pin: Pin, idx: number) => {
-    mapInstance.current?.flyTo([pin.lat, pin.lng], 15);
+    mapInstance.current?.panTo([pin.lat, pin.lng]); // pan only, no zoom change
+    setGeoPopup(null);
+    setDraftPin(null);
     setSelectedIdx(idx);
     setSidebarOpen(true);
     setPinListOpen(false);
@@ -339,7 +414,7 @@ export default function MapPickerPage() {
       const json = await res.json();
       if (json.features?.length) {
         const [lng, lat] = json.features[0].center;
-        mapInstance.current?.flyTo([lat, lng], 14);
+        mapInstance.current?.setView([lat, lng], 14);
       }
     } catch {}
   };
@@ -351,89 +426,60 @@ export default function MapPickerPage() {
       border: "1px solid #e0e0e0", fontSize: "14px", boxSizing: "border-box",
       outline: "none", fontFamily: "inherit", color: "#1a1a1a",
     };
-    // Non-editable always shows as readonly display
-    if (!editable) {
-      return (
-        <div style={{ ...base, background: "#f5f5f5", color: "#555", border: "1px solid #eee", minHeight: "38px" }}>
-          {value ?? "—"}
-        </div>
-      );
-    }
+    if (!editable) return (
+      <div style={{ ...base, background: "#f5f5f5", color: "#555", border: "1px solid #eee", minHeight: "38px" }}>
+        {value || "—"}
+      </div>
+    );
     switch (field.type) {
-      case "textarea":
-        return <textarea value={value ?? ""} onChange={e => onChange(e.target.value)} style={{ ...base, height: "80px", resize: "vertical" }} />;
-      case "number":
-        return <input type="number" value={value ?? ""} onChange={e => onChange(Number(e.target.value))} style={base} />;
-      case "datetime":
-        return <input type="datetime-local" value={value ?? ""} onChange={e => onChange(e.target.value)} style={base} />;
-      case "dropdown":
-        return (
-          <select value={value ?? ""} onChange={e => onChange(e.target.value)} style={base}>
-            <option value="">Select...</option>
-            {field.options?.map(o => <option key={o} value={o}>{o}</option>)}
-          </select>
-        );
-      default:
-        return <input type="text" value={value ?? ""} onChange={e => onChange(e.target.value)} style={base} />;
+      case "textarea":  return <textarea value={value ?? ""} onChange={e => onChange(e.target.value)} style={{ ...base, height: "80px", resize: "vertical" }} />;
+      case "number":    return <input type="number" value={value ?? ""} onChange={e => onChange(Number(e.target.value))} style={base} />;
+      case "datetime":  return <input type="datetime-local" value={value ?? ""} onChange={e => onChange(e.target.value)} style={base} />;
+      case "dropdown":  return (
+        <select value={value ?? ""} onChange={e => onChange(e.target.value)} style={base}>
+          <option value="">Select...</option>
+          {field.options?.map(o => <option key={o} value={o}>{o}</option>)}
+        </select>
+      );
+      default: return <input type="text" value={value ?? ""} onChange={e => onChange(e.target.value)} style={base} />;
     }
   };
 
   if (error) return <div style={{ padding: 40, color: "#B00020", fontFamily: "sans-serif" }}>Error: {error}</div>;
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  const isDraft   = !!draftPin && sidebarOpen;
+  const activePinData = isDraft ? draftPin : selectedPin;
+  const isNewActivePinData = isDraft ? true : (selectedPin?.id === null);
+
   return (
     <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden", fontFamily: "system-ui, sans-serif" }}>
 
       {/* ── Header ── */}
       <div style={{ height: "52px", background: "#0A1A2F", display: "flex", alignItems: "center", padding: "0 14px", gap: "10px" }}>
         <img src="/TemplatesLogoWhite.png" alt="Logo" style={{ height: "30px" }} />
-        {viewOnly && (
-          <span style={{ fontSize: "11px", color: "#FFB300", border: "1px solid #FFB300", borderRadius: "4px", padding: "2px 8px", fontWeight: 600 }}>
-            VIEW ONLY
-          </span>
-        )}
-        {!allowNewPins && !viewOnly && (
-          <span style={{ fontSize: "11px", color: "#78909C", border: "1px solid #78909C", borderRadius: "4px", padding: "2px 8px", fontWeight: 600 }}>
-            NO NEW PINS
-          </span>
-        )}
+        {viewOnly && <span style={{ fontSize: "11px", color: "#FFB300", border: "1px solid #FFB300", borderRadius: "4px", padding: "2px 8px", fontWeight: 600 }}>VIEW ONLY</span>}
+        {!allowNewPins && !viewOnly && <span style={{ fontSize: "11px", color: "#78909C", border: "1px solid #78909C", borderRadius: "4px", padding: "2px 8px", fontWeight: 600 }}>NO NEW PINS</span>}
         <div style={{ flex: 1 }} />
-        <input
-          type="text" placeholder="Search address..." value={searchQuery}
+        <input type="text" placeholder="Search address..." value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleSearch()}
           style={{ padding: "5px 10px", borderRadius: "5px", border: "none", fontSize: "13px", width: "200px", background: "#fff", outline: "none" }}
         />
-        <button onClick={handleSearch} style={{ padding: "5px 12px", background: "#1976D2", color: "#fff", border: "none", borderRadius: "5px", fontSize: "12px", cursor: "pointer", fontWeight: 600 }}>
-          Search
-        </button>
-        {!viewOnly && (
-          <button onClick={saveAndClose} style={{ padding: "5px 12px", background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "5px", fontSize: "12px", cursor: "pointer", fontWeight: 600 }}>
-            Save & Close
-          </button>
-        )}
-        {viewOnly && (
-          <button onClick={() => window.close()} style={{ padding: "5px 12px", background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "5px", fontSize: "12px", cursor: "pointer", fontWeight: 600 }}>
-            Close
-          </button>
-        )}
+        <button onClick={handleSearch} style={{ padding: "5px 12px", background: "#1976D2", color: "#fff", border: "none", borderRadius: "5px", fontSize: "12px", cursor: "pointer", fontWeight: 600 }}>Search</button>
+        {!viewOnly
+          ? <button onClick={saveAndClose} style={{ padding: "5px 12px", background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "5px", fontSize: "12px", cursor: "pointer", fontWeight: 600 }}>Save & Close</button>
+          : <button onClick={() => window.close()} style={{ padding: "5px 12px", background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "5px", fontSize: "12px", cursor: "pointer", fontWeight: 600 }}>Close</button>
+        }
       </div>
 
       {/* ── Map area ── */}
       <div style={{ position: "relative", height: "calc(100vh - 52px)" }}>
         <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
 
-        {/* Geocoding indicator */}
-        {geocoding && (
-          <div style={{ position: "absolute", top: 12, left: "50%", transform: "translateX(-50%)", zIndex: 900, background: "#0A1A2F", color: "#fff", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: 600, boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
-            Looking up location...
-          </div>
-        )}
-
-        {/* Hint when new pins allowed */}
+        {/* Click hint */}
         {allowNewPins && !viewOnly && pins.length === 0 && !loading && (
           <div style={{ position: "absolute", top: 12, left: "50%", transform: "translateX(-50%)", zIndex: 800, background: "rgba(10,26,47,0.8)", color: "#fff", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", pointerEvents: "none" }}>
-            Click the map to add a pin
+            Click the map to explore a location
           </div>
         )}
 
@@ -444,7 +490,7 @@ export default function MapPickerPage() {
           </div>
         )}
 
-        {/* Pin list */}
+        {/* Pin list dropdown */}
         {pinListOpen && pins.length > 0 && (
           <div style={{ position: "absolute", top: 48, left: 12, zIndex: 800, background: "#fff", borderRadius: "10px", boxShadow: "0 4px 20px rgba(0,0,0,0.2)", width: "260px", maxHeight: "340px", overflowY: "auto", padding: "8px" }}>
             {pins.map((pin, idx) => {
@@ -457,8 +503,7 @@ export default function MapPickerPage() {
                   <div style={{ minWidth: 0 }}>
                     <strong style={{ color: "#0A1A2F" }}>{getPinLabel(pin) || `Pin ${idx + 1}`}</strong>
                     {cv && <span style={{ color: "#666", marginLeft: 6, fontSize: "11px" }}>{cv}</span>}
-                    <br />
-                    <small style={{ color: "#999" }}>{pin.lat.toFixed(4)}, {pin.lng.toFixed(4)}</small>
+                    <br /><small style={{ color: "#999" }}>{pin.lat.toFixed(4)}, {pin.lng.toFixed(4)}</small>
                     {pin.id === null && <span style={{ color: "#1976D2", fontSize: "10px", marginLeft: 4 }}>• new</span>}
                   </div>
                 </div>
@@ -467,56 +512,131 @@ export default function MapPickerPage() {
           </div>
         )}
 
+        {/* ── Geo popup ── */}
+        {geoPopup && (() => {
+          const { screenX, screenY, props, loading: geoLoading } = geoPopup;
+          const mapRect = mapRef.current?.getBoundingClientRect();
+          const containerW = mapRect?.width  || 800;
+          const containerH = mapRect?.height || 600;
+          const popupW = 260;
+          const popupH = 200;
+          // Keep popup within map bounds
+          const left = Math.min(Math.max(screenX - popupW / 2, 8), containerW - popupW - 8);
+          const top  = screenY + 16 + popupH > containerH ? screenY - popupH - 16 : screenY + 16;
+
+          const hasName    = !!props.place_name;
+          const hasAddress = !!(props.address || props.city);
+
+          return (
+            <div style={{ position: "absolute", left, top, zIndex: 850, background: "#fff", borderRadius: "10px", boxShadow: "0 4px 24px rgba(0,0,0,0.22)", width: `${popupW}px`, overflow: "hidden" }}>
+              {/* Popup header */}
+              <div style={{ background: "#0A1A2F", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 600, fontSize: "13px" }}>
+                  {geoLoading ? "Looking up location…" : (hasName ? props.place_name : "Location")}
+                </span>
+                <span onClick={() => setGeoPopup(null)} style={{ color: "rgba(255,255,255,0.6)", cursor: "pointer", fontSize: "18px", lineHeight: 1 }}>×</span>
+              </div>
+
+              {/* Popup body */}
+              <div style={{ padding: "12px 14px" }}>
+                {geoLoading ? (
+                  <div style={{ color: "#999", fontSize: "13px" }}>Fetching details…</div>
+                ) : (
+                  <>
+                    {props.category && <div style={{ fontSize: "11px", color: "#1976D2", fontWeight: 600, marginBottom: "6px", textTransform: "uppercase" }}>{props.category}</div>}
+                    {hasAddress && (
+                      <div style={{ fontSize: "12px", color: "#555", marginBottom: "4px" }}>
+                        {props.address && <div>{props.address}</div>}
+                        {(props.city || props.province || props.postcode) && (
+                          <div>{[props.city, props.province, props.postcode].filter(Boolean).join(", ")}</div>
+                        )}
+                      </div>
+                    )}
+                    {props.phone   && <div style={{ fontSize: "12px", color: "#555", marginBottom: "2px" }}>📞 {props.phone}</div>}
+                    {props.website && <div style={{ fontSize: "12px", color: "#1976D2", marginBottom: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>🌐 {props.website}</div>}
+                    {!hasName && !hasAddress && !props.phone && (
+                      <div style={{ fontSize: "12px", color: "#999" }}>No details found for this location.</div>
+                    )}
+                  </>
+                )}
+
+                {!geoLoading && allowNewPins && !viewOnly && (
+                  <button onClick={handleAddPin} style={{ marginTop: "10px", width: "100%", padding: "9px", background: "#0A1A2F", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 700, fontSize: "13px", cursor: "pointer" }}>
+                    + Add Pin Here
+                  </button>
+                )}
+
+                <div style={{ marginTop: "6px", fontSize: "11px", color: "#bbb", textAlign: "center" }}>
+                  {geoPopup.lat.toFixed(5)}, {geoPopup.lng.toFixed(5)}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* ── Sidebar ── */}
-        {sidebarOpen && selectedPin && selectedIdx !== null && (
+        {sidebarOpen && activePinData && (
           <div style={{ position: "absolute", top: 0, right: 0, width: "360px", height: "100%", background: "#fff", boxShadow: "-4px 0 24px rgba(0,0,0,0.18)", zIndex: 900, display: "flex", flexDirection: "column" }}>
 
-            {/* Sidebar header */}
+            {/* Header */}
             <div style={{ padding: "16px 20px", borderBottom: "1px solid #f0f0f0", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 {(() => {
                   const cf = fields.find(f => f.pinColor);
-                  const cv = cf ? String(selectedPin[cf.key] || "") : "";
-                  return <div style={{ width: 10, height: 10, borderRadius: "50%", background: STATUS_COLORS[cv] || "#607D8B", flexShrink: 0 }} />;
+                  const cv = cf ? String(activePinData[cf.key] || "") : "";
+                  return <div style={{ width: 10, height: 10, borderRadius: "50%", background: STATUS_COLORS[cv] || "#607D8B" }} />;
                 })()}
                 <span style={{ fontWeight: 700, fontSize: "15px", color: "#0A1A2F" }}>
-                  {getPinLabel(selectedPin) || `Pin ${selectedIdx + 1}`}
+                  {getPinLabel(activePinData) || (isDraft ? "New Pin" : `Pin ${(selectedIdx ?? 0) + 1}`)}
                 </span>
-                {isNewPin && <span style={{ fontSize: "10px", color: "#1976D2", border: "1px solid #1976D2", borderRadius: "4px", padding: "1px 6px", fontWeight: 600 }}>NEW</span>}
+                {isDraft && <span style={{ fontSize: "10px", color: "#1976D2", border: "1px solid #1976D2", borderRadius: "4px", padding: "1px 6px", fontWeight: 600 }}>DRAFT</span>}
+                {!isDraft && isNewActivePinData && <span style={{ fontSize: "10px", color: "#43A047", border: "1px solid #43A047", borderRadius: "4px", padding: "1px 6px", fontWeight: 600 }}>NEW</span>}
               </div>
-              <span onClick={() => { setSidebarOpen(false); setSelectedIdx(null); }} style={{ cursor: "pointer", fontSize: "20px", color: "#999", lineHeight: 1, padding: "2px 6px" }}>×</span>
+              <span onClick={() => { isDraft ? discardDraft() : (setSidebarOpen(false), setSelectedIdx(null)); }} style={{ cursor: "pointer", fontSize: "20px", color: "#999", lineHeight: 1, padding: "2px 6px" }}>×</span>
             </div>
 
             {/* Fields */}
             <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
-              {fields
-                .filter(f => isFieldVisible(f, isNewPin))
-                .map(field => {
-                  const editable = isFieldEditable(field, isNewPin);
-                  return (
-                    <div key={field.key} style={{ marginBottom: "18px" }}>
-                      <label style={{ fontWeight: 700, fontSize: "12px", color: "#000", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                        {field.label}
-                        {field.geocode && <span style={{ color: "#1976D2", fontSize: "10px", fontWeight: 400, textTransform: "none" }}>auto-filled</span>}
-                        {!editable && field.type !== "readonly" && field.type !== "linked" && (
-                          <span style={{ color: "#999", fontSize: "10px", fontWeight: 400, textTransform: "none" }}>read only</span>
-                        )}
-                      </label>
-                      {renderField(field, selectedPin[field.key], editable, v => updatePin(selectedIdx, { [field.key]: v }))}
-                    </div>
-                  );
-                })}
+              {fields.filter(f => isFieldVisible(f, isDraft || isNewActivePinData)).map(field => {
+                const editable = isFieldEditable(field, isDraft || isNewActivePinData);
+                const value    = activePinData[field.key];
+                const onChange = isDraft
+                  ? (v: any) => updateDraft({ [field.key]: v })
+                  : (v: any) => updatePin(selectedIdx!, { [field.key]: v });
+
+                return (
+                  <div key={field.key} style={{ marginBottom: "18px" }}>
+                    <label style={{ fontWeight: 700, fontSize: "12px", color: "#000", display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                      {field.label}
+                      {field.geocode && value && <span style={{ color: "#1976D2", fontSize: "10px", fontWeight: 400, textTransform: "none" }}>auto-filled</span>}
+                    </label>
+                    {renderField(field, value, editable, onChange)}
+                  </div>
+                );
+              })}
 
               {/* Location */}
               <div style={{ paddingTop: "16px", borderTop: "1px solid #f0f0f0" }}>
                 <span style={{ fontWeight: 700, fontSize: "12px", color: "#000", textTransform: "uppercase", letterSpacing: "0.04em" }}>Location</span>
                 <div style={{ marginTop: "6px", fontSize: "13px", color: "#444" }}>
-                  <strong>Lat</strong> {selectedPin.lat.toFixed(6)} &nbsp; <strong>Lng</strong> {selectedPin.lng.toFixed(6)}
+                  <strong>Lat</strong> {activePinData.lat.toFixed(6)} &nbsp; <strong>Lng</strong> {activePinData.lng.toFixed(6)}
                 </div>
               </div>
 
-              {/* Delete — new pins only, not viewOnly */}
-              {isNewPin && !viewOnly && (
+              {/* Draft actions */}
+              {isDraft && (
+                <div style={{ marginTop: "24px", display: "flex", gap: "10px" }}>
+                  <button onClick={saveDraftPin} style={{ flex: 1, padding: "12px", background: "#0A1A2F", color: "#fff", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "14px", cursor: "pointer" }}>
+                    Save Pin
+                  </button>
+                  <button onClick={discardDraft} style={{ padding: "12px 16px", background: "#fff", color: "#B00020", border: "1px solid #B00020", borderRadius: "8px", fontWeight: 600, fontSize: "14px", cursor: "pointer" }}>
+                    Discard
+                  </button>
+                </div>
+              )}
+
+              {/* Delete saved new pin */}
+              {!isDraft && isNewActivePinData && !viewOnly && selectedIdx !== null && (
                 <button onClick={() => deletePin(selectedIdx)} style={{ marginTop: "24px", width: "100%", padding: "12px", background: "#B00020", color: "#fff", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "14px", cursor: "pointer" }}>
                   Delete Pin
                 </button>
@@ -526,7 +646,7 @@ export default function MapPickerPage() {
         )}
       </div>
 
-      {/* Loading overlay */}
+      {/* Loading */}
       {loading && (
         <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.96)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 999, fontSize: "15px", color: "#0A1A2F", fontWeight: 600 }}>
           Loading session...
