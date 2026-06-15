@@ -571,7 +571,7 @@ export default function MapPickerPage() {
           <div style={{position:"absolute",top:48,left:12,zIndex:800,background:"#fff",borderRadius:"10px",boxShadow:"0 4px 20px rgba(0,0,0,0.2)",width:"260px",maxHeight:"320px",overflowY:"auto",padding:"8px"}}>
             {pins.map((pin,idx)=>{
               const cf=fields.find(f=>f.pinColor);
-              const cv=cf?String(pin[cf.key]||")":"";
+              const cv=cf?String(pin[cf.key]||""):"";
               const dot=cf&&typeof cf.pinColor==="object"?resolveColor((cf.pinColor as any)[cv]||(cf.pinColor as any)[""]||"#607D8B"):(FALLBACK_COLORS[cv]||"#607D8B");
               return (
                 <div key={idx} onClick={()=>flyToPin(pin,idx)} style={{padding:"10px 12px",marginBottom:"4px",background:selectedIdx===idx?"#e3f2fd":"#fafafa",border:`1px solid ${selectedIdx===idx?"#90caf9":"#eee"}`,borderRadius:"7px",cursor:"pointer",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>
