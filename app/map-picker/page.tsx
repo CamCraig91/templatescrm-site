@@ -605,9 +605,6 @@ export default function MapPickerPage() {
               {/* pointer triangle */}
               <div style={{position:"absolute",left:screenX-left-8,bottom:above?"auto":-8,top:above?-8:"auto",width:0,height:0,
                 borderLeft:"8px solid transparent",borderRight:"8px solid transparent",
-                ...(above?{borderTop:"8px solid #0A1A2F"}:{borderBottom:"8px solid transparent",borderTop:"8px solid transparent",
-                  borderLeft:"8px solid transparent",borderRight:"8px solid transparent",
-                  top:-8,borderBottom:"8px solid #0A1A2F"})
               }}/>
               <div style={{background:"#0A1A2F",padding:"10px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <span style={{color:"#fff",fontWeight:600,fontSize:"13px",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1}}>
