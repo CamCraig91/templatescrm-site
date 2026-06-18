@@ -32,7 +32,7 @@ export default function HomePage() {
               alt="Hero section illustration"
               width={600}
               height={500}
-              className="rounded-lg shadow-lg object-cover hidden md:block"
+              className="rounded-lg shadow-lg object-cover object-contain"
               priority
             />
             </div>
