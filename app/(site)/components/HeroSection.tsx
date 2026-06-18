@@ -40,11 +40,11 @@ export default function HeroSection() {
         <div className="flex-1 flex justify-center">
           <div className="w-full max-w-md">
             <Image
-              src="/heroimage1.png"
+              src="/HeroImage2.png"
               alt="Hero section illustration"
               width={600}
               height={500}
-              className="rounded-lg shadow-lg object-cover"
+              className="rounded-lg shadow-lg object-cover md-hidden"
               priority
             />
           </div>
