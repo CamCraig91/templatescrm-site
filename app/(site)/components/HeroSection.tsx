@@ -3,15 +3,15 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="w-full py-20 bg-slate-800">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-10 text-center md:text-left">
+    <section className="w-full bg-slate-800 pt-28 pb-32 md:pt-32 md:pb-40">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12">
 
-        {/* Left side text */}
+        {/* LEFT SIDE */}
         <div className="flex-1">
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-            Your Business, 
-            <p>One Platform,</p> 
-            <p>Fully Customizable.</p>
+            Your Business,
+            <br />One Platform,
+            <br />Fully Customizable.
           </h1>
 
           <p className="mt-6 text-lg text-slate-200 max-w-xl">
@@ -22,29 +22,29 @@ export default function HeroSection() {
           <div className="mt-8 flex gap-4 justify-center md:justify-start">
             <Link
               href="/apps"
-              className="bg-blue-600 hover:bg-blue-900 text-white font-medium px-6 py-3 rounded-md inline-block cursor-pointer"
+              className="bg-blue-600 hover:bg-blue-900 text-white font-medium px-6 py-3 rounded-md"
             >
               Browse Applications
             </Link>
 
             <Link
               href="/book-demo"
-              className="border border-white text-white hover:bg-blue-200 hover:text-slate-900 font-medium px-6 py-3 rounded-md inline-block cursor-pointer"
+              className="border border-white text-white hover:bg-blue-200 hover:text-slate-900 font-medium px-6 py-3 rounded-md"
             >
               Book a Demo
             </Link>
           </div>
         </div>
 
-        {/* Right side hero image */}
-        <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-md">
+        {/* RIGHT SIDE IMAGE */}
+        <div className="flex-1 flex justify-center md:justify-end">
+          <div className="w-full max-w-lg h-[340px] md:h-[420px]">
             <Image
               src="/HeroImage2.png"
               alt="Hero section illustration"
-              width={600}
-              height={500}
-              className="rounded-lg shadow-lg object-cover md-hidden"
+              width={800}
+              height={600}
+              className="rounded-xl shadow-xl object-cover w-full h-full"
               priority
             />
           </div>
@@ -54,3 +54,4 @@ export default function HeroSection() {
     </section>
   );
 }
+
