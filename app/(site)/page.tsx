@@ -27,7 +27,14 @@ export default function HomePage() {
             </p>
 
             <div className="w-full h-56 md:h-64 bg-white border border-blue-200 rounded-lg flex items-center justify-center text-blue-400 shadow-sm text-sm md:text-base px-4">
-              Flow Diagram Placeholder (Website ↔ Front End ↔ Back End ↔ Integrations)
+              <Image
+              src="/heroimage1.png"
+              alt="Hero section illustration"
+              width={600}
+              height={500}
+              className="rounded-lg shadow-lg object-cover"
+              priority
+            />
             </div>
           </div>
         </section>
