@@ -15,29 +15,35 @@ export default function HomePage() {
 
       <main>
 
-        {/* FLOW DIAGRAM */}
-        <section className="w-full py-16 md:py-20 bg-blue-50 border-b border-blue-100">
-          <div className="max-w-5xl mx-auto px-4 md:px-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 md:mb-6">
-              Your Connected Business System
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-8 md:mb-10 text-sm md:text-base">
-              A complete front‑to‑back ecosystem that connects your website, customer experience,
-              internal operations, and external integrations into one seamless loop.
-            </p>
+       {/* FLOW DIAGRAM */}
+<section className="relative -mt-20 z-10">
+  <div className="max-w-6xl mx-auto px-4 md:px-6">
+    <div className="bg-blue-50 border border-blue-100 rounded-3xl shadow-md px-8 md:px-16 py-16 md:py-20 text-center">
 
-            <div className="w-full h-56 md:h-64 bg-white border border-blue-200 rounded-lg flex items-center justify-center text-blue-400 shadow-sm text-sm md:text-base px-4">
-              <Image
-              src="/heroimage1.png"
-              alt="Hero section illustration"
-              width={600}
-              height={500}
-              className="rounded-lg shadow-lg object-cover object-contain"
-              priority
-            />
-            </div>
-          </div>
-        </section>
+      <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 md:mb-6">
+        Your Connected Business System
+      </h2>
+
+      <p className="text-gray-600 max-w-2xl mx-auto mb-10 md:mb-12 text-sm md:text-base">
+        A complete front‑to‑back ecosystem that connects your website, customer experience,
+        internal operations, and external integrations into one seamless loop.
+      </p>
+
+      <div className="w-full flex items-center justify-center">
+        <Image
+          src="/heroimage1.png"
+          alt="Hero section illustration"
+          width={1000}
+          height={700}
+          className="object-contain mx-auto"
+          priority
+        />
+      </div>
+
+    </div>
+  </div>
+</section>
+
 
         {/* INTERACTIVE PILLARS */}
         <Pillars />
