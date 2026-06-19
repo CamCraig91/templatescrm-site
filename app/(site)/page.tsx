@@ -33,8 +33,8 @@ export default function HomePage() {
         <Image
           src="/heroimage1.png"
           alt="Hero section illustration"
-          width={1000}
-          height={700}
+          width={800}
+          height={500}
           className="object-contain mx-auto"
           priority
         />
