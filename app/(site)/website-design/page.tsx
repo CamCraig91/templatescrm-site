@@ -63,8 +63,18 @@ export default function WebsiteDesignPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Wireframe / Layout Diagram</span>
+          {/* IMAGE ON RIGHT */}
+          <div className="flex-1 flex justify-center md:justify-end">
+            <div className="w-full max-w-md">
+              <Image
+                src="/ConnectedBusiness1.png"
+                alt="website diagram"
+                width={900}
+                height={900}
+                className="object-contain drop-shadow-xl"
+                priority
+              />
+            </div>
           </div>
 
           <div>
