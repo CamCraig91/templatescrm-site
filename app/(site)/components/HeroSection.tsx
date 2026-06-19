@@ -3,8 +3,9 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="w-full bg-slate-800 pt-16 pb-32 md:pt-20 md:pb-40">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12">
+    <section className="w-full bg-slate-800 pt-10 pb-32 md:pt-12 md:pb-40">
+  <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-start justify-between gap-12">
+
 
         {/* LEFT SIDE */}
         <div className="flex-1">
