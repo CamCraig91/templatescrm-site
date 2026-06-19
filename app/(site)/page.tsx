@@ -35,7 +35,7 @@ export default function HomePage() {
           alt="Hero section illustration"
           width={800}
           height={500}
-          className="object-contain mx-auto rounded-3x1"
+          className="object-contain mx-auto rounded-3xl"
           priority
         />
       </div>
