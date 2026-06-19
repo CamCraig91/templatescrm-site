@@ -18,9 +18,17 @@ export default function WebsiteDesignPage() {
             </p>
           </div>
 
-          <div className="hidden md:flex justify-center">
-            <div className="w-80 h-56 bg-white rounded-xl shadow-xl border border-gray-100 flex items-center justify-center">
-              <span className="text-gray-400">Website Mockup</span>
+          {/* IMAGE ON RIGHT */}
+          <div className="flex-1 flex justify-center md:justify-end">
+            <div className="w-full max-w-md">
+              <Image
+                src="/websitedesign2.png"
+                alt="website design"
+                width={900}
+                height={900}
+                className="object-contain drop-shadow-xl"
+                priority
+              />
             </div>
           </div>
 
