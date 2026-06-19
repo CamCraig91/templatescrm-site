@@ -29,13 +29,13 @@ export default function HomePage() {
         internal operations, and external integrations into one seamless loop.
       </p>
 
-      <div className="w-full flex items-center justify-center rounded-3xl">
+      <div className="w-full flex items-center justify-center">
         <Image
           src="/ConnectedBusiness5.png"
           alt="Hero section illustration"
           width={800}
           height={500}
-          className="object-contain mx-auto"
+          className="object-contain mx-auto rounded-3x1"
           priority
         />
       </div>
