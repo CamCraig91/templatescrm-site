@@ -2,9 +2,13 @@ import "./globals.css";
 
 export const metadata = {
   icons: {
-    icon: "/faviconwhite.ico", // or "/favicon.png" if that's what you saved
-  },
+    icon: [
+      { url: "/favicon-light.png", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.png", media: "(prefers-color-scheme: dark)" }
+    ]
+  }
 };
+
 
 export default function RootLayout({
   children,
