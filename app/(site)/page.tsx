@@ -29,7 +29,7 @@ export default function HomePage() {
         internal operations, and external integrations into one seamless loop.
       </p>
 
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center rounded-3xl">
         <Image
           src="/ConnectedBusiness5.png"
           alt="Hero section illustration"
