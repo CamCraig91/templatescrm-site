@@ -41,7 +41,7 @@ export default function HeroSection() {
         <div className="flex-1 flex justify-center md:justify-end">
           <div className="w-full max-w-xl h-[420px] md:h-[500px]">
             <Image
-              src="/HeroImage6.png"
+              src="/HeroImage7.jpg"
               alt="Hero section illustration"
               width={900}
               height={700}
