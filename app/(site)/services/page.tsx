@@ -27,7 +27,7 @@ export default function ServicesPage() {
           <div className="flex-1 flex justify-center md:justify-end">
             <div className="w-full max-w-md">
               <Image
-                src="/serviceswhit.png"
+                src="/design1.png"
                 alt="Man building pillar with gear"
                 width={900}
                 height={900}
