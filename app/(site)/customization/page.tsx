@@ -41,7 +41,7 @@ export default function CustomizationPage() {
           <div className="flex-1 flex justify-center md:justify-end">
             <div className="w-full max-w-md">
               <Image
-                src="/serviceswhit.png"
+                src="/build.png"
                 alt="Man building pillar with gear"
                 width={900}
                 height={900}
