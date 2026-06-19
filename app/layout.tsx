@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   icons: {
-    icon: "/favicon.ico", // or "/favicon.png" if that's what you saved
+    icon: "/faviconwhite.ico", // or "/favicon.png" if that's what you saved
   },
 };
 
