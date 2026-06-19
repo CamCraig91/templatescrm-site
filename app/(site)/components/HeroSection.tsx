@@ -8,7 +8,7 @@ export default function HeroSection() {
 
 
         {/* LEFT SIDE */}
-        <div className="flex-1 pt-4">
+        <div className="flex-1 pt-8">
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
             Your Business,
             <br />One Platform,
