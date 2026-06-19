@@ -33,8 +33,8 @@ export default function HomePage() {
         <Image
           src="/ConnectedBusiness5.png"
           alt="Hero section illustration"
-          width={800}
-          height={500}
+          width={700}
+          height={400}
           className="object-contain mx-auto rounded-3xl"
           priority
         />
