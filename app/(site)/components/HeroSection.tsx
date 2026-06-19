@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="w-full bg-slate-800 pt-28 pb-32 md:pt-32 md:pb-40">
+    <section className="w-full bg-slate-800 pt-16 pb-32 md:pt-20 md:pb-40">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12">
 
         {/* LEFT SIDE */}
@@ -38,12 +38,12 @@ export default function HeroSection() {
 
         {/* RIGHT SIDE IMAGE */}
         <div className="flex-1 flex justify-center md:justify-end">
-          <div className="w-full max-w-lg h-[340px] md:h-[420px]">
+          <div className="w-full max-w-xl h-[420px] md:h-[500px]">
             <Image
               src="/HeroImage2.png"
               alt="Hero section illustration"
-              width={800}
-              height={600}
+              width={900}
+              height={700}
               className="rounded-xl shadow-xl object-cover w-full h-full"
               priority
             />
@@ -54,4 +54,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
