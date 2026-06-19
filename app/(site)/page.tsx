@@ -31,7 +31,7 @@ export default function HomePage() {
 
       <div className="w-full flex items-center justify-center">
         <Image
-          src="/heroimage1.png"
+          src="/ConnectedBusiness5.png"
           alt="Hero section illustration"
           width={800}
           height={500}
