@@ -23,7 +23,7 @@ export default function IntegrationsPage() {
   </div>
 
   {/* FULL-HEIGHT, EDGE-TO-EDGE HERO IMAGE */}
-  <div className="absolute top-0 right-0 h-full w-[45vw]">
+  <div className="hidden md:block absolute top-0 right-0 h-full w-[45vw]">
     <Image
       src="/integrations3.jpg"
       alt="Integrations Hero"
@@ -32,7 +32,6 @@ export default function IntegrationsPage() {
       priority
     />
   </div>
-
 </section>
 
 
