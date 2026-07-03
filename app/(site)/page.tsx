@@ -178,7 +178,7 @@ export default function HomePage() {
 
               <div className="flex-1">
                 <Image
-                  src="/integrations.png"
+                  src="/plugin.png"
                   alt="Integrations illustration"
                   width={600}
                   height={400}
