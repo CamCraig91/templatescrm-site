@@ -1,5 +1,8 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+
 export default function EventsPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
