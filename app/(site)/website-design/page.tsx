@@ -49,12 +49,16 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-      {/* WHITE CURVE OVERLAPPING BLUE HERO */}
-      <div className="w-full overflow-hidden -mt-16 relative z-10">
-        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
-          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
-        </svg>
-      </div>
+   {/* WHITE CURVE OVERLAPPING BLUE HERO */}
+<div className="w-full overflow-hidden -mt-20 relative z-10">
+  <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
+    <path
+      d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z"
+      fill="#ffffff"
+    />
+  </svg>
+</div>
+
 
       {/* WHAT'S INCLUDED */}
       <motion.section
