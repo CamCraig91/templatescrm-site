@@ -21,12 +21,16 @@ export default function OnlineShopPage() {
             </p>
           </div>
 
-          {/* VISUAL */}
-          <div className="hidden md:flex justify-center">
-            <div className="w-80 h-56 bg-white rounded-xl shadow-xl border border-gray-100 flex items-center justify-center">
-              <span className="text-gray-400">Screenshot / Visual</span>
-            </div>
-          </div>
+           {/* FULL-HEIGHT, EDGE-TO-EDGE HERO IMAGE */}
+  <div className="absolute top-0 right-0 h-full w-[45vw]">
+    <Image
+      src="/onlineshop.jpg"
+      alt="Front End Apps Hero"
+      fill
+      className="object-cover object-center"
+      priority
+    />
+  </div>
 
         </div>
       </section>
