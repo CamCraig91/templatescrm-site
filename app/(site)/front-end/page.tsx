@@ -24,16 +24,17 @@ export default function FrontEndPage() {
     </p>
   </div>
 
-  {/* FULL-HEIGHT, EDGE-TO-EDGE HERO IMAGE */}
-  <div className="absolute top-0 right-0 h-full w-[45vw]">
-    <Image
-      src="/customerservice2.jpg"
-      alt="Front End Apps Hero"
-      fill
-      className="object-cover object-center"
-      priority
-    />
-  </div>
+{/* FULL-HEIGHT, EDGE-TO-EDGE HERO IMAGE */}
+<div className="hidden md:block absolute top-0 right-0 h-full w-[45vw]">
+  <Image
+    src="/customerservice2.jpg"
+    alt="Front End Apps Hero"
+    fill
+    className="object-cover object-center"
+    priority
+  />
+</div>
+
 
 </section>
 
