@@ -14,7 +14,7 @@ export default function WebsiteDesignPage() {
         </svg>
       </div>
 
-      {/* HERO — Fade Up */}
+      {/* HERO — Fade Up and down */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
