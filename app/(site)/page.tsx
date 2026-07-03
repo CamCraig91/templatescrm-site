@@ -54,7 +54,7 @@ export default function HomePage() {
 <Curve flip={true} />
 
 {/* QUICKBOOKS SYNC (no animation) */}
-<section className="w-full py-10 md:py-12 bg-blue-50 border-t border-blue-100">
+<section className="w-full py-10 md:py-12 bg-blue-50">
 
           <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
