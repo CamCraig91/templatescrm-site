@@ -7,35 +7,38 @@ export default function FrontEndModulePage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
-      {/* HERO */}
-      <section className="relative w-full h-[420px] bg-slate-800 border-b border-slate-700 overflow-hidden flex items-center">
+{/* HERO */}
+<section className="relative w-full h-[420px] bg-slate-800 border-b border-slate-700 overflow-hidden flex items-center">
+  <div className="max-w-6xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
 
-        {/* TEXT */}
-        <div className="max-w-6xl mx-auto px-6 w-full relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Customer Portal
-          </h1>
+    {/* TEXT */}
+    <div>
+      <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+        Customer Portal
+      </h1>
 
-          <p className="text-lg text-blue-100 max-w-xl leading-relaxed">
-            A secure, branded hub where customers log in, view activity, pay invoices,
-            and manage their relationship with your business.
-          </p>
-        </div>
+      <p className="text-lg text-blue-100 max-w-xl leading-relaxed">
+        A secure, branded hub where customers log in, view activity, pay invoices,
+        and manage their relationship with your business.
+      </p>
+    </div>
 
-         {/* VISUAL */}
-    <div className="hidden md:flex justify-center">
+    {/* VISUAL */}
+    <div className="hidden md:flex justify-end">
       <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <Image
           src="/customerportal.png"
           alt="customerportal"
-          width={300}
-          height={160}
+          width={350}
+          height={220}
           className="object-cover"
         />
       </div>
     </div>
 
-      </section>
+  </div>
+</section>
+
 
       {/* FEATURE CARD */}
       <section className="py-20">
