@@ -9,7 +9,7 @@ export default function FrontEndModulePage() {
 
 {/* HERO */}
 <section className="relative w-full h-[420px] bg-slate-800 border-b border-slate-700 overflow-hidden flex items-center">
-  <div className="max-w-6xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
+  <div className="max-w-5xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
 
     {/* TEXT */}
     <div>
