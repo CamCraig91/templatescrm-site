@@ -145,7 +145,7 @@ export default function HomePage() {
 
               <div className="flex-1">
                 <Image
-                  src="/customization.png"
+                  src="/customizationchoice.jpg"
                   alt="Customization illustration"
                   width={600}
                   height={400}
