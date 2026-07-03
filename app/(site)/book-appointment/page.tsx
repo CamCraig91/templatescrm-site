@@ -28,8 +28,8 @@ export default function BookAppointmentPage() {
     <Image
       src="/bookappointment.png"
       alt="bookappointment"
-      width={500}
-      height={300}
+      width={300}
+      height={160}
       className="object-cover"
     />
   </div>
