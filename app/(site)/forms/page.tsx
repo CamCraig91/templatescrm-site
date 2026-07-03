@@ -28,8 +28,8 @@ export default function FormsPage() {
         <Image
           src="/forms.png"
           alt="forms"
-          width={200}
-          height={120}
+          width={300}
+          height={160}
           className="object-cover"
         />
       </div>
