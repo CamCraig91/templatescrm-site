@@ -22,7 +22,7 @@ export default function BackEndPage() {
   </div>
 
   {/* FULL-HEIGHT, EDGE-TO-EDGE HERO IMAGE */}
-  <div className="absolute top-0 right-0 h-full w-[45vw]">
+  <div className="hidden md:block absolute top-0 right-0 h-full w-[45vw]">
     <Image
       src="/backend3.jpg"
       alt="Back End System Hero"
