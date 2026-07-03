@@ -1,5 +1,7 @@
 "use client";
+
 import Image from "next/image";
+import Link from "next/link";
 
 export default function FrontEndModulePage() {
   return (
@@ -20,16 +22,18 @@ export default function FrontEndModulePage() {
           </p>
         </div>
 
-        {/* FULL-HEIGHT HERO IMAGE (NOT CLICKABLE) */}
-        <div className="absolute top-0 right-0 h-full w-[45vw] pointer-events-none">
-          <Image
-            src="/heroimage1.png"
-            alt="Customer Portal Screenshot"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
+         {/* VISUAL */}
+    <div className="hidden md:flex justify-center">
+      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+        <Image
+          src="/customerportal.png"
+          alt="customerportal"
+          width={300}
+          height={160}
+          className="object-cover"
+        />
+      </div>
+    </div>
 
       </section>
 
