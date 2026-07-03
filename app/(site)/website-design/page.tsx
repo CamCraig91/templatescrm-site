@@ -7,20 +7,13 @@ export default function WebsiteDesignPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
-      {/* CURVED SEPARATOR TOP */}
-      <div className="w-full overflow-hidden">
-        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
-          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#1e293b" />
-        </svg>
-      </div>
-
-      {/* HERO — Fade Up and down */}
+      {/* HERO */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="w-full py-28 bg-slate-800 border-b border-slate-700"
+        className="w-full py-28 bg-slate-800"
       >
         <div className="max-w-6xl mx-auto px-6 text-center md:text-left text-white grid md:grid-cols-2 gap-12 items-center">
           
@@ -34,7 +27,6 @@ export default function WebsiteDesignPage() {
             </p>
           </div>
 
-          {/* IMAGE ON RIGHT */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -57,20 +49,20 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-      {/* CURVE */}
-      <div className="w-full overflow-hidden rotate-180">
+      {/* WHITE CURVE OVERLAPPING BLUE HERO */}
+      <div className="w-full overflow-hidden -mt-1">
         <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
           <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
         </svg>
       </div>
 
-      {/* FEATURES — Slide In Left */}
+      {/* WHAT'S INCLUDED */}
       <motion.section
         initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-20"
+        className="py-20 bg-white"
       >
         <div className="max-w-6xl mx-auto px-6">
           <div className="bg-white border border-gray-200 rounded-xl p-10 shadow-sm">
@@ -94,24 +86,23 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-      {/* CURVE */}
-      <div className="w-full overflow-hidden">
+      {/* FLIPPED GRAY CURVE OVERLAPPING INTO NEXT SECTION */}
+      <div className="w-full overflow-hidden rotate-180 -mt-1">
         <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
           <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#f9fafb" />
         </svg>
       </div>
 
-      {/* VISUAL SECTION — Slide In Right */}
+      {/* DESIGNED FOR CLARITY — NO TOP BORDER */}
       <motion.section
         initial={{ opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-20 bg-gray-50 border-t border-b border-gray-200"
+        className="py-20 bg-gray-50 border-b border-gray-200"
       >
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* IMAGE ON RIGHT */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -146,20 +137,20 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-      {/* CURVE */}
-      <div className="w-full overflow-hidden rotate-180">
+      {/* WHITE CURVE AT BOTTOM */}
+      <div className="w-full overflow-hidden rotate-180 -mt-1">
         <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
           <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
         </svg>
       </div>
 
-      {/* VIDEO SECTION — Fade In */}
+      {/* VIDEO SECTION */}
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="py-20"
+        className="py-20 bg-white"
       >
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h3 className="text-2xl font-bold mb-6">See the Design Process</h3>
