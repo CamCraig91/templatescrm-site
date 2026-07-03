@@ -66,9 +66,17 @@ export default function SchedulingPage() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
           {/* IMAGE / DIAGRAM SLOT */}
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Calendar Layout Diagram</span>
-          </div>
+           <div className="hidden md:flex justify-center">
+      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+        <Image
+          src="/calendar2.png"
+          alt="calendar"
+          width={200}
+          height={120}
+          className="object-cover"
+        />
+      </div>
+    </div>
 
           {/* TEXT */}
           <div>
