@@ -1,11 +1,27 @@
 "use client";
 
+import Image from "next/image";
+import { motion } from "framer-motion";
+
 export default function WebsiteDesignPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
-      {/* HERO */}
-      <section className="w-full py-28 bg-slate-800 border-b border-slate-700">
+      {/* CURVED SEPARATOR TOP */}
+      <div className="w-full overflow-hidden">
+        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
+          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#1e293b" />
+        </svg>
+      </div>
+
+      {/* HERO — Fade Up */}
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="w-full py-28 bg-slate-800 border-b border-slate-700"
+      >
         <div className="max-w-6xl mx-auto px-6 text-center md:text-left text-white grid md:grid-cols-2 gap-12 items-center">
           
           <div>
@@ -19,7 +35,13 @@ export default function WebsiteDesignPage() {
           </div>
 
           {/* IMAGE ON RIGHT */}
-          <div className="flex-1 flex justify-center md:justify-end">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex-1 flex justify-center md:justify-end"
+          >
             <div className="w-full max-w-md">
               <Image
                 src="/websitedesign2.png"
@@ -30,13 +52,26 @@ export default function WebsiteDesignPage() {
                 priority
               />
             </div>
-          </div>
+          </motion.div>
 
         </div>
-      </section>
+      </motion.section>
 
-      {/* FEATURES */}
-      <section className="py-20">
+      {/* CURVE */}
+      <div className="w-full overflow-hidden rotate-180">
+        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
+          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
+        </svg>
+      </div>
+
+      {/* FEATURES — Slide In Left */}
+      <motion.section
+        initial={{ opacity: 0, x: -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="py-20"
+      >
         <div className="max-w-6xl mx-auto px-6">
           <div className="bg-white border border-gray-200 rounded-xl p-10 shadow-sm">
             <h2 className="text-2xl font-bold mb-4">What’s Included</h2>
@@ -57,14 +92,33 @@ export default function WebsiteDesignPage() {
             </ul>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* VISUAL SECTION */}
-      <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
+      {/* CURVE */}
+      <div className="w-full overflow-hidden">
+        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
+          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#f9fafb" />
+        </svg>
+      </div>
+
+      {/* VISUAL SECTION — Slide In Right */}
+      <motion.section
+        initial={{ opacity: 0, x: 40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="py-20 bg-gray-50 border-t border-b border-gray-200"
+      >
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
           {/* IMAGE ON RIGHT */}
-          <div className="flex-1 flex justify-center md:justify-end">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex-1 flex justify-center md:justify-end"
+          >
             <div className="w-full max-w-md">
               <Image
                 src="/ConnectedBusiness1.png"
@@ -75,7 +129,7 @@ export default function WebsiteDesignPage() {
                 priority
               />
             </div>
-          </div>
+          </motion.div>
 
           <div>
             <h3 className="text-2xl font-bold mb-4">Designed for Clarity and Conversion</h3>
@@ -90,18 +144,31 @@ export default function WebsiteDesignPage() {
           </div>
 
         </div>
-      </section>
+      </motion.section>
 
-      {/* VIDEO SECTION */}
-      <section className="py-20">
+      {/* CURVE */}
+      <div className="w-full overflow-hidden rotate-180">
+        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
+          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
+        </svg>
+      </div>
+
+      {/* VIDEO SECTION — Fade In */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-20"
+      >
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h3 className="text-2xl font-bold mb-6">See the Design Process</h3>
 
-          <div className="w-full aspect-video bg-gray-200 rounded-xl flex items-center justify-center">
+          <div className="w-full aspect-video bg-gray-200 rounded-xl flex items-center justify-center shadow-md">
             <span className="text-gray-500">Video Placeholder</span>
           </div>
         </div>
-      </section>
+      </motion.section>
 
     </main>
   );
