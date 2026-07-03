@@ -25,7 +25,7 @@ export default function FrontEndModulePage() {
 
     {/* VISUAL */}
     <div className="hidden md:flex justify-end">
-      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="rounded-xl shadow-xl overflow-hidden">
         <Image
           src="/customerportal.png"
           alt="customerportal"
