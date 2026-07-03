@@ -29,8 +29,8 @@ export default function TransactionsPage() {
         <Image
           src="/transactions.png"
           alt="transactions"
-          width={300}
-          height={160}
+          width={200}
+          height={120}
           className="object-cover"
         />
       </div>
