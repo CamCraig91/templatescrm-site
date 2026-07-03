@@ -1,5 +1,8 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+
 export default function SalesOrdersPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
@@ -14,11 +17,18 @@ export default function SalesOrdersPage() {
             </p>
           </div>
 
-          <div className="hidden md:flex justify-center">
-            <div className="w-80 h-56 bg-white rounded-xl shadow-xl border border-gray-100 flex items-center justify-center">
-              <span className="text-gray-400">Screenshot / Visual</span>
-            </div>
-          </div>
+         {/* VISUAL */}
+    <div className="hidden md:flex justify-center">
+      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+        <Image
+          src="/salesorder.png"
+          alt="salesorder"
+          width={300}
+          height={160}
+          className="object-cover"
+        />
+      </div>
+    </div>
         </div>
       </section>
 
