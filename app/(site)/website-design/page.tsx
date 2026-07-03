@@ -53,11 +53,12 @@ export default function WebsiteDesignPage() {
 <div className="w-full overflow-hidden -mt-20 relative z-10">
   <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
     <path
-      d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z"
+      d="M0,120 C480,0 960,120 1440,0 L1440,120 L0,120 Z"
       fill="#ffffff"
     />
   </svg>
 </div>
+
 
 
       {/* WHAT'S INCLUDED */}
