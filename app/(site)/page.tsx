@@ -1,6 +1,7 @@
 import HeroSection from "./components/HeroSection";
 import Pillars from "./components/Pillars";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const Curve = ({ flip = false }) => (
   <div className={`w-full overflow-hidden ${flip ? "rotate-180" : ""}`}>
