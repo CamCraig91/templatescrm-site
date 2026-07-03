@@ -1,3 +1,5 @@
+"use client";
+
 import HeroSection from "./components/HeroSection";
 import Pillars from "./components/Pillars";
 import Image from "next/image";
