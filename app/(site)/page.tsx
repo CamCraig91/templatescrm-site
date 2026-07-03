@@ -68,43 +68,55 @@ export default function HomePage() {
           </div>
         </section>
 
+{/* CURVE SEPARATOR */}
+<Curve />
 
-        {/* WEBSITE DESIGN / DIGITAL STOREFRONT */}
-        <section className="relative -mt-16 md:-mt-24 z-10">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="bg-white border border-gray-200 rounded-3xl shadow-lg px-8 md:px-16 py-16 md:py-20 flex flex-col md:flex-row items-center gap-12">
+{/* WEBSITE DESIGN / DIGITAL STOREFRONT */}
+<section className="relative -mt-16 md:-mt-24 z-10">
+  <div className="max-w-6xl mx-auto px-4 md:px-6">
 
-              {/* Text */}
-              <div className="flex-1">
-                <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-                  Website Design & Digital Storefront
-                </h2>
-                <p className="text-gray-600 text-sm md:text-base mb-6">
-                  Your website becomes the front door of your business — a digital storefront that
-                  connects directly to your backend system. Every form, purchase, booking, and
-                  customer interaction flows into one place you can easily manage.
-                </p>
-                <p className="text-gray-600 text-sm md:text-base">
-                  We design clean, modern websites that integrate seamlessly with your operations,
-                  ensuring customers get a premium experience while your team gets a unified,
-                  automated workflow behind the scenes.
-                </p>
-              </div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      viewport={{ once: true }}
+      className="bg-white border border-gray-200 rounded-3xl shadow-lg px-8 md:px-16 py-16 md:py-20 flex flex-col md:flex-row items-center gap-12"
+    >
 
-              {/* Image */}
-              <div className="flex-1">
-                <Image
-                  src="/website-design.png"
-                  alt="Website storefront illustration"
-                  width={600}
-                  height={400}
-                  className="rounded-2xl shadow-md object-cover"
-                />
-              </div>
+      {/* Text */}
+      <div className="flex-1">
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
+          Website Design & Digital Storefront
+        </h2>
+        <p className="text-gray-600 text-sm md:text-base mb-6">
+          Your website becomes the front door of your business — a digital storefront that
+          connects directly to your backend system. Every form, purchase, booking, and
+          customer interaction flows into one place you can easily manage.
+        </p>
+        <p className="text-gray-600 text-sm md:text-base">
+          We design clean, modern websites that integrate seamlessly with your operations,
+          ensuring customers get a premium experience while your team gets a unified,
+          automated workflow behind the scenes.
+        </p>
+      </div>
 
-            </div>
-          </div>
-        </section>
+      {/* Image */}
+      <div className="flex-1 flex justify-center md:justify-end">
+        <div className="w-full max-w-md">
+          <Image
+            src="/websitedesign2.png"
+            alt="website design"
+            width={900}
+            height={600}
+            className="rounded-2xl shadow-md object-cover"
+          />
+        </div>
+      </div>
+
+    </motion.div>
+  </div>
+</section>
+
 
 
         {/* PLATFORM CUSTOMIZATION */}
