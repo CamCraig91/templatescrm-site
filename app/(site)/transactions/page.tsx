@@ -7,36 +7,38 @@ export default function TransactionsPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
-      {/* HERO */}
-      <section className="relative w-full py-28 bg-slate-800 border-b border-slate-700 overflow-hidden">
-        <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+     {/* HERO */}
+<section className="relative w-full py-28 bg-slate-800 border-b border-slate-700 overflow-hidden">
+  <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* TEXT */}
-          <div className="text-center md:text-left text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Transactions
-            </h1>
-            <p className="text-lg text-slate-300 max-w-xl">
-              A clean interface where customers can view invoices, pay balances, 
-              review past payments, and manage billing preferences — all synced 
-              directly with your CRM and accounting system.
-            </p>
-          </div>
+    {/* TEXT */}
+    <div className="text-center md:text-left text-white">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        Transactions
+      </h1>
+      <p className="text-lg text-slate-300 max-w-xl">
+        A clean interface where customers can view invoices, pay balances, 
+        review past payments, and manage billing preferences — all synced 
+        directly with your CRM and accounting system.
+      </p>
+    </div>
 
-             {/* VISUAL */}
-<div className="hidden md:flex justify-center">
-  <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-    <Image
-      src="/transactions.png"
-      alt="transactions"
-      width={300}
-      height={160}
-      className="object-cover"
-    />
+    {/* VISUAL */}
+    <div className="hidden md:flex justify-center">
+      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+        <Image
+          src="/transactions.png"
+          alt="transactions"
+          width={300}
+          height={160}
+          className="object-cover"
+        />
+      </div>
+    </div>
+
   </div>
+</section>
 
-        </div>
-      </section>
 
       {/* FEATURE CARD */}
       <section className="py-20">
