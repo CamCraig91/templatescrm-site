@@ -38,7 +38,7 @@ export default function HomePage() {
     alt="Connected business diagram"
     width={700}
     height={400}
-    className="object-contain mx-auto rounded-3xl md:block hidden"
+    className="hidden md:block object-contain mx-auto rounded-3xl"
     priority
   />
 </div>
