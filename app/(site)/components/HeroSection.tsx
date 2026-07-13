@@ -38,7 +38,7 @@ export default function HeroSection() {
         </div>
 
         {/* RIGHT SIDE IMAGE */}
-        <div className="flex-1 flex justify-center md:justify-end">
+        <div className="hidden md:block flex-1 flex justify-center md:justify-end">
           <div className="w-full max-w-xl h-[420px] md:h-[500px]">
             <Image
               src="/HeroImage7.jpg"
