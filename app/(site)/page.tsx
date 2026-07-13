@@ -32,7 +32,7 @@ export default function HomePage() {
                 internal operations, and external integrations into one seamless loop.
               </p>
 
-              <div className="hidden md-block w-full flex items-center justify-center">
+              <div className="hidden md:block w-full flex items-center justify-center">
                 <Image
                   src="/ConnectedBusiness5.png"
                   alt="Connected business diagram"
