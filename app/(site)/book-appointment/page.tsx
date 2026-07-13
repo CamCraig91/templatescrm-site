@@ -26,7 +26,7 @@ export default function BookAppointmentPage() {
 <div className="hidden md:flex justify-center">
   <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
     <Image
-      src="/bookappointment.png"
+      src="/bookappointmentwhite.png"
       alt="bookappointment"
       width={300}
       height={160}
