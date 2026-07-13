@@ -32,13 +32,13 @@ export default function HomePage() {
                 internal operations, and external integrations into one seamless loop.
               </p>
 
-           <div className="hidden md:flex w-full items-center justify-center">
+           <div className="md:flex w-full items-center justify-center">
   <Image
     src="/ConnectedBusiness5.png"
     alt="Connected business diagram"
     width={700}
     height={400}
-    className="hidden md:block object-contain mx-auto rounded-3xl"
+    className="object-contain mx-auto rounded-3xl"
     priority
   />
 </div>
