@@ -23,12 +23,12 @@ export default function EventsPage() {
 
          {/* VISUAL */}
     <div className="hidden md:flex justify-center">
-      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="rounded-xl shadow-xl overflow-hidden">
         <Image
           src="/eventswhite.png"
           alt="events"
-          width={200}
-          height={120}
+          width={300}
+          height={150}
           className="object-cover"
         />
       </div>
