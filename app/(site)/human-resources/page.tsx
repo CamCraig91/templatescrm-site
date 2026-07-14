@@ -24,9 +24,9 @@ export default function HumanResourcesPage() {
 
          {/* VISUAL */}
     <div className="hidden md:flex justify-center">
-      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="rounded-xl shadow-xl overflow-hidden">
         <Image
-          src="/humanresources2.png"
+          src="/humanresourceswhite.png"
           alt="humanresources"
           width={200}
           height={120}
