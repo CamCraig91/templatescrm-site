@@ -25,7 +25,7 @@ export default function RemindersPage() {
     <div className="hidden md:flex justify-center">
       <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <Image
-          src="/reminders.png"
+          src="/reminderswhite.png"
           alt="reminders"
           width={200}
           height={120}
