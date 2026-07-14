@@ -16,6 +16,7 @@ export default function PayrollPage() {
               system — all from one centralized dashboard.
             </p>
           </div>
+        </div>
 
             {/* VISUAL */}
     <div className="hidden md:flex justify-center">
