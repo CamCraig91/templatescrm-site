@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function PricingPage() {
   return (
@@ -104,7 +105,7 @@ export default function PricingPage() {
             <div className="p-8 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition">
               <h3 className="text-2xl font-bold mb-2">All Apps Included</h3>
               <p className="text-4xl font-bold text-blue-600 mb-4">
-                $25<span className="text-lg text-gray-600">/user / month</span>
+                $20<span className="text-lg text-gray-600">/user / month</span>
               </p>
 
               <p className="text-gray-600 mb-6">
