@@ -75,7 +75,7 @@ export default function PricingPage() {
 
                 <ul className="text-blue-100 space-y-2 text-sm mb-8">
                   <li>• Minimum 3 hours/month</li>
-                  <li>• 3‑month commitment</li>
+                  <li>• Minimum 3‑month commitment </li>
                   <li>• Priority scheduling</li>
                   <li>• Monthly review & optimization</li>
                   <li>• Additional hours billed at $75/hour</li>
