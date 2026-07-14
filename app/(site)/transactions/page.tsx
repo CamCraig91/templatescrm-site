@@ -27,7 +27,7 @@ export default function TransactionsPage() {
     <div className="hidden md:flex justify-center">
       <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <Image
-          src="/transactions.png"
+          src="/transactionswhite.png"
           alt="transactions"
           width={200}
           height={120}
