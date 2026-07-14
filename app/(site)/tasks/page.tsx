@@ -16,6 +16,7 @@ export default function TasksPage() {
               task management system built into your CRM.
             </p>
           </div>
+        </div>
 
                   {/* VISUAL */}
 <div className="hidden md:flex justify-center">
