@@ -24,7 +24,7 @@ export default function FormsPage() {
 
          {/* VISUAL */}
     <div className="hidden md:flex justify-center">
-      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="rounded-xl shadow-xl overflow-hidden">
         <Image
           src="/form.png"
           alt="forms"
