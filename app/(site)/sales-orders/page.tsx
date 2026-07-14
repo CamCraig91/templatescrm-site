@@ -19,9 +19,9 @@ export default function SalesOrdersPage() {
 
          {/* VISUAL */}
     <div className="hidden md:flex justify-center">
-      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="rounded-xl shadow-xl overflow-hidden">
         <Image
-          src="/salesorder.png"
+          src="/salesorderwhite.png"
           alt="salesorder"
           width={300}
           height={160}
