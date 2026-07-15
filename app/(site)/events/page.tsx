@@ -33,6 +33,7 @@ export default function EventsPage() {
         />
       </div>
     </div>
+          </div>
       </section>
 
       {/* FEATURE CARD */}
