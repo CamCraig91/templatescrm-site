@@ -26,6 +26,7 @@ export default function InventoryPage() {
         />
       </div>
     </div>
+          </div>
       </section>
 
       <section className="py-20">
