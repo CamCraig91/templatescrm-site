@@ -38,7 +38,7 @@ export default function PricingPage() {
           <div className="grid md:grid-cols-2 gap-10">
 
             {/* PAY PER USE */}
-            <Link href="/pricing/pay-per-use" className="block">
+            <Link href="/pricing/submit-request" className="block">
               <div className="p-8 bg-blue-50 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition">
                 <h3 className="text-2xl font-bold mb-2">Pay‑Per‑Use</h3>
                 <p className="text-4xl font-bold text-blue-600 mb-4">
@@ -62,7 +62,7 @@ export default function PricingPage() {
             </Link>
 
             {/* DEDICATED SERVICE PLAN */}
-            <Link href="/pricing/dedicated-service" className="block">
+            <Link href="/pricing/submit-request" className="block">
               <div className="p-8 bg-blue-600 text-white rounded-xl shadow-lg border border-blue-700 hover:shadow-xl transition">
                 <h3 className="text-2xl font-bold mb-2">Dedicated Service Plan</h3>
                 <p className="text-4xl font-bold mb-4">
@@ -103,7 +103,7 @@ export default function PricingPage() {
             Unlock every front‑end and back‑end application with one simple subscription.
           </p>
 
-          <Link href="/pricing/app-subscription" className="block max-w-3xl mx-auto">
+          <Link href="/pricing/submit-request" className="block max-w-3xl mx-auto">
             <div className="p-8 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition">
               <h3 className="text-2xl font-bold mb-2">All Apps Included</h3>
               <p className="text-4xl font-bold text-blue-600 mb-4">
