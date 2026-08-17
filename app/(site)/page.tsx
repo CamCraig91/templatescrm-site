@@ -47,6 +47,41 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+{/* WHAT TEMPLATES IS — NEW SECTION */}
+<section className="relative -mt-16 z-10">
+  <div className="max-w-6xl mx-auto px-4 md:px-6">
+    <div className="bg-white border border-gray-200 rounded-3xl shadow-md px-8 md:px-16 py-16 md:py-20">
+
+      <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 text-center">
+        What Templates Is
+      </h2>
+
+      <p className="text-gray-600 max-w-3xl mx-auto mb-10 text-sm md:text-base text-center">
+        Templates is a suite of customizable business applications built inside Method:CRM.
+        It manages your financial, customer, work, and employee data in one unified system —
+        replacing spreadsheets, disconnected tools, and manual processes.
+      </p>
+
+      <p className="text-gray-600 max-w-3xl mx-auto mb-10 text-sm md:text-base text-center">
+        Powered by Method’s platform, every workflow you create syncs directly with QuickBooks,
+        ensuring clean accounting with no double entry. As your business grows, Templates adapts
+        with you — every screen, automation, and workflow can be tailored to fit your evolving needs.
+      </p>
+
+      {/* IMAGE AREA */}
+      <div className="w-full flex items-center justify-center mt-6">
+        <Image
+          src="/templates-overview.png"
+          alt="Templates overview illustration"
+          width={700}
+          height={400}
+          className="object-contain mx-auto rounded-3xl shadow-sm"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>
 
         {/* INTERACTIVE PILLARS (no animation) */}
         <Pillars />
