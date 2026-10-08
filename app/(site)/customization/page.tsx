@@ -68,7 +68,7 @@ export default function CustomizationPage() {
           <p className="text-center text-gray-600 max-w-3xl mx-auto mb-16">
             Method:CRM is a powerful business tool because it’s flexible. It connects to accounting softwares (QuickBooks, Xero) to the custom applications that manage the other aspects of your business unique to you. Every screen, workflow, and process 
             can be customized to match your exact business needs — giving you a system that 
-            works the way *you* work.
+            works the way <em>you</em> work.
           </p>
 
           <div className="grid md:grid-cols-2 gap-10">
@@ -112,7 +112,7 @@ export default function CustomizationPage() {
               <div className="relative h-40 w-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200">
   <Image
     src="/discovery1.png"
-    alt="test"
+    alt="Discovery Step Illustration"
     fill
     className="object-cover"
   />
@@ -128,7 +128,7 @@ export default function CustomizationPage() {
                <div className="relative h-40 w-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200">
   <Image
     src="/design1.png"
-    alt="test"
+    alt="Design Step Illustration"
     fill
     className="object-cover"
   />
@@ -144,7 +144,7 @@ export default function CustomizationPage() {
               <div className="relative h-40 w-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200">
   <Image
     src="/build.png"
-    alt="test"
+    alt="Build Step Illustration"
     fill
     className="object-cover"
   />
@@ -160,7 +160,7 @@ export default function CustomizationPage() {
               <div className="relative h-40 w-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200">
   <Image
     src="/launch.png"
-    alt="test"
+    alt="Launch Step Illustration"
     fill
     className="object-cover"
   />
