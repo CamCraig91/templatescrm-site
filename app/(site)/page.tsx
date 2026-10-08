@@ -206,7 +206,7 @@ export default function HomePage() {
             </div>
 
             {/* Swap /templates-overview.png for a screenshot of your landing screen or app */}
-            <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28 border rounded-3x1">
+            <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28 rounded-lg">
               <ImageLightbox
                 src="/homescreen.png"
                 alt="Templates overview"
