@@ -35,9 +35,9 @@ export default function ImageLightbox({ src, alt, width, height, className = "" 
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`View full screen: ${alt}`}
-        className={`relative block w-full cursor-zoom-in overflow-hidden border border-gray-200 bg-white shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${className}`}
+        className={`relative block w-full cursor-zoom-in overflow-hidden border border-gray-200 bg-white shadow-lg rounded-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${className}`}
       >
-        <Image src={src} alt={alt} width={width} height={height} className="h-auto w-full" />
+        <Image src={src} alt={alt} width={width} height={height} className="h-auto w-full"  />
         <span className="absolute bottom-3 right-3 inline-flex items-center justify-center bg-white/95 p-2 text-gray-800 shadow rounded-lg">
           <svg
             className="h-5 w-5"
@@ -88,6 +88,7 @@ export default function ImageLightbox({ src, alt, width, height, className = "" 
             sizes="100vw"
             onClick={(e) => e.stopPropagation()}
             className="h-auto max-h-full w-auto max-w-full object-contain shadow-2xl"
+            rounded-lg
           />
         </div>
       )}
