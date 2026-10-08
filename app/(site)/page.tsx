@@ -8,9 +8,9 @@ import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
 
 export const metadata = {
-  title: "Templates:CRM — Business Management Software",
+  title: "Templates — Business Management Software",
   description:
-    "Templates:CRM is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
+    "Templates is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
 };
 
 const apps = [
@@ -101,7 +101,7 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "Do I need Method:CRM to use Templates:CRM?",
+    q: "Do I need Method:CRM to use Templates?",
     a: "Yes. Templates is built inside Method:CRM, so it runs on a Method account. We can walk you through the setup during your free consultation.",
   },
   {
@@ -172,7 +172,7 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
             <div className="w-full max-w-3xl lg:max-w-2xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-                What is Templates:CRM?
+                What is Templates?
               </h2>
 
               <p className="text-gray-600 mb-4 text-sm md:text-base">
@@ -208,8 +208,8 @@ export default function HomePage() {
             {/* Swap /templates-overview.png for a screenshot of your landing screen or app */}
             <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
               <ImageLightbox
-                src="/homescreen.png"
-                alt="Templates:CRM overview"
+                src="/templates-overview.png"
+                alt="Templates overview"
                 width={1400}
                 height={900}
               />
@@ -493,7 +493,7 @@ export default function HomePage() {
               </h2>
               <p className="text-blue-100 max-w-2xl mx-auto mb-8 text-sm md:text-base">
                 Book a free consultation and tell us how your business works. We&apos;ll show you
-                what Templates:CRM can do for it and give you a clear estimate.
+                what Templates can do for it and give you a clear estimate.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
