@@ -161,56 +161,52 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* WHAT TEMPLATES IS — left aligned, layered over the card above */}
+        {/* WHAT TEMPLATES IS — card is pushed to the left and layered over the card above.
+            Tune the offset with md:w-[80%] (narrower = more of the card above shows on the right)
+            or add md:-ml-8 / lg:-ml-16 to bleed the card toward the left edge of the screen. */}
         <section className="relative -mt-16 z-20">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="bg-white border border-gray-200 rounded-3xl shadow-lg px-8 md:px-16 py-16 md:py-20">
-              <div className="flex flex-col md:flex-row items-center gap-12">
-                <div className="flex-1 text-left">
-                  <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
-                    What is Templates:CRM?
-                  </h2>
+            <div className="w-full md:w-[80%] md:mr-auto bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-16 py-16 md:py-20 text-left">
+              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
+                What is Templates:CRM?
+              </h2>
 
-                  <p className="text-gray-600 mb-5 text-sm md:text-base">
-                    Templates is a suite of customizable business applications built inside
-                    Method:CRM. It manages your financial, customer, work, and employee data in one
-                    unified system, replacing spreadsheets, disconnected tools, and manual
-                    processes.
-                  </p>
+              <p className="text-gray-600 mb-5 text-sm md:text-base max-w-3xl">
+                Templates is a suite of customizable business applications built inside
+                Method:CRM. It manages your financial, customer, work, and employee data in one
+                unified system, replacing spreadsheets, disconnected tools, and manual
+                processes.
+              </p>
 
-                  <p className="text-gray-600 mb-8 text-sm md:text-base">
-                    Powered by Method&apos;s platform, every workflow you create syncs directly
-                    with QuickBooks, ensuring clean accounting with no double entry. As your
-                    business grows, Templates adapts with you. Every screen, automation, and
-                    workflow can be tailored to fit your evolving needs.
-                  </p>
+              <p className="text-gray-600 mb-8 text-sm md:text-base max-w-3xl">
+                Powered by Method&apos;s platform, every workflow you create syncs directly
+                with QuickBooks, ensuring clean accounting with no double entry. As your
+                business grows, Templates adapts with you. Every screen, automation, and
+                workflow can be tailored to fit your evolving needs.
+              </p>
 
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Link
-                      href="/book-demo"
-                      className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-center hover:bg-blue-700 transition"
-                    >
-                      Book your free consultation
-                    </Link>
-                    <a
-                      href="#how-it-works"
-                      className="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg font-medium text-center hover:bg-blue-100 transition"
-                    >
-                      See how it works
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex-1">
-                  <Image
-                    src="/templates-overview.png"
-                    alt="Templates overview illustration"
-                    width={700}
-                    height={400}
-                    className="object-contain mx-auto rounded-3xl shadow-sm"
-                  />
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <Link
+                  href="/book-demo"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-center hover:bg-blue-700 transition"
+                >
+                  Book your free consultation
+                </Link>
+                <a
+                  href="#how-it-works"
+                  className="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg font-medium text-center hover:bg-blue-100 transition"
+                >
+                  See how it works
+                </a>
               </div>
+
+              <Image
+                src="/templates-overview.png"
+                alt="Templates overview illustration"
+                width={700}
+                height={400}
+                className="object-contain rounded-3xl shadow-sm w-full max-w-2xl h-auto"
+              />
             </div>
           </div>
         </section>
