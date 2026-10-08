@@ -100,7 +100,7 @@ export default function CustomizationPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-20 bg-gray-200 border-y border-gray-200" >
+      <section className="py-20 bg-blue-200 border-y border-blue-200" >
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
             How Customization Works
@@ -246,7 +246,7 @@ export default function CustomizationPage() {
 
 
       {/* REVIEWS */}
-      <section className="py-20 bg-gray-200 border-y border-gray-200" >
+      <section className="py-20 bg-blue-200 border-y border-blue-200" >
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold  text-center mb-6">
             What Clients Say
@@ -317,7 +317,7 @@ export default function CustomizationPage() {
             </div>
 
             {/* DEDICATED SERVICE PLAN */}
-            <div className="p-8 bg-blue-600 text-white rounded-xl shadow-lg border border-blue-700">
+            <div className="p-8 bg-blue-500 text-white rounded-xl shadow-lg border border-blue-600">
               <h3 className="text-2xl font-bold mb-2">Dedicated Service Plan</h3>
               <p className="text-4xl font-bold mb-4">$50<span className="text-lg text-blue-100">/hour</span></p>
               <p className="text-blue-100 mb-6">
