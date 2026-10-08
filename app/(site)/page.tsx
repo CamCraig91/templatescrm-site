@@ -167,8 +167,8 @@ export default function HomePage() {
             - Card closeness to the left edge: md:pl-12 lg:pl-20 on the <section>
             - Card width: lg:max-w-2xl
             - Image gap from the card above: lg:mt-28 (the card above ends 64px into this section)
-            - Space before the next section: pb-16 lg:pb-20 */}
-        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-16 lg:pb-20">
+            - Space before the next section: pb-6 lg:pb-8 */}
+        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-6 lg:pb-8">
           <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
             <div className="w-full max-w-3xl lg:max-w-2xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
@@ -208,7 +208,7 @@ export default function HomePage() {
             {/* Swap /templates-overview.png for a screenshot of your landing screen or app */}
             <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
               <ImageLightbox
-                src="/homescreen.png"
+                src="/templates-overview.png"
                 alt="Templates:CRM overview"
                 width={1400}
                 height={900}
