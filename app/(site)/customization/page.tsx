@@ -66,7 +66,7 @@ export default function CustomizationPage() {
           </h2>
 
           <p className="text-center text-gray-600 max-w-3xl mx-auto mb-16">
-            Method:CRM is powerful business tool because it’s flexible. It connects to accounting softwares (QuickBooks, Xero) to the custom applications that manage the other aspects of your business unique to you. Every screen, workflow, and process 
+            Method:CRM is a powerful business tool because it’s flexible. It connects to accounting softwares (QuickBooks, Xero) to the custom applications that manage the other aspects of your business unique to you. Every screen, workflow, and process 
             can be customized to match your exact business needs — giving you a system that 
             works the way *you* work.
           </p>
