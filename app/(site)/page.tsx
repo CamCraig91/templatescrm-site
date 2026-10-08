@@ -5,11 +5,12 @@ import Link from "next/link";
 
 import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
+import ImageLightbox from "./components/ImageLightbox";
 
 export const metadata = {
-  title: "Templates — Business Management Software",
+  title: "Templates:CRM — Business Management Software",
   description:
-    "Templates is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
+    "Templates:CRM is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
 };
 
 const apps = [
@@ -100,7 +101,7 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "Do I need Method:CRM to use Templates?",
+    q: "Do I need Method:CRM to use Templates:CRM?",
     a: "Yes. Templates is built inside Method:CRM, so it runs on a Method account. We can walk you through the setup during your free consultation.",
   },
   {
@@ -161,42 +162,57 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* WHAT TEMPLATES IS — compact card, anchored near the left edge of the screen
-            (outside the centered max-w-6xl container, so it doesn't line up with the card above).
-            Adjust md:max-w-3xl for width, or pl-4 / md:pl-4 for how close it sits to the edge. */}
-        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pr-6">
-          <div className="w-full md:max-w-3xl bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-              What is Templates?
-            </h2>
+        {/* WHAT TEMPLATES IS — compact card nudged toward the center, with a click-to-enlarge
+            image in the open space beside it. Below lg the image stacks under the card.
+            - Card closeness to the left edge: md:pl-12 lg:pl-20 on the <section>
+            - Card width: lg:max-w-2xl
+            - Image gap from the card above: lg:mt-28 (the card above ends 64px into this section)
+            - Space before the next section: pb-16 lg:pb-20 */}
+        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-16 lg:pb-20">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
+            <div className="w-full max-w-3xl lg:max-w-2xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
+              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
+                What is Templates:CRM?
+              </h2>
 
-            <p className="text-gray-600 mb-4 text-sm md:text-base">
-              Templates is a suite of customizable business applications built inside
-              Method:CRM. It manages your financial, customer, work, and employee data in one
-              unified system, replacing spreadsheets, disconnected tools, and manual
-              processes.
-            </p>
+              <p className="text-gray-600 mb-4 text-sm md:text-base">
+                Templates is a suite of customizable business applications built inside
+                Method:CRM. It manages your financial, customer, work, and employee data in one
+                unified system, replacing spreadsheets, disconnected tools, and manual
+                processes.
+              </p>
 
-            <p className="text-gray-600 mb-6 text-sm md:text-base">
-              Powered by Method&apos;s platform, every workflow you create syncs directly
-              with QuickBooks, ensuring clean accounting with no double entry. As your
-              business grows, Templates adapts with you. Every screen, automation, and
-              workflow can be tailored to fit your evolving needs.
-            </p>
+              <p className="text-gray-600 mb-6 text-sm md:text-base">
+                Powered by Method&apos;s platform, every workflow you create syncs directly
+                with QuickBooks, ensuring clean accounting with no double entry. As your
+                business grows, Templates adapts with you. Every screen, automation, and
+                workflow can be tailored to fit your evolving needs.
+              </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/book-demo"
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-center hover:bg-blue-700 transition"
-              >
-                Book your free consultation
-              </Link>
-              <a
-                href="#how-it-works"
-                className="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg font-medium text-center hover:bg-blue-100 transition"
-              >
-                See how it works
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/book-demo"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-center hover:bg-blue-700 transition"
+                >
+                  Book your free consultation
+                </Link>
+                <a
+                  href="#how-it-works"
+                  className="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg font-medium text-center hover:bg-blue-100 transition"
+                >
+                  See how it works
+                </a>
+              </div>
+            </div>
+
+            {/* Swap /templates-overview.png for a screenshot of your landing screen or app */}
+            <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
+              <ImageLightbox
+                src="/templates-overview.png"
+                alt="Templates:CRM overview"
+                width={1400}
+                height={900}
+              />
             </div>
           </div>
         </section>
