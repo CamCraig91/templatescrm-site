@@ -7,9 +7,9 @@ import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
 
 export const metadata = {
-  title: "Templates:CRM — Business Management Software",
+  title: "Templates — Business Management Software",
   description:
-    "Templates:CRM is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
+    "Templates is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
 };
 
 const apps = [
@@ -100,7 +100,7 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "Do I need Method:CRM to use Templates:CRM?",
+    q: "Do I need Method:CRM to use Templates?",
     a: "Yes. Templates is built inside Method:CRM, so it runs on a Method account. We can walk you through the setup during your free consultation.",
   },
   {
@@ -167,7 +167,7 @@ export default function HomePage() {
         <section className="relative -mt-16 z-20 pl-4 pr-4 md:pr-6">
           <div className="w-full md:max-w-3xl bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-              What is Templates:CRM?
+              What is Templates?
             </h2>
 
             <p className="text-gray-600 mb-4 text-sm md:text-base">
