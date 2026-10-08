@@ -35,12 +35,12 @@ export default function ImageLightbox({ src, alt, width, height, className = "" 
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`View full screen: ${alt}`}
-        className={`relative block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${className}`}
+        className={`relative block w-full cursor-zoom-in overflow-hidden border border-gray-200 bg-white shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${className}`}
       >
         <Image src={src} alt={alt} width={width} height={height} className="h-auto w-full" />
-        <span className="absolute bottom-3 right-3 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-medium text-gray-800 shadow">
+        <span className="absolute bottom-3 right-3 inline-flex items-center justify-center bg-white/95 p-2 text-gray-800 shadow">
           <svg
-            className="h-4 w-4"
+            className="h-5 w-5"
             viewBox="0 0 20 20"
             fill="none"
             stroke="currentColor"
@@ -49,7 +49,7 @@ export default function ImageLightbox({ src, alt, width, height, className = "" 
           >
             <path d="M12 3h5v5M8 17H3v-5M17 3l-5 5M3 17l5-5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Click to enlarge
+          <span className="sr-only">Enlarge image</span>
         </span>
       </button>
 
@@ -87,7 +87,7 @@ export default function ImageLightbox({ src, alt, width, height, className = "" 
             height={height}
             sizes="100vw"
             onClick={(e) => e.stopPropagation()}
-            className="h-auto max-h-full w-auto max-w-full rounded-xl object-contain shadow-2xl"
+            className="h-auto max-h-full w-auto max-w-full object-contain shadow-2xl"
           />
         </div>
       )}
