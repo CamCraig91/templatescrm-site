@@ -168,7 +168,7 @@ export default function HomePage() {
             - Card width: lg:max-w-2xl
             - Image gap from the card above: lg:mt-28 (the card above ends 64px into this section)
             - Space before the next section: pb-6 lg:pb-8 */}
-        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-4 lg:pb-6">
+        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-2 lg:pb-4">
           <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
             <div className="w-full max-w-3xl lg:max-w-2xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
