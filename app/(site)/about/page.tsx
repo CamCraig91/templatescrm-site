@@ -48,7 +48,7 @@ export default function AboutPage() {
             {/* WEBSITE */}
             <div className="p-6 bg-blue-50 rounded-xl border border-gray-200 shadow-sm">
               <img
-                src="/website.png"
+                src="/websitedesign.png"
                 alt="Website pillar graphic"
                 className="h-32 w-full object-contain rounded-lg mb-6"
               />
@@ -68,7 +68,7 @@ export default function AboutPage() {
             {/* FRONT END */}
             <div className="p-6 bg-blue-50 rounded-xl border border-gray-200 shadow-sm">
               <img
-                src="/frontend.png"
+                src="/onlineshop.png"
                 alt="Front end pillar graphic"
                 className="h-32 w-full object-contain rounded-lg mb-6"
               />
@@ -88,7 +88,7 @@ export default function AboutPage() {
             {/* BACK END */}
             <div className="p-6 bg-blue-50 rounded-xl border border-gray-200 shadow-sm">
               <img
-                src="/backend.png"
+                src="/remote.png"
                 alt="Back end pillar graphic"
                 className="h-32 w-full object-contain rounded-lg mb-6"
               />
@@ -108,7 +108,7 @@ export default function AboutPage() {
             {/* INTEGRATIONS */}
             <div className="p-6 bg-blue-50 rounded-xl border border-gray-200 shadow-sm">
               <img
-                src="/integrations.png"
+                src="/ConnectedBusiness6.png"
                 alt="Integrations pillar graphic"
                 className="h-32 w-full object-contain rounded-lg mb-6"
               />
