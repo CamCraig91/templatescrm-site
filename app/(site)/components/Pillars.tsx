@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Pillars() {
   const [activeCard, setActiveCard] = useState("website");
   const [lockedCard, setLockedCard] = useState<string | null>(null);
+  // If an image file is missing, skip it instead of showing a broken-image icon
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
 
-  
   const cards = [
     { id: "website", title: "Website" },
     { id: "frontend", title: "Front End" },
@@ -20,6 +22,14 @@ export default function Pillars() {
     frontend: "/front-end",
     backend: "/back-end",
     integrations: "/integrations",
+  };
+
+  // One image per pillar. Put the files in public/pillars/ (transparent PNG or WebP works best).
+  const images: Record<string, string> = {
+    website: "/pillars/website.png",
+    frontend: "/pillars/frontend.png",
+    backend: "/pillars/backend.png",
+    integrations: "/pillars/integrations.png",
   };
 
   const cardContent: Record<string, any> = {
@@ -84,7 +94,9 @@ export default function Pillars() {
   };
 
   return (
-    <section className="w-full py-20 md:py-24 bg-white">
+    // overflow-x-clip stops the spilling image from causing sideways scrolling,
+    // while still letting it hang out of the bottom of the panel.
+    <section className="relative z-10 w-full py-20 md:py-24 bg-white overflow-x-clip">
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex flex-col md:flex-row gap-8 md:gap-10">
 
         {/* Cards */}
@@ -118,8 +130,9 @@ export default function Pillars() {
           })}
         </div>
 
-        {/* Content Panel */}
-        <div className="w-full md:w-2/3 bg-blue-50 border border-blue-200 rounded-lg p-6 md:p-10 shadow-sm">
+        {/* Content Panel — `relative` so the image can hang off its bottom-right corner.
+            Don't add overflow-hidden here or the image will be cut off. */}
+        <div className="relative w-full md:w-2/3 bg-blue-50 border border-blue-200 rounded-lg p-6 md:p-10 pb-36 md:pb-10 shadow-sm">
           <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             {cardContent[activeCard].title}
           </h3>
@@ -141,6 +154,32 @@ export default function Pillars() {
           >
             Explore
           </Link>
+
+          {/* Spilling image: all four are stacked and cross-fade as the active pillar changes.
+              Size:      w-44 md:w-72 lg:w-[22rem]
+              Position:  -bottom-10 (how far it hangs below) and -right-3 / md:-right-10 (how far past the right edge) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-10 -right-3 md:-bottom-12 md:-right-10 z-20 aspect-[4/3] w-44 md:w-72 lg:w-[22rem]"
+          >
+            {cards.map((card) =>
+              failedImages[card.id] ? null : (
+                <Image
+                  key={card.id}
+                  src={images[card.id]}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 352px, (min-width: 768px) 288px, 176px"
+                  onError={() => setFailedImages((prev) => ({ ...prev, [card.id]: true }))}
+                  className={`object-contain object-right-bottom drop-shadow-xl transition duration-500 ease-out motion-reduce:transition-none ${
+                    activeCard === card.id
+                      ? "opacity-100 translate-y-0 scale-100"
+                      : "opacity-0 translate-y-4 scale-95"
+                  }`}
+                />
+              )
+            )}
+          </div>
         </div>
 
       </div>
