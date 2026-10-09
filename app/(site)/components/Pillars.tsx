@@ -26,10 +26,10 @@ export default function Pillars() {
 
   // One image per pillar. Put the files in public/pillars/ (transparent PNG or WebP works best).
   const images: Record<string, string> = {
-    website: "/websitedesign2.png",
-    frontend: "/frontend.png",
-    backend: "/backend.png",
-    integrations: "/integrations.png",
+    website: "/pillars/website.png",
+    frontend: "/pillars/frontend.png",
+    backend: "/pillars/backend.png",
+    integrations: "/pillars/integrations.png",
   };
 
   const cardContent: Record<string, any> = {
@@ -132,7 +132,7 @@ export default function Pillars() {
 
         {/* Content Panel — `relative` so the image can hang off its bottom-right corner.
             Don't add overflow-hidden here or the image will be cut off. */}
-        <div className="relative w-full md:w-2/3 bg-blue-50 border border-blue-200 rounded-lg p-6 md:p-10 pb-36 md:pb-10 shadow-sm">
+        <div className="relative w-full md:w-2/3 bg-blue-50 border border-blue-200 rounded-lg p-6 md:p-10 shadow-sm">
           <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             {cardContent[activeCard].title}
           </h3>
@@ -155,12 +155,16 @@ export default function Pillars() {
             Explore
           </Link>
 
-          {/* Spilling image: all four are stacked and cross-fade as the active pillar changes.
-              Size:      w-44 md:w-72 lg:w-[22rem]
-              Position:  -bottom-10 (how far it hangs below) and -right-3 / md:-right-10 (how far past the right edge) */}
+          {/* Spilling image (hidden on phones): all four are stacked and cross-fade as the active
+              pillar changes. The wrapper sits on the panel's bottom-right corner; each image is
+              anchored to the wrapper's bottom-right, so it grows up and to the left.
+              Size:      md:w-80 lg:w-[26rem] xl:w-[28rem]
+              Position:  -bottom-12 (how far it hangs below the panel)
+                         md:-right-2 lg:-right-4 (how far past the right edge; use md:right-6 to pull it fully inside)
+              Corners:   rounded-2xl (remove for square corners) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -bottom-10 -right-3 md:-bottom-12 md:-right-10 z-20 aspect-[4/3] w-44 md:w-72 lg:w-[22rem]"
+            className="pointer-events-none absolute -bottom-12 md:-right-2 lg:-right-4 z-20 hidden md:block md:w-80 lg:w-[26rem] xl:w-[28rem]"
           >
             {cards.map((card) =>
               failedImages[card.id] ? null : (
@@ -168,10 +172,11 @@ export default function Pillars() {
                   key={card.id}
                   src={images[card.id]}
                   alt=""
-                  fill
-                  sizes="(min-width: 1024px) 352px, (min-width: 768px) 288px, 176px"
+                  width={1200}
+                  height={900}
+                  sizes="(min-width: 1280px) 448px, (min-width: 1024px) 416px, 320px"
                   onError={() => setFailedImages((prev) => ({ ...prev, [card.id]: true }))}
-                  className={`object-contain object-right-bottom drop-shadow-xl transition duration-500 ease-out motion-reduce:transition-none ${
+                  className={`absolute bottom-0 right-0 h-auto w-full rounded-2xl drop-shadow-xl transition duration-500 ease-out motion-reduce:transition-none ${
                     activeCard === card.id
                       ? "opacity-100 translate-y-0 scale-100"
                       : "opacity-0 translate-y-4 scale-95"
