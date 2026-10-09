@@ -21,17 +21,6 @@ export default function BestPracticesPage() {
           </p>
         </div>
 
-        {/* HERO IMAGE (optional) */}
-        <div className="absolute top-0 right-0 h-full w-[45vw] pointer-events-none opacity-40">
-          <Image
-            src="/method-hero.png" // swap with any image you want
-            alt="Method Customization"
-            fill
-            className="object-contain object-right"
-            priority
-          />
-        </div>
-
       </section>
 
       {/* CONTENT */}
