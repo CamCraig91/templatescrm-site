@@ -7,30 +7,33 @@ export default function TasksPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
-      <section className="relative w-full py-28 bg-slate-800 border-b border-slate-700 overflow-hidden">
-        <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-center md:text-left text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Tasks</h1>
-            <p className="text-lg text-slate-300 max-w-xl">
-              Assign, track, and complete tasks across your team with a simple, organized
-              task management system built into your CRM.
-            </p>
-          </div>
-        </div>
+     <section className="relative w-full py-28 bg-slate-800 border-b border-slate-700 overflow-hidden">
+  <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-                  {/* VISUAL */}
-<div className="hidden md:flex justify-center">
-  <div className="rounded-xl shadow-xl overflow-hidden">
-    <Image
-      src="/taskswhite.png"
-      alt="Tasks"
-      width={300}
-      height={160}
-      className="object-cover"
-    />
+    {/* TEXT */}
+    <div className="text-center md:text-left text-white">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4">Tasks</h1>
+      <p className="text-lg text-slate-300 max-w-xl">
+        Assign, track, and complete tasks across your team with a simple, organized
+        task management system built into your CRM.
+      </p>
+    </div>
+
+    {/* VISUAL — now inside the grid, so it becomes the right-hand column */}
+    <div className="hidden md:flex md:justify-end">
+      <div className="rounded-xl shadow-xl overflow-hidden">
+        <Image
+          src="/taskswhite.png"
+          alt="Tasks"
+          width={300}
+          height={160}
+          className="object-cover"
+        />
+      </div>
+    </div>
+
   </div>
-</div>
-      </section>
+</section>
 
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-6">
