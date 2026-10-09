@@ -51,7 +51,7 @@ export default function SetupPage() {
 
               {/* QUICKBOOKS */}
               <div className="border border-gray-200 rounded-2xl p-8 bg-white shadow-sm">
-                <img src="/quickbooks.png" className="h-20 mb-4 opacity-90" />
+                <img src="/quickbooks1.png" className="h-20 mb-4 opacity-90" />
                 <h3 className="text-xl font-semibold mb-3">QuickBooks Setup</h3>
                 <p className="text-gray-600 mb-4">
                   Connect your QuickBooks Online account to Method:CRM in minutes.
