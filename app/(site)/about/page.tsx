@@ -29,14 +29,6 @@ export default function AboutPage() {
             </a>
           </div>
 
-          {/* HERO GRAPHIC */}
-          <div className="mt-16">
-            <img
-              src="/images/four-pillars-hero.png"
-              alt="Illustration representing the four pillars of the Templates platform"
-              className="w-full max-w-4xl mx-auto rounded-xl shadow-lg"
-            />
-          </div>
         </div>
       </section>
 
