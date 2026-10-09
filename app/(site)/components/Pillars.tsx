@@ -26,10 +26,10 @@ export default function Pillars() {
 
   // One image per pillar. Put the files in public/pillars/ (transparent PNG or WebP works best).
   const images: Record<string, string> = {
-    website: "/pillars/website.png",
-    frontend: "/pillars/frontend.png",
-    backend: "/pillars/backend.png",
-    integrations: "/pillars/integrations.png",
+    website: "/website2.png",
+    frontend: "/onlineshop.png",
+    backend: "/remote.png",
+    integrations: "/ConnectedBusiness6.png",
   };
 
   const cardContent: Record<string, any> = {
