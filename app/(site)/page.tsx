@@ -13,6 +13,10 @@ export const metadata = {
     "Templates is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
 };
 
+// Flip to true once you have real client reviews to show (the section and its background
+// rhythm switch back automatically)
+const SHOW_TESTIMONIALS = false;
+
 // Change this one function if your app pages live somewhere other than /apps/<slug>
 const appPath = (slug: string) => `/apps/${slug}`;
 
@@ -203,14 +207,15 @@ export default function HomePage() {
         </section>
 
         {/* WHAT TEMPLATES IS — compact card nudged toward the center, with a click-to-enlarge
-            image in the open space beside it. Below lg the image stacks under the card.
+            image in the open space beside it. Hidden on phones; stacks under the card on tablets.
             - Card closeness to the left edge: md:pl-12 lg:pl-20 on the <section>
-            - Card width: lg:max-w-2xl
+            - Image closeness to the right edge: lg:pr-10 xl:pr-16 on the <section> (bigger = more central)
+            - Card width: lg:max-w-xl (narrower card = bigger image)
             - Image gap from the card above: lg:mt-28 (the card above ends 64px into this section)
             - Space before the next section: pb-6 lg:pb-8 */}
-        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-6 lg:pb-8">
-          <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
-            <div className="w-full max-w-3xl lg:max-w-2xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
+        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 lg:pr-10 xl:pr-16 pb-6 lg:pb-8">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-10">
+            <div className="w-full max-w-3xl lg:max-w-xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
                 What is Templates?
               </h2>
@@ -245,13 +250,14 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Swap /templates-overview.png for a screenshot of your landing screen or app */}
-            <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
+            {/* Home screen image (hidden on phones). Remove rounded-3xl for flat corners. */}
+            <div className="hidden md:block w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
               <ImageLightbox
                 src="/homescreen.png"
-                alt="Templates overview"
+                alt="Templates home screen"
                 width={1400}
                 height={900}
+                className="rounded-3xl"
               />
             </div>
           </div>
@@ -391,7 +397,7 @@ export default function HomePage() {
         {/* INTEGRATIONS (animated) */}
         <AnimatedSection>
           <section className="py-20 bg-white">
-            <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-12">
+            <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row-reverse items-center gap-12">
               <div className="flex-1">
                 <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
                   Integrations That Connect Your Entire Business
@@ -484,7 +490,8 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        {/* TESTIMONIALS */}
+        {/* TESTIMONIALS — hidden until SHOW_TESTIMONIALS is true */}
+        {SHOW_TESTIMONIALS && (
         <AnimatedSection>
           <section className="py-20 bg-blue-50 border-y border-blue-100">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -506,10 +513,15 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
         {/* VIDEO (animated) */}
         <AnimatedSection>
-          <section className="py-20 bg-white">
+          <section
+            className={`py-20 ${
+              SHOW_TESTIMONIALS ? "bg-white" : "bg-blue-50 border-y border-blue-100"
+            }`}
+          >
             <div className="max-w-5xl mx-auto px-4 md:px-6 text-center">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
                 Watch the Product Walkthrough
@@ -521,7 +533,11 @@ export default function HomePage() {
               </p>
 
               {/* Swap this placeholder for your real video (iframe or <video>) when it's ready */}
-              <div className="aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-md bg-blue-50 border border-blue-100 flex items-center justify-center">
+              <div
+                className={`aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-md border border-blue-100 flex items-center justify-center ${
+                  SHOW_TESTIMONIALS ? "bg-blue-50" : "bg-white"
+                }`}
+              >
                 <span className="text-gray-500">Video coming soon</span>
               </div>
             </div>
@@ -530,7 +546,11 @@ export default function HomePage() {
 
         {/* FAQ — native <details>, no client JS needed */}
         <AnimatedSection>
-          <section className="py-20 bg-blue-50 border-y border-blue-100">
+          <section
+            className={`py-20 ${
+              SHOW_TESTIMONIALS ? "bg-blue-50 border-y border-blue-100" : "bg-white"
+            }`}
+          >
             <div className="max-w-3xl mx-auto px-4 md:px-6">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-10 text-center">
                 Frequently Asked Questions
@@ -540,7 +560,9 @@ export default function HomePage() {
                 {faqs.map((item) => (
                   <details
                     key={item.q}
-                    className="group bg-white border border-blue-100 rounded-2xl px-6 py-5 shadow-sm"
+                    className={`group border border-blue-100 rounded-2xl px-6 py-5 shadow-sm ${
+                      SHOW_TESTIMONIALS ? "bg-white" : "bg-blue-50"
+                    }`}
                   >
                     <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-medium text-gray-900 [&::-webkit-details-marker]:hidden">
                       {item.q}
@@ -564,7 +586,7 @@ export default function HomePage() {
         </AnimatedSection>
 
         {/* FINAL CTA */}
-        <section className="py-20 bg-white">
+        <section className={`bg-white ${SHOW_TESTIMONIALS ? "py-20" : "pt-4 pb-20"}`}>
           <div className="max-w-5xl mx-auto px-4 md:px-6">
             <div className="bg-blue-600 rounded-3xl px-8 md:px-16 py-14 md:py-16 text-center shadow-lg">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
