@@ -57,7 +57,7 @@ export default function TasksPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
+      <section className="py-20 bg-blue-50 border-t border-b border-blue-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
             <span className="text-gray-500">Task Flow Diagram</span>
