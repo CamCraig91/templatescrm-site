@@ -13,22 +13,62 @@ export const metadata = {
     "Templates is a suite of customizable business applications built inside Method:CRM. Manage customers, work, and finances in one system with two-way QuickBooks sync and no double entry.",
 };
 
-const apps = [
-  "Estimates",
-  "Invoices",
-  "Work Orders",
-  "Events",
-  "Booking Calendar",
-  "Appointments",
-  "Tasks",
-  "Schedules",
-  "Shipment Tracking",
-  "Forms",
-  "Items",
-  "Documents",
-  "Cases",
-  "Reviews",
-  "Gallery",
+// Change this one function if your app pages live somewhere other than /apps/<slug>
+const appPath = (slug: string) => `/apps/${slug}`;
+
+// Featured apps: the ones with the most interesting features. Each card links to its own page.
+const featuredApps = [
+  {
+    name: "Customer Portal",
+    blurb: "A branded login where customers follow their jobs, see photos, and review invoices.",
+    slug: "customer-portal",
+  },
+  {
+    name: "Online Shop",
+    blurb: "Sell products online, with orders flowing straight into your accounting.",
+    slug: "online-shop",
+  },
+  {
+    name: "Book Appointment",
+    blurb: "Let customers pick an open time themselves, any hour of the day.",
+    slug: "book-appointment",
+  },
+  {
+    name: "Work Orders",
+    blurb: "Send jobs to the field and collect photo proof when they're finished.",
+    slug: "work-orders",
+  },
+  {
+    name: "Scheduling",
+    blurb: "Plan crews and jobs on one calendar the whole team can see.",
+    slug: "scheduling",
+  },
+  {
+    name: "Inventory",
+    blurb: "Track stock and items, with prices that carry into estimates and invoices.",
+    slug: "inventory",
+  },
+  {
+    name: "Shipment Tracking",
+    blurb: "Live shipment status for your team and your customers.",
+    slug: "shipment-tracking",
+  },
+  {
+    name: "Forms",
+    blurb: "Custom forms for intake, inspections, and sign-offs, saved to the customer record.",
+    slug: "forms",
+  },
+];
+
+// Everything else: shown as quick links under the featured cards
+const moreApps = [
+  { name: "Sales Orders", slug: "sales-orders" },
+  { name: "Transactions", slug: "transactions" },
+  { name: "Events", slug: "events" },
+  { name: "Reminders", slug: "reminders" },
+  { name: "Tasks", slug: "tasks" },
+  { name: "Human Resources", slug: "human-resources" },
+  { name: "Payroll", slug: "payroll" },
 ];
 
 const steps = [
@@ -168,8 +208,8 @@ export default function HomePage() {
             - Card width: lg:max-w-2xl
             - Image gap from the card above: lg:mt-28 (the card above ends 64px into this section)
             - Space before the next section: pb-6 lg:pb-8 */}
-        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-1 lg:pb-2">
-          <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-10">
+        <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 pb-6 lg:pb-8">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12">
             <div className="w-full max-w-3xl lg:max-w-2xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
                 What is Templates?
@@ -206,9 +246,9 @@ export default function HomePage() {
             </div>
 
             {/* Swap /templates-overview.png for a screenshot of your landing screen or app */}
-            <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28 rounded-lg">
+            <div className="w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
               <ImageLightbox
-                src="/homescreen.png"
+                src="/templates-overview.png"
                 alt="Templates overview"
                 width={1400}
                 height={900}
@@ -248,7 +288,7 @@ export default function HomePage() {
         {/* KEEP CURVE ONLY HERE */}
         <Curve />
 
-        {/* PREBUILT APPLICATIONS (animated) */}
+        {/* PREBUILT APPLICATIONS (animated) — featured cards link to each app's page */}
         <AnimatedSection>
           <section className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -256,21 +296,60 @@ export default function HomePage() {
                 Prebuilt Applications for Every Part of Your Business
               </h2>
 
-              <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
-                Templates includes a full suite of ready‑to‑use applications that manage your daily
-                operations — from estimates and invoices to work orders, events, calendars, and
-                more.
+              <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
+                Start with the applications you need. Each one is ready to use and can be tailored
+                to the way your business works.
               </p>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {apps.map((app) => (
-                  <div
-                    key={app}
-                    className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-center shadow-sm"
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {featuredApps.map((app) => (
+                  <Link
+                    key={app.slug}
+                    href={appPath(app.slug)}
+                    className="group flex flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
                   >
-                    <p className="font-medium text-gray-800">{app}</p>
-                  </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{app.name}</h3>
+                    <p className="text-gray-600 text-sm mb-5">{app.blurb}</p>
+                    <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-blue-700 transition-all group-hover:gap-2">
+                      Learn more
+                      <svg
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        aria-hidden="true"
+                      >
+                        <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </Link>
                 ))}
+              </div>
+
+              <p className="text-gray-600 text-center mt-12 mb-4 text-sm">
+                Plus more applications, all ready to customize:
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-3 mb-10">
+                {moreApps.map((app) => (
+                  <Link
+                    key={app.slug}
+                    href={appPath(app.slug)}
+                    className="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-700 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+                  >
+                    {app.name}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="text-center">
+                <Link
+                  href="/apps"
+                  className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+                >
+                  View all applications
+                </Link>
               </div>
             </div>
           </section>
