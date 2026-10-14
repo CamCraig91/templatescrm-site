@@ -68,7 +68,7 @@ export default function AboutPage() {
             {/* FRONT END */}
             <div className="p-6 bg-blue-50 rounded-xl border border-gray-200 shadow-sm">
               <img
-                src="/onlineshop.png"
+                src="/onlineshop.jpg"
                 alt="Front end pillar graphic"
                 className="h-32 w-full object-contain rounded-lg mb-6"
               />
@@ -88,7 +88,7 @@ export default function AboutPage() {
             {/* BACK END */}
             <div className="p-6 bg-blue-50 rounded-xl border border-gray-200 shadow-sm">
               <img
-                src="/remote.png"
+                src="/remote.jpg"
                 alt="Back end pillar graphic"
                 className="h-32 w-full object-contain rounded-lg mb-6"
               />
