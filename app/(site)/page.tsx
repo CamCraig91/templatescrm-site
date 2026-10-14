@@ -532,13 +532,17 @@ export default function HomePage() {
                 into one seamless business system.
               </p>
 
-              {/* Swap this placeholder for your real video (iframe or <video>) when it's ready */}
-              <div
-                className={`aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-md border border-blue-100 flex items-center justify-center ${
-                  SHOW_TESTIMONIALS ? "bg-blue-50" : "bg-white"
-                }`}
-              >
-                <span className="text-gray-500">Video coming soon</span>
+              {/* YouTube embed (privacy-enhanced domain, loads only when scrolled near) */}
+              <div className="aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-md bg-slate-900">
+                <iframe
+                  className="h-full w-full"
+                  src="https://www.youtube-nocookie.com/embed/TpN1_FyHVeI"
+                  title="Method CRM: #1 Customizable QuickBooks CRM for Growing Businesses"
+                  loading="lazy"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
               </div>
             </div>
           </section>
