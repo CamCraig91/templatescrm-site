@@ -100,7 +100,7 @@ export default function CustomizationPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-20 bg-blue-200 border-y border-blue-200" >
+      <section className="py-20 bg-blue-100 border-y border-blue-100" >
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
             How Customization Works
@@ -246,7 +246,7 @@ export default function CustomizationPage() {
 
 
       {/* REVIEWS */}
-      <section className="py-20 bg-blue-200 border-y border-blue-200" >
+      <section className="py-20 bg-blue-100 border-y border-blue-100" >
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold  text-center mb-6">
             What Clients Say
