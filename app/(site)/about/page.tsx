@@ -140,7 +140,7 @@ export default function AboutPage() {
 
             <div className="text-center">
               <img
-                src="/images/how-learn.png"
+                src="/design1.png"
                 alt="Learn step graphic"
                 className="h-20 w-20 mx-auto mb-4"
               />
@@ -152,7 +152,7 @@ export default function AboutPage() {
 
             <div className="text-center">
               <img
-                src="/images/how-build.png"
+                src="/build.png"
                 alt="Build step graphic"
                 className="h-20 w-20 mx-auto mb-4"
               />
@@ -164,7 +164,7 @@ export default function AboutPage() {
 
             <div className="text-center">
               <img
-                src="/images/how-launch.png"
+                src="/launch.png"
                 alt="Launch step graphic"
                 className="h-20 w-20 mx-auto mb-4"
               />
@@ -176,7 +176,7 @@ export default function AboutPage() {
 
             <div className="text-center">
               <img
-                src="/images/how-grow.png"
+                src="/discovery1.png"
                 alt="Grow step graphic"
                 className="h-20 w-20 mx-auto mb-4"
               />
