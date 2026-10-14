@@ -17,8 +17,8 @@ export const metadata = {
 // rhythm switch back automatically)
 const SHOW_TESTIMONIALS = false;
 
-// Change this one function if your app pages live somewhere other than /apps/<slug>
-const appPath = (slug: string) => `/apps/${slug}`;
+// App pages live at /<slug> (e.g. /work-orders). Change this one function if that ever changes
+const appPath = (slug: string) => `/${slug}`;
 
 // Featured apps: the ones with the most interesting features. Each card links to its own page.
 const featuredApps = [
