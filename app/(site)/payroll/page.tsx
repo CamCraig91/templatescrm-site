@@ -69,7 +69,7 @@ export default function PayrollPage() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
          <ImageGallery items={galleryItems} />
 
-          <div>
+        </div>
             <h3 className="text-2xl font-bold mb-4">Accurate and Connected</h3>
             <p className="text-gray-600 mb-4">
               Payroll data flows directly from your scheduling and HR systems.
