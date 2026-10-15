@@ -2,6 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/Estimates1.png", alt: "Estimates screen 1" },
+  { src: "/Estimates2.png", alt: "Estimates screen 2" },
+  { src: "/Estimates3.png", alt: "Estimates screen 3" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function BookAppointmentPage() {
   return (
@@ -67,10 +76,7 @@ export default function BookAppointmentPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* IMAGE / DIAGRAM SLOT */}
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Booking Flow Diagram Placeholder</span>
-          </div>
+       <ImageGallery items={galleryItems} />
 
           {/* TEXT */}
           <div>
