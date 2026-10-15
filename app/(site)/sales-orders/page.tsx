@@ -2,6 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/SalesOrders1.png", alt: "SalesOrders screen 1" },
+  { src: "/SalesOrders2.png", alt: "SalesOrders screen 2" },
+  { src: "/SalesOrders3.png", alt: "SalesOrders screen 3" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function SalesOrdersPage() {
   return (
@@ -56,9 +65,7 @@ export default function SalesOrdersPage() {
 
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Sales Order Lifecycle Diagram</span>
-          </div>
+         <ImageGallery items={galleryItems} />
 
           <div>
             <h3 className="text-2xl font-bold mb-4">A Smooth Sales Workflow</h3>
