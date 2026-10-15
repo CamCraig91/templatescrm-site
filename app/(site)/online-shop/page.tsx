@@ -1,6 +1,15 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/OnlineShop1.png", alt: "OnlineShop screen 1" },
+  { src: "/OnlineShop2.png", alt: "OnlineShop screen 2" },
+  { src: "/OnlineShop3.png", alt: "OnlineShop screen 3" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function OnlineShopPage() {
   return (
@@ -65,16 +74,7 @@ export default function OnlineShopPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-       {/* IMAGE */}
-<div className="w-full">
-  <Image
-    src="/BookAppointmentPage.png"
-    alt="Book appointment page screenshot"
-    width={900}
-    height={600}
-    className="w-full h-auto rounded-xl shadow-md border border-gray-200"
-  />
-</div>
+    <ImageGallery items={galleryItems} />
 
           {/* TEXT */}
           <div>
