@@ -2,6 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/Forms1.png", alt: "Forms screen 1" },
+  { src: "/Forms2.png", alt: "Forms screen 2" },
+  { src: "/Forms3.png", alt: "Forms screen 3" },
+  { src: "/Forms4.png", alt: "Forms screen 4" },
+  { src: "/Forms5.png", alt: "Forms screen 5" },
+  { src: "/Forms6.png", alt: "Forms screen 6" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function FormsPage() {
   return (
@@ -66,10 +78,7 @@ export default function FormsPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* IMAGE / DIAGRAM SLOT */}
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Form Flow Diagram Placeholder</span>
-          </div>
+      <ImageGallery items={galleryItems} />
 
           {/* TEXT */}
           <div>
