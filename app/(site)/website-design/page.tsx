@@ -16,13 +16,13 @@ export default function WebsiteDesignPage() {
         className="w-full py-28 bg-slate-800"
       >
         <div className="max-w-6xl mx-auto px-6 text-center md:text-left text-white grid md:grid-cols-2 gap-12 items-center">
-          
+
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Website Design
             </h1>
             <p className="text-lg text-slate-300 max-w-xl">
-              Modern, responsive websites built with clean design, strong branding, 
+              Modern, responsive websites built with clean design, strong branding,
               and seamless integration into your Templates ecosystem.
             </p>
           </div>
@@ -49,18 +49,6 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-   {/* WHITE CURVE OVERLAPPING BLUE HERO */}
-<div className="w-full overflow-hidden -mt-20 relative z-10">
-  <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
-    <path
-      d="M0,120 C480,0 960,120 1440,0 L1440,120 L0,120 Z"
-      fill="#ffffff"
-    />
-  </svg>
-</div>
-
-
-
       {/* WHAT'S INCLUDED */}
       <motion.section
         initial={{ opacity: 0, x: -40 }}
@@ -73,7 +61,7 @@ export default function WebsiteDesignPage() {
           <div className="bg-white border border-gray-200 rounded-xl p-10 shadow-sm">
             <h2 className="text-2xl font-bold mb-4">What’s Included</h2>
             <p className="text-gray-600 mb-6">
-              Your website becomes the front door of your business — designed to convert, 
+              Your website becomes the front door of your business — designed to convert,
               inform, and integrate seamlessly with your internal systems.
             </p>
 
@@ -130,11 +118,11 @@ export default function WebsiteDesignPage() {
           <div>
             <h3 className="text-2xl font-bold mb-4">Designed for Clarity and Conversion</h3>
             <p className="text-gray-600 mb-4">
-              Every page is crafted with purpose — guiding visitors toward the actions 
+              Every page is crafted with purpose — guiding visitors toward the actions
               that matter most to your business.
             </p>
             <p className="text-gray-600">
-              With Templates powering your backend, your website becomes more than a 
+              With Templates powering your backend, your website becomes more than a
               brochure — it becomes a fully connected digital experience.
             </p>
           </div>
