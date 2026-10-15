@@ -5,9 +5,10 @@ import Link from "next/link";
 import ImageGallery from "../components/ImageGallery";
 
 const galleryItems = [
-  { src: "/Estimates1.png", alt: "Estimates screen 1" },
-  { src: "/Estimates2.png", alt: "Estimates screen 2" },
-  { src: "/Estimates3.png", alt: "Estimates screen 3" },
+  { src: "/BookAppointment1.png", alt: "BookAppointments screen 1" },
+  { src: "/BookAppointment2.png", alt: "BookAppointments screen 2" },
+  { src: "/BookAppointment3.png", alt: "BookAppointments screen 3" },
+  { src: "/BookAppointment3.png", alt: "BookAppointments screen 3" },
   // Later you can add more, including video:
   // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
 ];
