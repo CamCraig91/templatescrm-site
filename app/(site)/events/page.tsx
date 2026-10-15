@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
 
 const galleryItems = [
   { src: "/Events1.png", alt: "Events screen 1" },
