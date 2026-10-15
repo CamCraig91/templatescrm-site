@@ -528,11 +528,11 @@ export default function HomePage() {
               </h2>
 
               <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-sm md:text-base">
-                See how Templates connects your website, front end, back end, and integrations
-                into one seamless business system.
+                Method provides the platform - we build the applications. See how Method connects all aspects of your business into one seemless business system. 
               </p>
 
-              {/* YouTube embed (privacy-enhanced domain, loads only when scrolled near) */}
+              {/* YouTube embed (privacy-enhanced domain, loads only when scrolled near) See how Templates connects your website, front end, back end, and integrations
+                into one seamless business system.*/}
               <div className="aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-md bg-slate-900">
                 <iframe
                   className="h-full w-full"
