@@ -314,30 +314,32 @@ export default function NavBar() {
                 >
                   ‹ Back
                 </button>
-                <Link
-                  href="/customization"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 500,
-                    color: "#111827",
-                    textDecoration: "none",
-                  }}
-                >
-                  Customization
-                </Link>
-                {/* <Link
-                  href="/website-design"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 500,
-                    color: "#111827",
-                    textDecoration: "none",
-                  }}
-                >
-                  Website Design
-                </Link>*/} {/* hidden for now */}
+              <Link
+  href="/customization"
+  onClick={closeMobile}
+  className="block px-4 py-2 hover:bg-gray-100"
+  style={{
+    fontSize: 18,
+    fontWeight: 500,
+    color: "#111827",
+    textDecoration: "none",
+  }}
+>
+  Customization
+</Link>
+<Link
+  href="/website-design"
+  onClick={closeMobile}
+  className="block px-4 py-2 hover:bg-gray-100"
+  style={{
+    fontSize: 18,
+    fontWeight: 500,
+    color: "#111827",
+    textDecoration: "none",
+  }}
+>
+  Website Design
+</Link>
               </div>
             )}
 
