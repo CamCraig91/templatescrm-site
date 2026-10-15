@@ -137,7 +137,7 @@ export default function WebsiteDesignPage() {
   </svg>
 </div>
 
-      {/* VIDEO SECTION */}
+     {/* VIDEO SECTION 
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -152,7 +152,7 @@ export default function WebsiteDesignPage() {
             <span className="text-gray-500">Video Placeholder</span>
           </div>
         </div>
-      </motion.section>
+      </motion.section>*/}
 
     </main>
   );
