@@ -2,6 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/Payroll1.png", alt: "Payroll screen 1" },
+  { src: "/Payroll2.png", alt: "Payroll screen 2" },
+  { src: "/Payroll3.png", alt: "Payroll screen 3" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function PayrollPage() {
   return (
@@ -58,9 +67,7 @@ export default function PayrollPage() {
 
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Payroll Workflow Diagram</span>
-          </div>
+         <ImageGallery items={galleryItems} />
 
           <div>
             <h3 className="text-2xl font-bold mb-4">Accurate and Connected</h3>
