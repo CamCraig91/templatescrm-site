@@ -2,6 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/Reminders1.png", alt: "Reminders screen 1" },
+  { src: "/Reminders2.png", alt: "Reminders screen 2" },
+  { src: "/Reminders3.png", alt: "Reminders screen 3" },
+  { src: "/Reminders4.png", alt: "Reminders screen 4" },
+  { src: "/Reminders5.png", alt: "Reminders screen 5" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function RemindersPage() {
   return (
@@ -64,9 +75,7 @@ export default function RemindersPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Reminder Workflow Diagram</span>
-          </div>
+         <ImageGallery items={galleryItems} />
 
           <div>
             <h3 className="text-2xl font-bold mb-4">Never Miss a Follow‑Up</h3>
