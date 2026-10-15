@@ -92,7 +92,7 @@ export default function WebsiteDesignPage() {
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-20 bg-gray-50 border-b border-gray-200"
+        className="py-20 bg-gray-50"
       >
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
@@ -130,12 +130,12 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-      {/* WHITE CURVE AT BOTTOM */}
-      <div className="w-full overflow-hidden rotate-180 -mt-1">
-        <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
-          <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
-        </svg>
-      </div>
+     {/* WHITE CURVE AT BOTTOM */}
+<div className="w-full overflow-hidden rotate-180 -mt-1 bg-gray-50">
+  <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
+    <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
+  </svg>
+</div>
 
       {/* VIDEO SECTION */}
       <motion.section
