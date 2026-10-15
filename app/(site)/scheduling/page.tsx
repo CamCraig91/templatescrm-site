@@ -93,7 +93,7 @@ export default function SchedulingPage() {
         </div>
       </section>
 
-      {/* VIDEO SECTION (OPTIONAL) */}
+      {/* VIDEO SECTION (OPTIONAL) 
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h3 className="text-2xl font-bold mb-6">See It In Action</h3>
@@ -102,7 +102,7 @@ export default function SchedulingPage() {
             <span className="text-gray-500">Embedded Video Placeholder</span>
           </div>
         </div>
-      </section>
+      </section>*/}
 
     </main>
   );
