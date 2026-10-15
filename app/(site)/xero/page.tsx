@@ -55,24 +55,6 @@ export default function XeroPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Xero Sync Diagram</span>
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-bold mb-4">Unified Financial Data</h3>
-            <p className="text-gray-600 mb-4">
-              Your CRM and accounting system stay perfectly aligned.
-            </p>
-            <p className="text-gray-600">
-              No more mismatched invoices or missing payments.
-            </p>
-          </div>
-        </div>
-      </section>
-
     </main>
   );
 }
