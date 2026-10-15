@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import PricingSection from "@/components/PricingSection";
-import ReviewsSection from "@/components/ReviewsSection";
+import PricingSection from "./components/PricingSection";
+import ReviewsSection from "./components/ReviewsSection";
 
 export default function CustomizationPage() {
   return (
