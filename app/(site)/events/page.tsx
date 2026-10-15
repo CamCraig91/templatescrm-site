@@ -7,6 +7,7 @@ import ImageGallery from "../components/ImageGallery";
 const galleryItems = [
   { src: "/Events1.png", alt: "Events screen 1" },
   { src: "/Events2.png", alt: "Events screen 2" },
+   { src: "/Events3.png", alt: "Events screen 3" },
   // Later you can add more, including video:
   // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
 ];
