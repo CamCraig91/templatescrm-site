@@ -2,6 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/WorkOrders1.png", alt: "WorkOrders screen 1" },
+  { src: "/WorkOrders2.png", alt: "WorkOrders screen 2" },
+  { src: "/WorkOrders3.png", alt: "WorkOrders screen 3" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function SchedulingPage() {
   return (
@@ -65,17 +74,7 @@ export default function SchedulingPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* IMAGE / DIAGRAM SLOT */}
-           <div className="hidden md:flex justify-center">
-      <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-        <Image
-          src="/calendar2.png"
-          alt="calendar"
-          width={200}
-          height={120}
-          className="object-cover"
-        />
-      </div>
+       <ImageGallery items={galleryItems} />
     </div>
 
           {/* TEXT */}
