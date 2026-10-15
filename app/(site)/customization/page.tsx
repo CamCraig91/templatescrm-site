@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import PricingSection from "@/components/PricingSection";
+import ReviewsSection from "@/components/ReviewsSection";
 
 export default function CustomizationPage() {
   return (
@@ -246,40 +247,9 @@ export default function CustomizationPage() {
 </section>
 
 
-      {/* REVIEWS 
-      <section className="py-20 bg-blue-100 border-y border-blue-100" >
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold  text-center mb-6">
-            What Clients Say
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-10 mt-16">
-
-            <div className="p-6 bg-white rounded-xl shadow-sm border border-gray-200">
-              <p className="text-gray-700 italic mb-4">
-                “Cameron helped us automate our entire estimate workflow. We save hours every week.”
-              </p>
-              <p className="text-gray-600 text-sm">— Sarah, Home Services Business</p>
-            </div>
-
-            <div className="p-6 bg-white rounded-xl shadow-sm border border-gray-200">
-              <p className="text-gray-700 italic mb-4">
-                “Our custom screens make Method so much easier for our team. Total game‑changer.”
-              </p>
-              <p className="text-gray-600 text-sm">— Mark, Construction Company</p>
-            </div>
-
-            <div className="p-6 bg-white rounded-xl shadow-sm border border-gray-200">
-              <p className="text-gray-700 italic mb-4">
-                “The integrations Cameron built keep everything synced. No more double‑entry.”
-              </p>
-              <p className="text-gray-600 text-sm">— Jenna, Accounting Firm</p>
-            </div>
-
-          </div>
-        </div>
-      </section>*/}
-
+     {/* REVIEWS */}
+<ReviewsSection />
+      
    {/* PRICING */}
 <PricingSection />
 
