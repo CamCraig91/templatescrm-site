@@ -10,24 +10,52 @@ export type MediaItem = {
   poster?: string; // optional preview image for videos
 };
 
-function Media({ item, priority = false }: { item: MediaItem; priority?: boolean }) {
+function Media({
+  item,
+  fullscreen = false,
+  priority = false,
+}: {
+  item: MediaItem;
+  fullscreen?: boolean;
+  priority?: boolean;
+}) {
   if (item.type === "video") {
     return (
       <video
         src={item.src}
         poster={item.poster}
         controls
-        className="w-full h-full object-contain"
+        className={
+          fullscreen
+            ? "w-full h-full object-contain"
+            : "w-full aspect-video bg-black"
+        }
       />
     );
   }
+
+  // Full screen: fill the viewport box
+  if (fullscreen) {
+    return (
+      <Image
+        src={item.src}
+        alt={item.alt}
+        fill
+        sizes="92vw"
+        className="object-contain"
+      />
+    );
+  }
+
+  // Inline: image sets its own height, no surrounding box
   return (
     <Image
       src={item.src}
       alt={item.alt}
-      fill
+      width={0}
+      height={0}
       sizes="(min-width: 1024px) 50vw, 100vw"
-      className="object-contain"
+      style={{ width: "100%", height: "auto" }}
       priority={priority}
     />
   );
@@ -61,16 +89,17 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
   if (count === 0) return null;
   const current = items[index];
 
-  const arrowClass =
-    "absolute top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/50 hover:bg-black/70 text-white text-2xl flex items-center justify-center transition";
+  // Frosted-glass look shared by the floating controls
+  const glass =
+    "bg-white/80 hover:bg-white text-gray-800 backdrop-blur-md shadow-md transition";
 
   return (
     <div className="w-full">
-      {/* MAIN VIEWER */}
-      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 border border-gray-200 shadow-md">
+      {/* VIEWER — just the image with a thin outline */}
+      <div className="relative rounded-lg overflow-hidden ring-1 ring-gray-200">
         <Media item={current} priority />
 
-        {/* Click anywhere on an image to enlarge it */}
+        {/* Click the image itself to enlarge */}
         {current.type !== "video" && (
           <button
             onClick={() => setOpen(true)}
@@ -79,26 +108,53 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
           />
         )}
 
-        {/* Maximize button */}
-        <button
-          onClick={() => setOpen(true)}
-          aria-label="Full screen"
-          className="absolute top-3 right-3 h-9 w-9 rounded-md bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
-          </svg>
-        </button>
-
         {count > 1 && (
           <>
-            <button onClick={prev} aria-label="Previous" className={`${arrowClass} left-3`}>‹</button>
-            <button onClick={next} aria-label="Next" className={`${arrowClass} right-3`}>›</button>
-            <span className="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-black/50 text-white text-xs">
+            <button
+              onClick={prev}
+              aria-label="Previous"
+              className={`absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full text-xl flex items-center justify-center ${glass}`}
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next"
+              className={`absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full text-xl flex items-center justify-center ${glass}`}
+            >
+              ›
+            </button>
+
+            {/* Counter — bottom left */}
+            <span
+              className={`absolute bottom-3 left-3 px-3 py-1 rounded-full text-xs font-medium pointer-events-none ${glass}`}
+            >
               {index + 1} / {count}
             </span>
           </>
         )}
+
+        {/* Full screen — bottom right */}
+        <button
+          onClick={() => setOpen(true)}
+          aria-label="Full screen"
+          className={`absolute bottom-3 right-3 flex items-center gap-2 pl-3 pr-4 py-1.5 rounded-full text-xs font-medium ${glass}`}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.25"
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"
+            />
+          </svg>
+          Full screen
+        </button>
       </div>
 
       {/* THUMBNAIL STRIP */}
@@ -144,7 +200,7 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
             className="relative w-[92vw] h-[85vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <Media item={current} />
+            <Media item={current} fullscreen />
           </div>
 
           <button
@@ -171,7 +227,7 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
               >
                 ›
               </button>
-              <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/80 text-sm">
+              <span className="absolute bottom-4 left-4 text-white/80 text-sm">
                 {index + 1} / {count}
               </span>
             </>
