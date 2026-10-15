@@ -1,5 +1,14 @@
 "use client";
 import Image from "next/image";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/ShipmentTracking1.png", alt: "ShipmentTracking screen 1" },
+  { src: "/ShipmentTracking2.png", alt: "ShipmentTracking screen 2" },
+  { src: "/ShipmentTracking3.png", alt: "ShipmentTracking screen 3" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function ShipmentTrackingPage() {
   return (
@@ -58,9 +67,7 @@ export default function ShipmentTrackingPage() {
 
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Tracking Flow Diagram</span>
-          </div>
+         <ImageGallery items={galleryItems} />
 
           <div>
             <h3 className="text-2xl font-bold mb-4">Real‑Time Delivery Visibility</h3>
