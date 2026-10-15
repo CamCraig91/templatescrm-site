@@ -2,6 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ImageGallery from "../components/ImageGallery";
+
+const galleryItems = [
+  { src: "/HumanResources1.png", alt: "HumanResources screen 1" },
+  { src: "/HumanResources3.png", alt: "HumanResources screen 2" },
+  { src: "/HumanResources4.png", alt: "HumanResources screen 3" },
+  { src: "/HumanResources5.png", alt: "HumanResources screen 4" },
+  // Later you can add more, including video:
+  // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
+];
 
 export default function HumanResourcesPage() {
   return (
@@ -65,10 +75,7 @@ export default function HumanResourcesPage() {
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* IMAGE / DIAGRAM SLOT */}
-          <div className="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">HR Workflow Diagram</span>
-          </div>
+ <ImageGallery items={galleryItems} />
 
           {/* TEXT */}
           <div>
@@ -83,17 +90,6 @@ export default function HumanResourcesPage() {
             </p>
           </div>
 
-        </div>
-      </section>
-
-      {/* VIDEO SECTION (OPTIONAL) */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h3 className="text-2xl font-bold mb-6">See It In Action</h3>
-
-          <div className="w-full aspect-video bg-gray-200 rounded-xl flex items-center justify-center">
-            <span className="text-gray-500">Embedded Video Placeholder</span>
-          </div>
         </div>
       </section>
 
