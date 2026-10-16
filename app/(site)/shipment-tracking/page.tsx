@@ -26,19 +26,18 @@ export default function ShipmentTrackingPage() {
 
           <div className="hidden md:flex justify-center">
             <div className="w-80 h-56 bg-white rounded-xl shadow-xl border border-gray-100 flex items-center justify-center">
-              {/* IMAGE ON RIGHT */}
-                        <div className="flex-1 flex justify-center md:justify-end">
-                          <div className="w-full max-w-md">
-                            <Image
-                              src="/DHLLogo.png"
-                              alt="DHL Logo"
-                              width={900}
-                              height={900}
-                              className="object-contain drop-shadow-xl"
-                              priority
-                            />
-                          </div>
-                        </div>
+             <div className="hidden md:flex justify-center">
+  <div className="w-80 h-56 bg-white rounded-xl shadow-xl border border-gray-100 flex items-center justify-center p-6">
+    <Image
+      src="/DHLLogo.png"
+      alt="DHL Logo"
+      width={300}
+      height={200}
+      className="max-h-full w-auto object-contain"
+      priority
+    />
+  </div>
+</div>
             </div>
           </div>
         </div>
