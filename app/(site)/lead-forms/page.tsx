@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import ImageGallery from "../components/ImageGallery";
 
 // Paste the embed URL for your Method:CRM lead form here.
@@ -20,6 +21,47 @@ const galleryItems = [
 ];
 
 export default function LeadFormsPage() {
+  // The "Try it" text follows the visitor down the tall form, then stops at the
+  // bottom of the section. This is done with a scroll handler instead of CSS
+  // sticky because sticky silently breaks if any parent (layout, body) has an
+  // overflow setting such as overflow-x-hidden.
+  const tryGridRef = useRef<HTMLDivElement>(null);
+  const tryFollowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const grid = tryGridRef.current;
+    const follow = tryFollowRef.current;
+    if (!grid || !follow) return;
+
+    const TOP_OFFSET = 96; // px gap from the top of the viewport (raise if you have a tall fixed nav)
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      if (window.innerWidth < 768) {
+        follow.style.transform = "";
+        return;
+      }
+      const gridRect = grid.getBoundingClientRect();
+      const maxShift = Math.max(0, gridRect.height - follow.offsetHeight);
+      const shift = Math.min(Math.max(TOP_OFFSET - gridRect.top, 0), maxShift);
+      follow.style.transform = `translate3d(0, ${shift}px, 0)`;
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
@@ -176,10 +218,13 @@ export default function LeadFormsPage() {
           className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-blue-300/20 blur-3xl"
         />
 
-        <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-start">
+        <div
+          ref={tryGridRef}
+          className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-start"
+        >
 
           {/* TEXT + ARROW */}
-          <div className="text-white md:sticky md:top-24">
+          <div ref={tryFollowRef} className="text-white md:will-change-transform">
             <span className="try-sticker inline-block bg-yellow-300 text-slate-900 text-sm font-bold uppercase tracking-wide px-3 py-1 rounded-md shadow-md mb-5">
               Try me!
             </span>
