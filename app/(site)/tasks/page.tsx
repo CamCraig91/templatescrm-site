@@ -60,7 +60,6 @@ export default function TasksPage() {
               <li>• Internal notes and attachments</li>
               <li>• Daily and weekly task views</li>
               <li>• Automated task creation from workflows</li>
-              <li>• Sync with Scheduling and HR</li>
             </ul>
           </div>
         </div>
