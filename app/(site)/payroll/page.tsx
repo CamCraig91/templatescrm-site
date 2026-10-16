@@ -77,8 +77,8 @@ export default function PayrollPage() {
             <p className="text-gray-600">
               No more manual calculations — everything stays synced and audit‑ready.
             </p>
-          </div>
-        </div>
+       
+       
       </section>
 
     </main>
