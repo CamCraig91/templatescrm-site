@@ -7,6 +7,7 @@ export type MediaItem = {
   type?: "image" | "video"; // defaults to "image"
   src: string;
   alt: string;
+  caption?: string; // optional text shown under the image; nothing appears if left out
   poster?: string; // optional preview image for videos
 };
 
@@ -88,6 +89,7 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
 
   if (count === 0) return null;
   const current = items[index];
+  const caption = current.caption?.trim(); // empty or missing means no caption
 
   // Frosted-glass look shared by the floating controls
   const glass =
@@ -156,6 +158,11 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
         </button>
       </div>
 
+      {/* CAPTION — only rendered when this item has one */}
+      {caption && (
+        <p className="mt-3 text-sm text-gray-600 text-center">{caption}</p>
+      )}
+
       {/* THUMBNAIL STRIP */}
       {count > 1 && (
         <div className="flex gap-3 mt-4 overflow-x-auto pb-1">
@@ -196,10 +203,21 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
           aria-modal="true"
         >
           <div
-            className="relative w-[92vw] h-[85vh]"
+            className="flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <Media item={current} fullscreen />
+            {/* Leave room for the caption when there is one */}
+            <div
+              className={`relative w-[92vw] ${caption ? "h-[76vh]" : "h-[85vh]"}`}
+            >
+              <Media item={current} fullscreen />
+            </div>
+
+            {caption && (
+              <p className="mt-4 max-w-3xl px-4 text-center text-white/90 text-sm md:text-base">
+                {caption}
+              </p>
+            )}
           </div>
 
           <button
