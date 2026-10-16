@@ -41,8 +41,8 @@ export default function LeadFormsPage() {
               <Image
                 src="/webtoleadhero.png"
                 alt="Lead form"
-                width={300}
-                height={160}
+                width={450}
+                height={220}
                 className="object-cover"
               />
             </div>
