@@ -60,13 +60,12 @@ export default function SchedulingPage() {
 
             <ul className="text-gray-700 space-y-3">
               <li>• Staff calendars with availability and shift management</li>
-              <li>• Real‑time sync with customer bookings</li>
-              <li>• Drag‑and‑drop appointment management</li>
-              <li>• Color‑coded schedules for teams and service types</li>
+              <li>• Track sign in/out location to ensure employees are on site</li>
+              <li>• Color‑coded calendars for users</li>
               <li>• Automated reminders and notifications</li>
               <li>• Daily, weekly, and monthly calendar views</li>
-              <li>• Assign appointments to staff or teams</li>
-              <li>• Optional travel time and buffer rules</li>
+              <li>• Assign work orders, tasks, roles to staff or teams</li>
+              <li>• Convert time tracking records to payroll</li>
             </ul>
           </div>
         </div>
