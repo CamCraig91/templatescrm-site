@@ -3,9 +3,9 @@ import Image from "next/image";
 import ImageGallery from "../components/ImageGallery";
 
 const galleryItems = [
-  { src: "/ShipmentTracking1.png", alt: "ShipmentTracking screen 1" },
-  { src: "/ShipmentTracking2.png", alt: "ShipmentTracking screen 2" },
-  { src: "/ShipmentTracking3.png", alt: "ShipmentTracking screen 3" },
+  { src: "/shipmenttracking1.png", alt: "ShipmentTracking screen 1" },
+  { src: "/shipmenttracking2.png", alt: "ShipmentTracking screen 2" },
+  { src: "/shipmenttracking3.png", alt: "ShipmentTracking screen 3" },
   // Later you can add more, including video:
   // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
 ];
