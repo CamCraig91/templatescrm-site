@@ -8,6 +8,8 @@ const galleryItems = [
   { src: "/Scheduling1.png", alt: "Scheduling screen 1" },
   { src: "/Scheduling2.png", alt: "Scheduling screen 2" },
   { src: "/Scheduling3.png", alt: "Scheduling screen 3" },
+  { src: "/Scheduling4.png", alt: "Scheduling screen 4" },
+  { src: "/Scheduling5.png", alt: "Scheduling screen 5" },
   // Later you can add more, including video:
   // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
 ];
