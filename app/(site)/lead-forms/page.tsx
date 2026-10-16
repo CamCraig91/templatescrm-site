@@ -39,7 +39,7 @@ export default function LeadFormsPage() {
           <div className="hidden md:flex justify-center">
             <div className="rounded-xl shadow-xl overflow-hidden">
               <Image
-                src="/lead-form.png"
+                src="/leadformhero.png"
                 alt="Lead form"
                 width={300}
                 height={160}
