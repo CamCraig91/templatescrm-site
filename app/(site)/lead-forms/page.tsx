@@ -6,7 +6,7 @@ import ImageGallery from "../components/ImageGallery";
 
 // Paste the embed URL for your Method:CRM lead form here.
 const LEAD_FORM_URL = "https://MIurl.cc/GDo6AOlmI";
-const LEAD_FORM_HEIGHT = 1200; // px, adjust to fit your form
+const LEAD_FORM_HEIGHT = 1100; // px, adjust to fit your form
 
 const galleryItems = [
   { src: "/LeadForms1.png", alt: "Lead Forms screen 1" },
@@ -164,7 +164,7 @@ export default function LeadFormsPage() {
       {/* TRY IT */}
       <section
         id="try-it"
-        className="relative scroll-mt-4 py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 overflow-hidden"
+        className="relative scroll-mt-4 py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 overflow-clip"
       >
         {/* decorative glows */}
         <div
@@ -179,7 +179,7 @@ export default function LeadFormsPage() {
         <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-start">
 
           {/* TEXT + ARROW */}
-          <div className="text-white">
+          <div className="text-white md:sticky md:top-24">
             <span className="try-sticker inline-block bg-yellow-300 text-slate-900 text-sm font-bold uppercase tracking-wide px-3 py-1 rounded-md shadow-md mb-5">
               Try me!
             </span>
