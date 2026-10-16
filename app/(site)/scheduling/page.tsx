@@ -76,7 +76,7 @@ export default function SchedulingPage() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
        <ImageGallery items={galleryItems} />
-    </div>
+ 
 
           {/* TEXT */}
           <div>
@@ -90,6 +90,7 @@ export default function SchedulingPage() {
               your team always knows where they need to be.
             </p>
           </div>
+             </div>
       </section>
 
       {/* VIDEO SECTION (OPTIONAL) 
