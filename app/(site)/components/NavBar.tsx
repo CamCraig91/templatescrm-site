@@ -394,6 +394,7 @@ export default function NavBar() {
                     }}
                   >
                     {[
+                      { label: "Lead Forms", link: "/leadforms" },
                       { label: "Customer Portal", link: "/customer-portal" },
                       { label: "Online Shop", link: "/online-shop" },
                       { label: "Book Appointment", link: "/book-appointment" },
@@ -661,6 +662,7 @@ export default function NavBar() {
                       </Link>
                       <ul className="space-y-1 text-gray-700">
                         {[
+                          { label: "Lead Forms", link: "/leadforms" },
                           { label: "Customer Portal", link: "/customer-portal" },
                           { label: "Online Shop", link: "/online-shop" },
                           { label: "Book Appointment", link: "/book-appointment" },
