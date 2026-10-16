@@ -130,12 +130,12 @@ export default function WebsiteDesignPage() {
         </div>
       </motion.section>
 
-     {/* WHITE CURVE AT BOTTOM */}
+     {/* WHITE CURVE AT BOTTOM 
 <div className="w-full overflow-hidden rotate-180 -mt-1 bg-gray-50">
   <svg viewBox="0 0 1440 120" className="w-full h-20" preserveAspectRatio="none">
     <path d="M0,0 C480,120 960,0 1440,120 L1440,0 L0,0 Z" fill="#ffffff" />
   </svg>
-</div>
+</div>*/}
 
      {/* VIDEO SECTION 
       <motion.section
