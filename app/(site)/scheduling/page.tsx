@@ -52,7 +52,7 @@ export default function SchedulingPage() {
       {/* FEATURE CARD */}
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="border border-gray-200 rounded-xl p-10 shadow-sm bg-white">
+          <div className="border border-gray-200 rounded-xl p-10  shadow-sm bg-white">
             <h2 className="text-2xl font-bold mb-4">What This Module Includes</h2>
             <p className="text-gray-600 mb-6">
               Keep your team organized with a centralized scheduling system that adapts to your workflow.
@@ -73,7 +73,7 @@ export default function SchedulingPage() {
       </section>
 
       {/* VISUAL SECTION */}
-      <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
+      <section className="py-20 bg-gray-50 border-t border-b border-gray-200 px-6 grid md:grid-cols-2 gap-12 items-center">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
        <ImageGallery items={galleryItems} />
@@ -81,7 +81,7 @@ export default function SchedulingPage() {
 
           {/* TEXT */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">A Calendar Built for Your Team</h3>
+            <h3 className="text-2xl font-bold mb-4 md:text-right">A Calendar Built for Your Team</h3>
             <p className="text-gray-600 mb-4">
               Whether you're managing field technicians, office staff, or service providers, 
               your schedule stays accurate and up‑to‑date across the entire system.
