@@ -4,6 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import ImageGallery from "../components/ImageGallery";
 
+// Paste the embed URL for your Method:CRM lead form here.
+const LEAD_FORM_URL = "https://REPLACE-WITH-YOUR-LEAD-FORM-URL";
+const LEAD_FORM_HEIGHT = 620; // px, adjust to fit your form
+
 const galleryItems = [
   { src: "/LeadForms1.png", alt: "Lead Forms screen 1" },
   { src: "/LeadForms2.png", alt: "Lead Forms screen 2" },
@@ -19,6 +23,40 @@ export default function LeadFormsPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
 
+      {/* Animations for the "Try it" section */}
+      <style>{`
+        @keyframes try-draw {
+          0%   { stroke-dashoffset: 1; }
+          55%  { stroke-dashoffset: 0; }
+          100% { stroke-dashoffset: 0; }
+        }
+        @keyframes try-head {
+          0%, 50% { opacity: 0; }
+          62%, 100% { opacity: 1; }
+        }
+        @keyframes try-wiggle {
+          0%, 100% { transform: rotate(-6deg); }
+          50%      { transform: rotate(-2deg) scale(1.05); }
+        }
+        .try-arrow-line {
+          stroke-dasharray: 1;
+          stroke-dashoffset: 1;
+          animation: try-draw 3.2s ease-in-out infinite;
+        }
+        .try-arrow-head {
+          opacity: 0;
+          animation: try-head 3.2s ease-in-out infinite;
+        }
+        .try-sticker {
+          animation: try-wiggle 2.4s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .try-arrow-line { animation: none; stroke-dashoffset: 0; }
+          .try-arrow-head { animation: none; opacity: 1; }
+          .try-sticker { animation: none; transform: rotate(-4deg); }
+        }
+      `}</style>
+
       {/* HERO */}
       <section className="relative w-full py-28 bg-slate-800 border-b border-slate-700 overflow-hidden">
         <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -28,24 +66,29 @@ export default function LeadFormsPage() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Lead Forms
             </h1>
-            <p className="text-lg text-slate-300 max-w-xl">
+            <p className="text-lg text-slate-300 max-w-xl mb-8">
               Capture new leads straight from your website, campaigns, and referrals.
               Every submission becomes a contact, an opportunity, and a follow-up
               in Method:CRM, with no manual entry.
             </p>
+            <a
+              href="#try-it"
+              className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-semibold px-6 py-3 rounded-lg transition"
+            >
+              Try one live
+              <span aria-hidden="true">↓</span>
+            </a>
           </div>
 
           {/* VISUAL */}
           <div className="hidden md:flex justify-center">
-            <div className="rounded-xl shadow-xl overflow-hidden">
-              <Image
-                src="/webtoleadhero.png"
-                alt="Lead form"
-                width={450}
-                height={220}
-                className="object-cover"
-              />
-            </div>
+            <Image
+              src="/lead-form.png"
+              alt="Lead form creating a contact, opportunity and alert"
+              width={480}
+              height={256}
+              className="object-contain"
+            />
           </div>
 
         </div>
@@ -115,6 +158,123 @@ export default function LeadFormsPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* TRY IT */}
+      <section
+        id="try-it"
+        className="relative scroll-mt-4 py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 overflow-hidden"
+      >
+        {/* decorative glows */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-2xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-blue-300/20 blur-3xl"
+        />
+
+        <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
+
+          {/* TEXT + ARROW */}
+          <div className="text-white">
+            <span className="try-sticker inline-block bg-yellow-300 text-slate-900 text-sm font-bold uppercase tracking-wide px-3 py-1 rounded-md shadow-md mb-5">
+              Try me!
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
+              Why not try one to see how it works!
+            </h2>
+            <p className="text-blue-100 text-lg max-w-md">
+              Fill in the form and hit submit. It's the same kind of Lead Form your
+              website visitors would use, and everything in the steps above happens
+              behind the scenes.
+            </p>
+
+            {/* Desktop: hand-drawn arrow curving toward the form */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 200 120"
+              fill="none"
+              className="hidden md:block w-48 h-28 mt-6 ml-auto mr-4 text-white"
+            >
+              <path
+                className="try-arrow-line"
+                pathLength={1}
+                d="M10 20 C 80 10, 140 40, 170 95"
+                stroke="currentColor"
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+              <path
+                className="try-arrow-head"
+                d="M147.7 81.4 L170 95 L170.6 69"
+                stroke="currentColor"
+                strokeWidth="5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+
+            {/* Mobile: bouncing arrow pointing down at the form */}
+            <div className="md:hidden flex justify-center mt-8" aria-hidden="true">
+              <svg
+                viewBox="0 0 40 60"
+                fill="none"
+                className="h-14 w-10 text-white animate-bounce"
+              >
+                <path
+                  d="M20 4 V48 M6 34 L20 50 L34 34"
+                  stroke="currentColor"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* FORM */}
+          <div className="relative">
+            {/* pulsing glow to make the form pop */}
+            <div
+              aria-hidden="true"
+              className="absolute -inset-4 rounded-3xl bg-white/30 blur-2xl animate-pulse"
+            />
+
+            {/* live badge */}
+            <div className="absolute -top-4 left-6 z-10 flex items-center gap-2 bg-white text-slate-900 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-lg">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+              </span>
+              Live demo
+            </div>
+
+            <div className="relative bg-white rounded-2xl shadow-2xl ring-4 ring-white/40 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+              <iframe
+                src={LEAD_FORM_URL}
+                title="Try a Lead Form"
+                loading="lazy"
+                className="block w-full border-0"
+                style={{ height: LEAD_FORM_HEIGHT }}
+              />
+            </div>
+
+            <p className="relative mt-5 text-center text-sm text-blue-100">
+              Form not loading?{" "}
+              <a
+                href={LEAD_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-white"
+              >
+                Open it in a new tab
+              </a>
+            </p>
+          </div>
+
         </div>
       </section>
 
