@@ -176,7 +176,7 @@ export default function LeadFormsPage() {
           className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-blue-300/20 blur-3xl"
         />
 
-        <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
+        <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-start">
 
           {/* TEXT + ARROW */}
           <div className="text-white">
