@@ -127,8 +127,8 @@ export default function LeadFormsPage() {
             <Image
               src="/webtoleadhero.png"
               alt="Lead form creating a contact, opportunity and alert"
-              width={480}
-              height={256}
+              width={800}
+              height={340}
               className="object-contain"
             />
           </div>
