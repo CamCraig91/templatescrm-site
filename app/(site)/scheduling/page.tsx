@@ -5,9 +5,9 @@ import Link from "next/link";
 import ImageGallery from "../components/ImageGallery";
 
 const galleryItems = [
-  { src: "/WorkOrders1.png", alt: "WorkOrders screen 1" },
-  { src: "/WorkOrders2.png", alt: "WorkOrders screen 2" },
-  { src: "/WorkOrders3.png", alt: "WorkOrders screen 3" },
+  { src: "/Scheduling1.png", alt: "Scheduling screen 1" },
+  { src: "/Scheduling2.png", alt: "Scheduling screen 2" },
+  { src: "/Scheduling3.png", alt: "Scheduling screen 3" },
   // Later you can add more, including video:
   // { type: "video" as const, src: "/demo.mp4", alt: "Transactions demo", poster: "/demo-poster.png" },
 ];
@@ -89,8 +89,6 @@ export default function SchedulingPage() {
               your team always knows where they need to be.
             </p>
           </div>
-
-        </div>
       </section>
 
       {/* VIDEO SECTION (OPTIONAL) 
