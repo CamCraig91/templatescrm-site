@@ -83,7 +83,7 @@ export default function LeadFormsPage() {
           {/* VISUAL */}
           <div className="hidden md:flex justify-center">
             <Image
-              src="/lead-form.png"
+              src="/webtoleadhero.png"
               alt="Lead form creating a contact, opportunity and alert"
               width={480}
               height={256}
