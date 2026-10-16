@@ -5,7 +5,7 @@ import Link from "next/link";
 import ImageGallery from "../components/ImageGallery";
 
 // Paste the embed URL for your Method:CRM lead form here.
-const LEAD_FORM_URL = "https://REPLACE-WITH-YOUR-LEAD-FORM-URL";
+const LEAD_FORM_URL = "https://MIurl.cc/GDo6AOlmI";
 const LEAD_FORM_HEIGHT = 620; // px, adjust to fit your form
 
 const galleryItems = [
