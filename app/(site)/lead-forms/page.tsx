@@ -7,15 +7,14 @@ import ImageGallery from "../components/ImageGallery";
 
 // Paste the embed URL for your Method:CRM lead form here.
 const LEAD_FORM_URL = "https://MIurl.cc/GDo6AOlmI";
-const LEAD_FORM_HEIGHT = 1100; // px, adjust to fit your form
+const LEAD_FORM_HEIGHT = 1400; // px, adjust to fit your form
 
 const galleryItems = [
   { src: "/LeadForms1.png", alt: "Lead Forms screen 1" },
   { src: "/LeadForms2.png", alt: "Lead Forms screen 2" },
   { src: "/LeadForms3.png", alt: "Lead Forms screen 3" },
   { src: "/LeadForms4.png", alt: "Lead Forms screen 4" },
-  { src: "/LeadForms5.png", alt: "Lead Forms screen 5" },
-  { src: "/LeadForms6.png", alt: "Lead Forms screen 6" },
+  { src: "/LeadForms5.png", alt: "Lead Forms screen 5" }
   // Later you can add more, including video:
   // { type: "video" as const, src: "/lead-forms-demo.mp4", alt: "Lead Forms demo", poster: "/lead-forms-poster.png" },
 ];
