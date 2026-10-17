@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import ImageGallery from "../components/ImageGallery";
 
 // Paste the embed URL for your Method:CRM lead form here.
-const LEAD_FORM_URL = "https://MIurl.cc/GDo6AOlmI";
+const LEAD_FORM_URL = "https://camcraigconsulting.method.ws/apps/Public.aspx#/c697111f-e736-4001-ac82-e46c2b5653c6/V1RVYXNJRTNrdDFoNWptV2JLQjVrUS0t";
 const LEAD_FORM_HEIGHT = "100svh"; // px, adjust to fit your form
 
 const galleryItems = [
