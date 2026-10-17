@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import ImageGallery from "../components/ImageGallery";
 
 // Paste the embed URL for your Method:CRM lead form here.
@@ -19,6 +19,9 @@ const galleryItems = [
   // { type: "video" as const, src: "/lead-forms-demo.mp4", alt: "Lead Forms demo", poster: "/lead-forms-poster.png" },
 ];
 
+
+
+
 export default function LeadFormsPage() {
   // The "Try it" text follows the visitor down the tall form, then stops at the
   // bottom of the section. This is done with a scroll handler instead of CSS
@@ -26,7 +29,15 @@ export default function LeadFormsPage() {
   // overflow setting such as overflow-x-hidden.
   const tryGridRef = useRef<HTMLDivElement>(null);
   const tryFollowRef = useRef<HTMLDivElement>(null);
-
+  
+// inside LeadFormsPage():
+const [formLoaded, setFormLoaded] = useState(false);
+useEffect(() => {
+  // safety net: never leave the skeleton up forever
+  const t = setTimeout(() => setFormLoaded(true), 8000);
+  return () => clearTimeout(t);
+}, []);
+  
   useEffect(() => {
     const grid = tryGridRef.current;
     const follow = tryFollowRef.current;
@@ -279,47 +290,67 @@ export default function LeadFormsPage() {
             </div>
           </div>
 
-          {/* FORM */}
-          <div className="relative">
-            {/* pulsing glow to make the form pop */}
-            <div
-              aria-hidden="true"
-              className="absolute -inset-4 rounded-3xl bg-white/30 blur-2xl animate-pulse"
-            />
+         {/* FORM */}
+<div className="relative -mx-6 md:mx-0">
+  {/* pulsing glow, desktop only */}
+  <div
+    aria-hidden="true"
+    className="hidden md:block absolute -inset-4 rounded-3xl bg-white/30 blur-2xl animate-pulse"
+  />
 
-            {/* live badge */}
-            <div className="absolute -top-4 left-6 z-10 flex items-center gap-2 bg-white text-slate-900 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-lg">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
-              </span>
-              Live demo
-            </div>
+  {/* live badge */}
+  <div className="absolute -top-4 left-6 z-10 flex items-center gap-2 bg-white text-slate-900 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-lg">
+    <span className="relative flex h-2.5 w-2.5">
+      <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
+      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+    </span>
+    Live demo
+  </div>
 
-            <div className="relative bg-white rounded-2xl shadow-2xl ring-4 ring-white/40 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
-              <iframe
-                src={LEAD_FORM_URL}
-                title="Try a Lead Form"
-                loading="lazy"
-                className="block w-full border-0"
-                style={{ height: LEAD_FORM_HEIGHT }}
-              />
-            </div>
-
-            <p className="relative mt-5 text-center text-sm text-blue-100">
-              Form not loading?{" "}
-              <a
-                href={LEAD_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-white"
-              >
-                Open it in a new tab
-              </a>
-            </p>
-          </div>
-
+  <div
+    className="relative bg-white overflow-hidden md:rounded-2xl md:shadow-2xl md:ring-4 md:ring-white/40 md:transition-transform md:duration-300 md:hover:-translate-y-1"
+    style={{ height: LEAD_FORM_HEIGHT }}
+  >
+    {/* skeleton shows until the form is ready */}
+    <div
+      aria-hidden="true"
+      className={`absolute inset-0 p-8 pt-12 space-y-5 transition-opacity duration-300 ${
+        formLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
+    >
+      <div className="h-6 w-1/2 rounded bg-gray-200 animate-pulse" />
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="space-y-2">
+          <div className="h-3 w-24 rounded bg-gray-200 animate-pulse" />
+          <div className="h-11 w-full rounded-lg bg-gray-100 animate-pulse" />
         </div>
+      ))}
+      <div className="h-12 w-40 rounded-lg bg-blue-100 animate-pulse" />
+      <p className="text-center text-sm text-gray-400">Loading form…</p>
+    </div>
+
+    <iframe
+      src={LEAD_FORM_URL}
+      title="Try a Lead Form"
+      onLoad={() => setFormLoaded(true)}
+      className={`relative block w-full h-full border-0 transition-opacity duration-300 ${
+        formLoaded ? "opacity-100" : "opacity-0"
+      }`}
+    />
+  </div>
+
+  <p className="relative mt-5 text-center text-sm text-blue-100">
+    Form not loading?{" "}
+    <a
+      href={LEAD_FORM_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-white"
+    >
+      Open it in a new tab
+    </a>
+  </p>
+</div>
       </section>
 
       {/* VISUAL SECTION */}
