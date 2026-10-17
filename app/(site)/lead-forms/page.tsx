@@ -350,7 +350,7 @@ useEffect(() => {
       Open it in a new tab
     </a>
   </p>
-</div>
+</div></div>
       </section>
 
       {/* VISUAL SECTION */}
