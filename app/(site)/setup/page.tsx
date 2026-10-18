@@ -10,7 +10,7 @@ export default function SetupPage() {
     <main className="bg-white text-gray-900 min-h-screen">
 
       {/* HERO */}
-      <section className="w-full pt-24 pb-10 bg-slate-800 border-b border-slate-700">
+      <section className="w-full pt-24 pb-24 bg-slate-800 border-b border-slate-700">
         <div className="max-w-5xl mx-auto px-6 text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Getting Set Up
@@ -27,30 +27,38 @@ export default function SetupPage() {
             </a>
           </div>
 
-          {/* Arrow leading down to the content */}
-          <div className="mt-10 flex justify-center">
-            <a
-              href="#start"
-              aria-label="Scroll down to get started"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-500 text-white hover:bg-slate-700 transition animate-bounce"
-            >
-              <svg
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                aria-hidden="true"
-              >
-                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-          </div>
         </div>
       </section>
 
       {/* MAIN CONTENT */}
-      <section id="start" className="py-20 scroll-mt-4">
+      <section id="start" className="relative py-20 scroll-mt-4">
+
+        {/* DECORATIVE ARROW 1 — flows out of the hero, across its edge, down to the Browse box.
+            Not clickable, hidden on phones. Tweak the path "d" to change the curve. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none hidden md:block absolute left-0 right-0 -top-24 h-40 z-10"
+        >
+          <div className="max-w-5xl mx-auto px-6 h-full">
+            <svg viewBox="0 0 400 160" className="h-full w-full" fill="none">
+              <path
+                d="M 40 40 C 40 110, 200 60, 200 138"
+                stroke="#60a5fa"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeDasharray="8 9"
+              />
+              <path
+                d="M 187 124 L 200 146 L 213 124"
+                stroke="#60a5fa"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+
         <div className="max-w-5xl mx-auto px-6 space-y-20">
 
           {/* BROWSE APPS FIRST */}
@@ -69,7 +77,30 @@ export default function SetupPage() {
           </div>
 
           {/* BOOKING SECTION */}
-          <div>
+          <div className="relative">
+            {/* DECORATIVE ARROW 2 — swings back from the Browse box down to step 1 */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none hidden md:block absolute left-0 right-0 -top-[84px] h-[100px] z-10"
+            >
+              <svg viewBox="0 0 400 100" className="h-full w-full" fill="none">
+                <path
+                  d="M 330 4 C 330 60, 70 30, 70 84"
+                  stroke="#60a5fa"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeDasharray="8 9"
+                />
+                <path
+                  d="M 57 70 L 70 92 L 83 70"
+                  stroke="#60a5fa"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
             <h2 className="text-3xl font-bold mb-6">1. See What&apos;s Right For You!</h2>
             <p className="text-gray-700 mb-6">
               A demo is a quickest way to see if our software is the right fit for you. Have questions answered in real time by a real agent.
