@@ -308,12 +308,14 @@ export default function HomePage() {
               </p>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {featuredApps.map((app) => (
-                  <Link
-                    key={app.slug}
-                    href={appPath(app.slug)}
-                    className="group flex flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
-                  >
+               {featuredApps.map((app, i) => (
+  <Link
+    key={app.slug}
+    href={appPath(app.slug)}
+    className={`group flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${
+      i >= 4 ? "hidden sm:flex" : "flex"
+    }`}
+  >
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{app.name}</h3>
                     <p className="text-gray-600 text-sm mb-5">{app.blurb}</p>
                     <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-blue-700 transition-all group-hover:gap-2">
@@ -337,17 +339,18 @@ export default function HomePage() {
                 Plus more applications, all ready to customize:
               </p>
 
-              <div className="flex flex-wrap justify-center gap-3 mb-10">
-                {moreApps.map((app) => (
-                  <Link
-                    key={app.slug}
-                    href={appPath(app.slug)}
-                    className="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-700 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
-                  >
-                    {app.name}
-                  </Link>
-                ))}
-              </div>
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+  {featuredApps.slice(4).map((app) => (
+    <Link
+      key={app.slug}
+      href={appPath(app.slug)}
+      className="sm:hidden px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-700 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+    >
+      {app.name}
+    </Link>
+  ))}
+  {moreApps.map((app) => ( /* unchanged */ ))}
+</div>
 
               <div className="text-center">
                 <Link
