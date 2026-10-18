@@ -39,7 +39,7 @@ export default function IndustriesGrid({
             aria-expanded={expanded}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-blue-700 border border-blue-100 font-medium hover:bg-blue-50 transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
           >
-            {expanded ? "Show less" : `Show ${hiddenCount} more industries`}
+            {expanded ? "Show less" : "Show more"}
             <svg
               className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`}
               viewBox="0 0 20 20"
