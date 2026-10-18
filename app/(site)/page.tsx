@@ -6,6 +6,7 @@ import Link from "next/link";
 import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
+import IndustriesGrid from "./components/IndustriesGrid";
 
 export const metadata = {
   title: "Templates — Business Management Software",
@@ -22,7 +23,7 @@ const appPath = (slug: string) => `/${slug}`;
 
 // How many cards show on phones before the rest are tucked away.
 // Featured apps beyond this number move into the quick-link pills on mobile.
-// Industries beyond this number are hidden on mobile.
+// Industries beyond this number are tucked behind a "Show more" button on mobile.
 const MOBILE_FEATURED_COUNT = 4;
 const MOBILE_INDUSTRY_COUNT = 3;
 
@@ -495,19 +496,7 @@ export default function HomePage() {
                 well.
               </p>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {industries.map((item, i) => (
-                  <div
-                    key={item.name}
-                    className={`bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left ${
-                      i >= MOBILE_INDUSTRY_COUNT ? "hidden md:block" : ""
-                    }`}
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.name}</h3>
-                    <p className="text-gray-600 text-sm">{item.body}</p>
-                  </div>
-                ))}
-              </div>
+              <IndustriesGrid industries={industries} mobileCount={MOBILE_INDUSTRY_COUNT} />
             </div>
           </section>
         </AnimatedSection>
