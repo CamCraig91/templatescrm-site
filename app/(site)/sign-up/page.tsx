@@ -8,7 +8,7 @@ export const metadata = {
 
 // Paste your Method web-to-lead form URL here (the src of the iframe Method gives you).
 // Until it's set, the page shows a fallback card pointing people to the consultation booking.
-const WEB_TO_LEAD_URL = "https://MIurl.cc/RL5AMVlmI";
+const WEB_TO_LEAD_URL = "";
 
 // Height of the form frame in pixels. Raise it if the form gets cut off or shows a scrollbar.
 const FORM_HEIGHT = 900;
@@ -25,6 +25,26 @@ const nextSteps = [
   {
     title: "Get a clear estimate",
     body: "We scope your project and give you a clear estimate before any build work begins.",
+  },
+  {
+    title: "Install your apps",
+    body: "We install the Templates applications that suit your business, so you start with what you actually need.",
+  },
+  {
+    title: "Work with your project leads",
+    body: "We collaborate with your project leads to understand how each part of your business runs.",
+  },
+  {
+    title: "Customize to fit",
+    body: "We implement customizations as your project leads see fit, so the system works the way you do.",
+  },
+  {
+    title: "Involve your team",
+    body: "Optionally, we work with your wider team through each update, so everyone is comfortable with the changes.",
+  },
+  {
+    title: "Fine-tune through use",
+    body: "As your team uses the system, we keep refining the process so it keeps getting better.",
   },
 ];
 
@@ -88,7 +108,7 @@ export default function SignUpPage() {
             <h2 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
               What happens next
             </h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {nextSteps.map((step, i) => (
                 <div
                   key={step.title}
