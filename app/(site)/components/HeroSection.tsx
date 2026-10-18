@@ -22,8 +22,6 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
-            <SignUpButton variant="onDark" className="!rounded-md" />
-
             <Link
               href="/apps"
               className="bg-blue-600 hover:bg-blue-900 text-white font-medium px-6 py-3 rounded-md"
@@ -37,6 +35,8 @@ export default function HeroSection() {
             >
               Book a Demo
             </Link>
+
+            <SignUpButton variant="onDark" className="!rounded-md" />
           </div>
         </div>
 
