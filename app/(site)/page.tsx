@@ -7,6 +7,7 @@ import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
 import IndustriesGrid from "./components/IndustriesGrid";
+import SignUpButton from "./SignUpButton";
 
 export const metadata = {
   title: "Templates — Business Management Software",
