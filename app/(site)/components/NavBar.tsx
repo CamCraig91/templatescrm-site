@@ -248,44 +248,44 @@ export default function NavBar() {
                 >
                   Pricing
                 </Link>
-                <Link
-                  href="https://signin.method.me/"
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 500,
-                    color: "#111827",
-                    textDecoration: "none",
-                  }}
-                >
-                  Method:CRM
-                </Link>
-                <Link
-                  href="/my-account"
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 500,
-                    color: "#111827",
-                    textDecoration: "none",
-                  }}
-                >
-                  My Account
-                </Link>
-                <Link
-                  href="/book-demo"
-                  style={{
-                    marginTop: 8,
-                    backgroundColor: "#2563eb",
-                    color: "white",
-                    textAlign: "center",
-                    padding: "12px 0",
-                    borderRadius: 8,
-                    fontSize: 18,
-                    fontWeight: 500,
-                    textDecoration: "none",
-                  }}
-                >
-                  Book a Demo
-                </Link>
+
+                {/* SIGN IN + BOOK A DEMO — side by side, mirrors the desktop buttons */}
+                <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+                  <Link
+                    href="/my-account"
+                    onClick={closeMobile}
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      padding: "12px 0",
+                      borderRadius: 8,
+                      fontSize: 18,
+                      fontWeight: 500,
+                      color: "#111827",
+                      border: "1px solid #d1d5db",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/book-demo"
+                    onClick={closeMobile}
+                    style={{
+                      flex: 1,
+                      backgroundColor: "#2563eb",
+                      color: "white",
+                      textAlign: "center",
+                      padding: "12px 0",
+                      borderRadius: 8,
+                      fontSize: 18,
+                      fontWeight: 500,
+                      textDecoration: "none",
+                    }}
+                  >
+                    Book a Demo
+                  </Link>
+                </div>
               </div>
             )}
 
