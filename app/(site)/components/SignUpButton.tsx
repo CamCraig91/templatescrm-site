@@ -21,18 +21,25 @@ export default function SignUpButton({
   href = DEFAULT_SIGNUP_HREF,
   variant = "primary",
   fullWidth = false,
+  size = "md",
+  onClick,
   className = "",
 }: {
   label?: string;
   href?: string;
   variant?: Variant;
   fullWidth?: boolean;
+  size?: "sm" | "md";
+  onClick?: () => void;
   className?: string;
 }) {
   return (
     <Link
       href={href}
-      className={`inline-block px-6 py-3 rounded-lg font-medium text-center transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${
+      onClick={onClick}
+      className={`inline-block ${
+        size === "sm" ? "px-4 py-2 rounded-md" : "px-6 py-3 rounded-lg"
+      } font-medium text-center transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${
         styles[variant]
       } ${fullWidth ? "w-full" : ""} ${className}`}
     >
