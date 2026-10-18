@@ -7,7 +7,6 @@ import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
 import IndustriesGrid from "./components/IndustriesGrid";
-import SignUpButton from "./SignUpButton";
 
 export const metadata = {
   title: "Templates — Business Management Software",
@@ -22,7 +21,7 @@ const SHOW_TESTIMONIALS = false;
 // App pages live at /<slug> (e.g. /work-orders). Change this one function if that ever changes
 const appPath = (slug: string) => `/${slug}`;
 
-// How many card show on phones before the rest are tucked away.
+// How many cards show on phones before the rest are tucked away.
 // Featured apps beyond this number move into the quick-link pills on mobile.
 // Industries beyond this number are tucked behind a "Show more" button on mobile.
 const MOBILE_FEATURED_COUNT = 4;
