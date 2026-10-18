@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import SignUpButton from "../components/SignUpButton";
+import SignUpButton from "./components/SignUpButton";
 
 export default function BookDemoPage() {
   const [loading, setLoading] = useState(true);
