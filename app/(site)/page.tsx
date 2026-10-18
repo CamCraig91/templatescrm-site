@@ -20,6 +20,12 @@ const SHOW_TESTIMONIALS = false;
 // App pages live at /<slug> (e.g. /work-orders). Change this one function if that ever changes
 const appPath = (slug: string) => `/${slug}`;
 
+// How many cards show on phones before the rest are tucked away.
+// Featured apps beyond this number move into the quick-link pills on mobile.
+// Industries beyond this number are hidden on mobile.
+const MOBILE_FEATURED_COUNT = 4;
+const MOBILE_INDUSTRY_COUNT = 3;
+
 // Featured apps: the ones with the most interesting features. Each card links to its own page.
 const featuredApps = [
   {
@@ -294,7 +300,9 @@ export default function HomePage() {
         {/* KEEP CURVE ONLY HERE */}
         <Curve />
 
-        {/* PREBUILT APPLICATIONS (animated) — featured cards link to each app's page */}
+        {/* PREBUILT APPLICATIONS (animated) — featured cards link to each app's page.
+            On phones only the first MOBILE_FEATURED_COUNT cards show; the rest appear as
+            quick-link pills below (the sm:hidden pills). From sm up, all cards show. */}
         <AnimatedSection>
           <section className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -308,14 +316,14 @@ export default function HomePage() {
               </p>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-               {featuredApps.map((app, i) => (
-  <Link
-    key={app.slug}
-    href={appPath(app.slug)}
-    className={`group flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${
-      i >= 4 ? "hidden sm:flex" : "flex"
-    }`}
-  >
+                {featuredApps.map((app, i) => (
+                  <Link
+                    key={app.slug}
+                    href={appPath(app.slug)}
+                    className={`group flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${
+                      i >= MOBILE_FEATURED_COUNT ? "hidden sm:flex" : "flex"
+                    }`}
+                  >
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{app.name}</h3>
                     <p className="text-gray-600 text-sm mb-5">{app.blurb}</p>
                     <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-blue-700 transition-all group-hover:gap-2">
@@ -339,18 +347,27 @@ export default function HomePage() {
                 Plus more applications, all ready to customize:
               </p>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-  {featuredApps.slice(4).map((app) => (
-    <Link
-      key={app.slug}
-      href={appPath(app.slug)}
-      className="sm:hidden px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-700 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
-    >
-      {app.name}
-    </Link>
-  ))}
-  {moreApps.map((app) => ( /* unchanged */ ))}
-</div>
+              <div className="flex flex-wrap justify-center gap-3 mb-10">
+                {/* Mobile only: the featured apps that were hidden from the card grid */}
+                {featuredApps.slice(MOBILE_FEATURED_COUNT).map((app) => (
+                  <Link
+                    key={`mobile-${app.slug}`}
+                    href={appPath(app.slug)}
+                    className="sm:hidden px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-700 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+                  >
+                    {app.name}
+                  </Link>
+                ))}
+                {moreApps.map((app) => (
+                  <Link
+                    key={app.slug}
+                    href={appPath(app.slug)}
+                    className="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-700 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+                  >
+                    {app.name}
+                  </Link>
+                ))}
+              </div>
 
               <div className="text-center">
                 <Link
@@ -466,7 +483,7 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        {/* INDUSTRIES */}
+        {/* INDUSTRIES — on phones only the first MOBILE_INDUSTRY_COUNT cards show */}
         <AnimatedSection>
           <section className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -479,10 +496,12 @@ export default function HomePage() {
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {industries.map((item) => (
+                {industries.map((item, i) => (
                   <div
                     key={item.name}
-                    className="bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left"
+                    className={`bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left ${
+                      i >= MOBILE_INDUSTRY_COUNT ? "hidden md:block" : ""
+                    }`}
                   >
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.name}</h3>
                     <p className="text-gray-600 text-sm">{item.body}</p>
