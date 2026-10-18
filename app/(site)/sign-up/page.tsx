@@ -8,7 +8,7 @@ export const metadata = {
 
 // Paste your Method web-to-lead form URL here (the src of the iframe Method gives you).
 // Until it's set, the page shows a fallback card pointing people to the consultation booking.
-const WEB_TO_LEAD_URL = "";
+const WEB_TO_LEAD_URL = "	https://MIurl.cc/RL5AMVlmI";
 
 // Height of the form frame in pixels. Raise it if the form gets cut off or shows a scrollbar.
 const FORM_HEIGHT = 900;
