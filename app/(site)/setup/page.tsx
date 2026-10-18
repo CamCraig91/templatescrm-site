@@ -1,9 +1,41 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 // Paste/replace the web-to-lead form URL here if it ever changes.
 const WEB_TO_LEAD_URL = "https://MIurl.cc/RL5AMVlmI";
+
+// Only loads the iframe once it scrolls into view. Embedded forms can grab focus when they
+// load, which scrolls the page down to them; waiting until they're on screen stops that.
+// The box keeps its full height while empty, so nothing shifts when the form appears.
+function LazyIframe({ src, title }: { src: string; title: string }) {
+  const boxRef = useRef<HTMLDivElement | null>(null);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setShow(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShow(true);
+        observer.disconnect();
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={boxRef} className="w-full h-[900px] rounded-xl border bg-gray-50">
+      {show && <iframe src={src} title={title} className="w-full h-full rounded-xl" />}
+    </div>
+  );
+}
 
 export default function SetupPage() {
   return (
@@ -21,11 +53,6 @@ export default function SetupPage() {
             every step from signup to customization.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <a href="#form" className="text-blue-300 font-medium hover:underline">
-              Ready to go? Jump to the sign up form →
-            </a>
-          </div>
 
         </div>
       </section>
@@ -81,18 +108,18 @@ export default function SetupPage() {
             {/* DECORATIVE ARROW 2 — swings back from the Browse box down to step 1 */}
             <div
               aria-hidden="true"
-              className="pointer-events-none hidden md:block absolute left-0 right-0 -top-[84px] h-[100px] z-10"
+              className="pointer-events-none hidden md:block absolute left-0 right-0 -top-[76px] h-[72px] z-10"
             >
-              <svg viewBox="0 0 400 100" className="h-full w-full" fill="none">
+              <svg viewBox="0 0 400 72" className="h-full w-full" fill="none">
                 <path
-                  d="M 330 4 C 330 60, 70 30, 70 84"
+                  d="M 330 2 C 330 45, 70 18, 70 54"
                   stroke="#60a5fa"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeDasharray="8 9"
                 />
                 <path
-                  d="M 57 70 L 70 92 L 83 70"
+                  d="M 57 42 L 70 62 L 83 42"
                   stroke="#60a5fa"
                   strokeWidth="3"
                   strokeLinecap="round"
@@ -107,10 +134,9 @@ export default function SetupPage() {
             </p>
 
             <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm">
-              <iframe
+              <LazyIframe
                 src="https://camcraigconsulting.method.ws/apps/Public.aspx#/1e4729fe-c52a-46d9-90e6-d86f8bca59d3/RkZzZFJYbHVOZHR4bTYwRFpHRTJ1Zy0t"
                 title="Book a demo"
-                className="w-full h-[900px] rounded-xl border"
               />
             </div>
           </div>
@@ -239,12 +265,7 @@ export default function SetupPage() {
               <p className="text-gray-600 mb-5">
                 Fill in the form below and we&apos;ll be in touch to confirm which applications to install.
               </p>
-              <iframe
-                src={WEB_TO_LEAD_URL}
-                title="Sign up form"
-                loading="lazy"
-                className="w-full h-[900px] rounded-xl border"
-              />
+              <LazyIframe src={WEB_TO_LEAD_URL} title="Sign up form" />
               <p className="text-gray-500 text-sm mt-4">
                 Form not loading?{" "}
                 <a
