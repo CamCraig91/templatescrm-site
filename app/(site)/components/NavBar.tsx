@@ -249,13 +249,15 @@ export default function NavBar() {
                   Pricing
                 </Link>
 
-                {/* SIGN IN + BOOK A DEMO — side by side, mirrors the desktop buttons */}
-                <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+                {/* SIGN IN + BOOK A DEMO — stacked, each full width */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8, width: "100%" }}>
                   <Link
                     href="/my-account"
                     onClick={closeMobile}
                     style={{
-                      flex: 1,
+                      display: "block",
+                      width: "100%",
+                      boxSizing: "border-box",
                       textAlign: "center",
                       padding: "12px 0",
                       borderRadius: 8,
@@ -272,7 +274,9 @@ export default function NavBar() {
                     href="/book-demo"
                     onClick={closeMobile}
                     style={{
-                      flex: 1,
+                      display: "block",
+                      width: "100%",
+                      boxSizing: "border-box",
                       backgroundColor: "#2563eb",
                       color: "white",
                       textAlign: "center",
