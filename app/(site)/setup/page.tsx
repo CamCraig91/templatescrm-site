@@ -1,11 +1,16 @@
 "use client";
 
+import Link from "next/link";
+
+// Paste/replace the web-to-lead form URL here if it ever changes.
+const WEB_TO_LEAD_URL = "https://MIurl.cc/RL5AMVlmI";
+
 export default function SetupPage() {
   return (
     <main className="bg-white text-gray-900 min-h-screen">
 
       {/* HERO */}
-      <section className="w-full py-24 bg-slate-800 border-b border-slate-700">
+      <section className="w-full pt-24 pb-10 bg-slate-800 border-b border-slate-700">
         <div className="max-w-5xl mx-auto px-6 text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Getting Set Up
@@ -15,16 +20,57 @@ export default function SetupPage() {
             your Templates applications installed. This guide walks you through
             every step from signup to customization.
           </p>
+
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <a href="#form" className="text-blue-300 font-medium hover:underline">
+              Ready to go? Jump to the sign up form →
+            </a>
+          </div>
+
+          {/* Arrow leading down to the content */}
+          <div className="mt-10 flex justify-center">
+            <a
+              href="#start"
+              aria-label="Scroll down to get started"
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-500 text-white hover:bg-slate-700 transition animate-bounce"
+            >
+              <svg
+                className="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 
       {/* MAIN CONTENT */}
-      <section className="py-20">
+      <section id="start" className="py-20 scroll-mt-4">
         <div className="max-w-5xl mx-auto px-6 space-y-20">
 
-                  {/* BOOKING SECTION */}
+          {/* BROWSE APPS FIRST */}
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-8 text-center">
+            <h2 className="text-2xl font-bold mb-3">Not sure which apps you need? Browse first.</h2>
+            <p className="text-gray-700 max-w-2xl mx-auto mb-6">
+              Take a look at the prebuilt Templates applications before you continue. And if you
+              don&apos;t see exactly what your business needs, new apps can be created quickly.
+            </p>
+            <Link
+              href="/apps"
+              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
+            >
+              Browse Applications
+            </Link>
+          </div>
+
+          {/* BOOKING SECTION */}
           <div>
-            <h2 className="text-3xl font-bold mb-6">1. See Whats Right For You! </h2>
+            <h2 className="text-3xl font-bold mb-6">1. See What&apos;s Right For You!</h2>
             <p className="text-gray-700 mb-6">
               A demo is a quickest way to see if our software is the right fit for you. Have questions answered in real time by a real agent.
             </p>
@@ -32,6 +78,7 @@ export default function SetupPage() {
             <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm">
               <iframe
                 src="https://camcraigconsulting.method.ws/apps/Public.aspx#/1e4729fe-c52a-46d9-90e6-d86f8bca59d3/RkZzZFJYbHVOZHR4bTYwRFpHRTJ1Zy0t"
+                title="Book a demo"
                 className="w-full h-[900px] rounded-xl border"
               />
             </div>
@@ -140,20 +187,46 @@ export default function SetupPage() {
             </div>
           </div>
 
-          {/* TEMPLATES APPLICATION SETUP */}
-          <div>
+          {/* TEMPLATES APPLICATION SETUP + WEB TO LEAD FORM */}
+          <div id="form" className="scroll-mt-6">
             <h2 className="text-3xl font-bold mb-6">4. Install Your Templates Applications</h2>
             <p className="text-gray-700 mb-8">
               After your Method:CRM account is created, a short form will help us determine what applications are needed for your business. We will then install the Templates
               applications directly into your Method environment. This includes:
             </p>
 
-            <ul className="text-gray-700 space-y-3 mb-6">
+            <ul className="text-gray-700 space-y-3 mb-8">
               <li>• Core Templates modules</li>
               <li>• Custom screens and workflows</li>
               <li>• API integrations*</li>
               <li>• Optional add‑ons depending on your business needs</li>
             </ul>
+
+            {/* WEB TO LEAD FORM */}
+            <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm mb-4">
+              <h3 className="text-xl font-semibold mb-2">Tell us about your business</h3>
+              <p className="text-gray-600 mb-5">
+                Fill in the form below and we&apos;ll be in touch to confirm which applications to install.
+              </p>
+              <iframe
+                src={WEB_TO_LEAD_URL}
+                title="Sign up form"
+                loading="lazy"
+                className="w-full h-[900px] rounded-xl border"
+              />
+              <p className="text-gray-500 text-sm mt-4">
+                Form not loading?{" "}
+                <a
+                  href={WEB_TO_LEAD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 font-medium hover:underline"
+                >
+                  Open it in a new tab
+                </a>
+                .
+              </p>
+            </div>
 
             <p className="text-gray-700">
               Once installed, you’ll receive a guided walkthrough and at request access to a
