@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import SignUpButton from "./SignUpButton";
 
 export default function NavBar() {
   /* ---------------- DESKTOP STATE ---------------- */
@@ -270,6 +271,12 @@ export default function NavBar() {
                   >
                     Sign In
                   </Link>
+                  <SignUpButton
+                    variant="secondary"
+                    fullWidth
+                    onClick={closeMobile}
+                    className="!py-3 !text-lg"
+                  />
                   <Link
                     href="/book-demo"
                     onClick={closeMobile}
@@ -883,6 +890,7 @@ export default function NavBar() {
                 </div>
               )}
             </div>
+            <SignUpButton size="sm" variant="secondary" />
             <a
               href="/book-demo"
               className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md shadow-sm"
