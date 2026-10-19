@@ -8,8 +8,7 @@ import ImageGallery from "../components/ImageGallery";
 const LEAD_FORM_URL =
   "https://camcraigconsulting.method.ws/apps/Public.aspx#/c697111f-e736-4001-ac82-e46c2b5653c6/V1RVYXNJRTNrdDFoNWptV2JLQjVrUS0t";
 
-// Slightly less aggressive height than 100svh so the iframe doesn't dominate the whole viewport
-const LEAD_FORM_HEIGHT = "900px";
+const LEAD_FORM_HEIGHT = "900px"; // adjust after testing
 
 const galleryItems = [
   { src: "/LeadForms1.png", alt: "Lead Forms screen 1" },
@@ -17,34 +16,30 @@ const galleryItems = [
   { src: "/LeadForms3.png", alt: "Lead Forms screen 3" },
   { src: "/LeadForms4.png", alt: "Lead Forms screen 4" },
   { src: "/LeadForms5.png", alt: "Lead Forms screen 5" },
-  // Later you can add more, including video:
-  // { type: "video" as const, src: "/lead-forms-demo.mp4", alt: "Lead Forms demo", poster: "/lead-forms-poster.png" },
 ];
 
 export default function LeadFormsPage() {
-  // The "Try it" text follows the visitor down the tall form, then stops at the
-  // bottom of the section. This is done with a scroll handler instead of CSS
-  // sticky because sticky silently breaks if any parent (layout, body) has an
-  // overflow setting such as overflow-x-hidden.
   const tryGridRef = useRef<HTMLDivElement>(null);
   const tryFollowRef = useRef<HTMLDivElement>(null);
   const formContainerRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const [formLoaded, setFormLoaded] = useState(false);
+  const [overlayActive, setOverlayActive] = useState(true);
 
-  // Safety net: never leave the skeleton up forever
+  // Safety net for skeleton
   useEffect(() => {
     const t = setTimeout(() => setFormLoaded(true), 8000);
     return () => clearTimeout(t);
   }, []);
 
-  // Make the "Try it" text follow the scroll on desktop
+  // Sticky "Try it" text
   useEffect(() => {
     const grid = tryGridRef.current;
     const follow = tryFollowRef.current;
     if (!grid || !follow) return;
 
-    const TOP_OFFSET = 96; // px gap from the top of the viewport
+    const TOP_OFFSET = 96;
     let frame = 0;
 
     const update = () => {
@@ -74,25 +69,38 @@ export default function LeadFormsPage() {
     };
   }, []);
 
-  // Force parent page scrolling while the mouse is over the iframe
-  // (cross-origin iframes normally swallow wheel events)
+  // Chrome-friendly scroll fix using an overlay
   useEffect(() => {
-    const el = formContainerRef.current;
-    if (!el) return;
+    const overlay = overlayRef.current;
+    if (!overlay) return;
 
     const onWheel = (e: WheelEvent) => {
-      // Always scroll the parent page
-      window.scrollBy({ top: e.deltaY, left: 0, behavior: "auto" });
+      // Force the parent page to scroll
+      window.scrollBy({ top: e.deltaY, behavior: "auto" });
       e.preventDefault();
     };
 
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
+    // Temporarily disable overlay so the user can click/interact with the form
+    const enableInteraction = () => {
+      setOverlayActive(false);
+      // Re-enable after a short delay (or on mouse leave)
+      setTimeout(() => setOverlayActive(true), 300);
+    };
+
+    overlay.addEventListener("wheel", onWheel, { passive: false });
+    overlay.addEventListener("mousedown", enableInteraction);
+    overlay.addEventListener("touchstart", enableInteraction, { passive: true });
+
+    return () => {
+      overlay.removeEventListener("wheel", onWheel);
+      overlay.removeEventListener("mousedown", enableInteraction);
+      overlay.removeEventListener("touchstart", enableInteraction);
+    };
   }, []);
 
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
-      {/* Animations for the "Try it" section */}
+      {/* Animations */}
       <style>{`
         @keyframes try-draw {
           0%   { stroke-dashoffset: 1; }
@@ -129,7 +137,6 @@ export default function LeadFormsPage() {
       {/* HERO */}
       <section className="relative w-full py-28 bg-slate-800 border-b border-slate-700 overflow-hidden">
         <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          {/* TEXT */}
           <div className="text-center md:text-left text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Lead Forms</h1>
             <p className="text-lg text-slate-300 max-w-xl mb-8">
@@ -146,7 +153,6 @@ export default function LeadFormsPage() {
             </a>
           </div>
 
-          {/* VISUAL */}
           <div className="hidden md:flex justify-center">
             <Image
               src="/webtoleadhero.png"
@@ -230,7 +236,6 @@ export default function LeadFormsPage() {
         id="try-it"
         className="relative scroll-mt-4 py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 overflow-clip"
       >
-        {/* decorative glows */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-2xl"
@@ -258,7 +263,6 @@ export default function LeadFormsPage() {
               above happens behind the scenes.
             </p>
 
-            {/* Desktop: hand-drawn arrow curving toward the form */}
             <svg
               aria-hidden="true"
               viewBox="0 0 200 120"
@@ -283,7 +287,6 @@ export default function LeadFormsPage() {
               />
             </svg>
 
-            {/* Mobile: bouncing arrow pointing down at the form */}
             <div className="md:hidden flex justify-center mt-8" aria-hidden="true">
               <svg
                 viewBox="0 0 40 60"
@@ -303,13 +306,11 @@ export default function LeadFormsPage() {
 
           {/* FORM */}
           <div className="relative -mx-6 md:mx-0">
-            {/* pulsing glow, desktop only */}
             <div
               aria-hidden="true"
               className="hidden md:block absolute -inset-4 rounded-3xl bg-white/30 blur-2xl animate-pulse"
             />
 
-            {/* live badge */}
             <div className="absolute -top-4 left-6 z-10 flex items-center gap-2 bg-white text-slate-900 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-lg">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
@@ -323,7 +324,17 @@ export default function LeadFormsPage() {
               className="relative bg-white overflow-hidden md:rounded-2xl md:shadow-2xl md:ring-4 md:ring-white/40 md:transition-transform md:duration-300 md:hover:-translate-y-1"
               style={{ height: LEAD_FORM_HEIGHT }}
             >
-              {/* skeleton shows until the form is ready */}
+              {/* Transparent overlay that captures wheel events in Chrome */}
+              <div
+                ref={overlayRef}
+                className={`absolute inset-0 z-20 ${
+                  overlayActive ? "pointer-events-auto" : "pointer-events-none"
+                }`}
+                style={{ background: "transparent" }}
+                aria-hidden="true"
+              />
+
+              {/* Skeleton */}
               <div
                 aria-hidden="true"
                 className={`absolute inset-0 p-8 pt-12 space-y-5 transition-opacity duration-300 ${
@@ -370,8 +381,6 @@ export default function LeadFormsPage() {
       <section className="py-20 bg-white border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <ImageGallery items={galleryItems} />
-
-          {/* TEXT */}
           <div>
             <h3 className="text-2xl font-bold mb-4">
               Know Where Every Lead Came From
