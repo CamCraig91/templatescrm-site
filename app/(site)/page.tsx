@@ -7,6 +7,7 @@ import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
 import IndustriesGrid from "./components/IndustriesGrid";
+import ValueProps from "./components/ValueProps";
 
 export const metadata = {
   title: "Templates — Business Management Software",
@@ -82,6 +83,85 @@ const moreApps = [
   { name: "Payroll", slug: "payroll" },
 ];
 
+// Custom tools that live outside the CRM and feed data back into it
+const customTools = [
+  {
+    name: "Location and geofencing",
+    body: "Record where employees sign in, or mark points on a map, like trees for an arborist, and bring that data back into your records.",
+  },
+  {
+    name: "Maps on your website",
+    body: "Show saved coordinates and work locations on a map for your team or your customers.",
+  },
+  {
+    name: "Shipment status on your site",
+    body: "Enter the carrier and tracking number and status updates run on their own, shown beside the customer's order.",
+  },
+  {
+    name: "Less typing, more automation",
+    body: "Scan barcodes for inventory, take point-of-sale payments, or use AI to pick out leads from photographs so less is entered by hand.",
+  },
+];
+
+// Why Templates: the alternatives on the left, Templates highlighted last
+const comparison = [
+  {
+    name: "Spreadsheets and separate tools",
+    points: [
+      "Information copied into several places",
+      "Manual re-entry that invites errors",
+      "Every new need becomes another tool",
+    ],
+  },
+  {
+    name: "Fixed off-the-shelf software",
+    points: [
+      "You adapt your workflow to the software",
+      "Gaps get patched with other programs",
+      "Hard to change as your business grows",
+    ],
+  },
+  {
+    name: "A blank platform",
+    points: [
+      "Basic apps that need customization first",
+      "You pay to build the foundations",
+      "Slow to get to a working system",
+    ],
+  },
+];
+
+const templatesPoints = [
+  "One adaptable home for operations and finances",
+  "Changes with your business, now and later",
+  "Prebuilt, connected apps that work out of the box",
+  "Two-way QuickBooks and Xero sync",
+  "Custom tools for maps, tracking, and more",
+];
+
+// Ways to work with us. Each card links to its own page.
+// NOTE: confirm the web design page URL below.
+const offerings = [
+  {
+    name: "Application subscription",
+    body: "Subscribe to the Templates applications you need. Each one is prebuilt, connected to the others, and ready to use.",
+    cta: "Browse applications",
+    href: "/apps",
+  },
+  {
+    name: "Customization",
+    body: "Tailor screens, workflows, and automations to your business. Choose hourly or pay-per-use work, or a lower-rate dedicated service plan for ongoing support.",
+    cta: "See customization",
+    href: "/customization",
+  },
+  {
+    name: "Web design",
+    body: "Websites and portals built to work with your data, such as maps, order and shipment status, and online shops.",
+    cta: "See web design",
+    href: "/web-design",
+  },
+];
+
 const steps = [
   {
     title: "Discovery",
@@ -153,7 +233,11 @@ const testimonials = [
 const faqs = [
   {
     q: "Do I need Method:CRM to use Templates?",
-    a: "Yes. Templates is built inside Method:CRM, so it runs on a Method account. We can walk you through the setup during your free consultation.",
+    a: "Yes. Templates is built inside Method:CRM, so it runs on a Method account, and Method's base fee is required. It is billed by Method, separately from Templates. You don't need Method's additional packs or its basic applications when you use Templates applications. We can walk you through the setup during your free consultation.",
+  },
+  {
+    q: "Do I need QuickBooks?",
+    a: "To use the accounting sync, yes. You'll need a QuickBooks account (Xero is supported as well). Your books stay where they are, and Templates keeps them in step with the rest of your business.",
   },
   {
     q: "How does the QuickBooks sync work?",
@@ -184,31 +268,13 @@ export default function HomePage() {
       <HeroSection />
 
       <main>
-        {/* FLOW DIAGRAM (no animation) */}
-        {/* Extra bottom padding (pb-28 / md:pb-32) gives the next card room to overlap
-            without covering the diagram. */}
+        {/* VALUE PROPOSITIONS (interactive — see components/ValueProps.tsx)
+            Extra bottom padding (pb-28 / md:pb-32) gives the next card room to overlap
+            without covering the content. */}
         <section className="relative -mt-20 z-10">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="bg-blue-50 border border-blue-100 rounded-3xl shadow-md px-8 md:px-16 pt-16 md:pt-20 pb-28 md:pb-32 text-center">
-              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 md:mb-6">
-                Your Connected Business System
-              </h2>
-
-              <p className="text-gray-600 max-w-2xl mx-auto mb-10 md:mb-12 text-sm md:text-base">
-                A complete front‑to‑back ecosystem that connects your website, customer experience,
-                internal operations, and external integrations into one seamless loop.
-              </p>
-
-              <div className="md:flex w-full items-center justify-center">
-                <Image
-                  src="/ConnectedBusiness5.png"
-                  alt="Connected business diagram"
-                  width={700}
-                  height={400}
-                  className="object-contain mx-auto rounded-3xl"
-                  priority
-                />
-              </div>
+            <div className="bg-blue-50 border border-blue-100 rounded-3xl shadow-md px-6 md:px-14 pt-14 md:pt-16 pb-28 md:pb-32 text-center">
+              <ValueProps />
             </div>
           </div>
         </section>
@@ -446,6 +512,138 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
+        {/* CUSTOM TOOLS BEYOND THE CRM (animated) */}
+        <AnimatedSection>
+          <section className="py-20 bg-blue-50 border-y border-blue-100">
+            <div className="max-w-6xl mx-auto px-4 md:px-6">
+              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
+                Custom Tools That Reach Beyond the CRM
+              </h2>
+              <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
+                We also build apps and websites that work with your data, then feed what they
+                collect back into your system.
+              </p>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {customTools.map((tool) => (
+                  <div
+                    key={tool.name}
+                    className="bg-white border border-blue-100 rounded-2xl p-6 text-left shadow-sm"
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{tool.name}</h3>
+                    <p className="text-gray-600 text-sm">{tool.body}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* AI TEASER — links to the /ai page */}
+              <div className="mt-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-8 bg-white border border-blue-200 rounded-2xl p-6 md:p-8 text-left shadow-sm">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    AI to cut down manual entry
+                  </h3>
+                  <p className="text-gray-600 text-sm md:text-base">
+                    Method AI is available now, and we&apos;re working on using Google Gemini to
+                    read photos and pull out text, so less information has to be typed in by hand.
+                  </p>
+                </div>
+                <Link
+                  href="/ai"
+                  className="shrink-0 text-center px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+                >
+                  Explore AI
+                </Link>
+              </div>
+            </div>
+          </section>
+        </AnimatedSection>
+
+        {/* WHY TEMPLATES — compared with staying put or choosing something else (animated) */}
+        <AnimatedSection>
+          <section className="py-20 bg-white">
+            <div className="max-w-6xl mx-auto px-4 md:px-6">
+              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
+                Why Templates?
+              </h2>
+              <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
+                Whether you&apos;re keeping what you have or weighing up other software, here is
+                how the options compare.
+              </p>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {comparison.map((option) => (
+                  <div
+                    key={option.name}
+                    className="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-left"
+                  >
+                    <h3 className="text-base font-semibold text-gray-700 mb-4">{option.name}</h3>
+                    <ul className="space-y-3">
+                      {option.points.map((point) => (
+                        <li key={point} className="flex gap-2 text-sm text-gray-600">
+                          <span aria-hidden="true" className="text-gray-400">
+                            &ndash;
+                          </span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+
+                <div className="bg-blue-600 rounded-2xl p-6 text-left shadow-lg">
+                  <h3 className="text-base font-semibold text-white mb-4">Templates</h3>
+                  <ul className="space-y-3">
+                    {templatesPoints.map((point) => (
+                      <li key={point} className="flex gap-2 text-sm text-blue-50">
+                        <svg
+                          className="mt-0.5 h-4 w-4 shrink-0 text-white"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          aria-hidden="true"
+                        >
+                          <path d="M4 10.5l4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* WAYS TO WORK WITH US */}
+              <div className="mt-20">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-3 text-center">
+                  Choose how you want to work with us
+                </h3>
+                <p className="text-gray-600 text-center max-w-2xl mx-auto mb-10 text-sm md:text-base">
+                  Start with the applications, tailor them to your business, or add a website that
+                  works with your data. Many clients use more than one.
+                </p>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                  {offerings.map((o) => (
+                    <div
+                      key={o.name}
+                      className="flex flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left"
+                    >
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">{o.name}</h4>
+                      <p className="text-gray-600 text-sm mb-6">{o.body}</p>
+                      <Link
+                        href={o.href}
+                        className="mt-auto inline-block self-start px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+                      >
+                        {o.cta}
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        </AnimatedSection>
+
         {/* HOW IT WORKS — a real sequence, so the steps are numbered */}
         <AnimatedSection>
           <section
@@ -479,6 +677,44 @@ export default function HomePage() {
                     <p className="text-gray-600 text-sm">{step.body}</p>
                   </div>
                 ))}
+              </div>
+
+              {/* REQUIREMENTS NOTICE — kept in amber so it reads as an alert against the blue */}
+              <div
+                role="note"
+                className="mt-14 max-w-3xl mx-auto flex gap-4 rounded-2xl border border-amber-300 bg-amber-50 px-6 py-5 text-left shadow-sm"
+              >
+                <svg
+                  className="mt-0.5 h-6 w-6 shrink-0 text-amber-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 11v5M12 8h.01" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <div>
+                  <p className="font-semibold text-amber-900">
+                    Before you start: a Method:CRM account is required
+                  </p>
+                  <p className="mt-1 text-sm text-amber-900/80">
+                    Templates applications are installed inside Method:CRM, so you&apos;ll need an
+                    active Method subscription. Method&apos;s base fee is required, and it is
+                    billed by Method, separately from Templates.
+                  </p>
+                  <p className="mt-2 text-sm text-amber-900/80">
+                    <span className="font-medium">
+                      You don&apos;t need Method&apos;s additional packs or its basic applications.
+                    </span>{" "}
+                    They aren&apos;t necessary when you use Templates applications.
+                  </p>
+                  <p className="mt-2 text-sm text-amber-900/80">
+                    To use the two-way accounting sync, you&apos;ll also need a QuickBooks account
+                    (Xero works too). We&apos;ll help you get set up during your free consultation.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
@@ -539,7 +775,7 @@ export default function HomePage() {
               </h2>
 
               <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-sm md:text-base">
-                Method provides the platform - we build the applications. See how Method connects all aspects of your business into one seemless business system. 
+                Method provides the platform - we build the applications. See how Method connects all aspects of your business into one seamless business system.
               </p>
 
               {/* YouTube embed (privacy-enhanced domain, loads only when scrolled near) See how Templates connects your website, front end, back end, and integrations
