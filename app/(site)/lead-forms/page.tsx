@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import ImageGallery from "../components/ImageGallery";
 
-// Paste the embed URL for your Method:CRM lead form here.
 const LEAD_FORM_URL =
   "https://camcraigconsulting.method.ws/apps/Public.aspx#/c697111f-e736-4001-ac82-e46c2b5653c6/V1RVYXNJRTNrdDFoNWptV2JLQjVrUS0t";
 
-const LEAD_FORM_HEIGHT = "900px"; // adjust after testing
+const LEAD_FORM_HEIGHT = "900px";
 
 const galleryItems = [
   { src: "/LeadForms1.png", alt: "Lead Forms screen 1" },
@@ -21,13 +20,10 @@ const galleryItems = [
 export default function LeadFormsPage() {
   const tryGridRef = useRef<HTMLDivElement>(null);
   const tryFollowRef = useRef<HTMLDivElement>(null);
-  const formContainerRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   const [formLoaded, setFormLoaded] = useState(false);
-  const [overlayActive, setOverlayActive] = useState(true);
+  const [formActive, setFormActive] = useState(false); // ← key state
 
-  // Safety net for skeleton
   useEffect(() => {
     const t = setTimeout(() => setFormLoaded(true), 8000);
     return () => clearTimeout(t);
@@ -69,38 +65,8 @@ export default function LeadFormsPage() {
     };
   }, []);
 
-  // Chrome-friendly scroll fix using an overlay
-  useEffect(() => {
-    const overlay = overlayRef.current;
-    if (!overlay) return;
-
-    const onWheel = (e: WheelEvent) => {
-      // Force the parent page to scroll
-      window.scrollBy({ top: e.deltaY, behavior: "auto" });
-      e.preventDefault();
-    };
-
-    // Temporarily disable overlay so the user can click/interact with the form
-    const enableInteraction = () => {
-      setOverlayActive(false);
-      // Re-enable after a short delay (or on mouse leave)
-      setTimeout(() => setOverlayActive(true), 300);
-    };
-
-    overlay.addEventListener("wheel", onWheel, { passive: false });
-    overlay.addEventListener("mousedown", enableInteraction);
-    overlay.addEventListener("touchstart", enableInteraction, { passive: true });
-
-    return () => {
-      overlay.removeEventListener("wheel", onWheel);
-      overlay.removeEventListener("mousedown", enableInteraction);
-      overlay.removeEventListener("touchstart", enableInteraction);
-    };
-  }, []);
-
   return (
     <main className="bg-white text-gray-900 min-h-screen flex flex-col">
-      {/* Animations */}
       <style>{`
         @keyframes try-draw {
           0%   { stroke-dashoffset: 1; }
@@ -249,7 +215,6 @@ export default function LeadFormsPage() {
           ref={tryGridRef}
           className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-start"
         >
-          {/* TEXT + ARROW */}
           <div ref={tryFollowRef} className="text-white md:will-change-transform">
             <span className="try-sticker inline-block bg-yellow-300 text-slate-900 text-sm font-bold uppercase tracking-wide px-3 py-1 rounded-md shadow-md mb-5">
               Try me!
@@ -320,19 +285,22 @@ export default function LeadFormsPage() {
             </div>
 
             <div
-              ref={formContainerRef}
-              className="relative bg-white overflow-hidden md:rounded-2xl md:shadow-2xl md:ring-4 md:ring-white/40 md:transition-transform md:duration-300 md:hover:-translate-y-1"
+              className="relative bg-white overflow-hidden md:rounded-2xl md:shadow-2xl md:ring-4 md:ring-white/40"
               style={{ height: LEAD_FORM_HEIGHT }}
+              onMouseLeave={() => setFormActive(false)} // put overlay back when mouse leaves
             >
-              {/* Transparent overlay that captures wheel events in Chrome */}
-              <div
-                ref={overlayRef}
-                className={`absolute inset-0 z-20 ${
-                  overlayActive ? "pointer-events-auto" : "pointer-events-none"
-                }`}
-                style={{ background: "transparent" }}
-                aria-hidden="true"
-              />
+              {/* ========== THE FIX ========== */}
+              {!formActive && (
+                <div
+                  className="absolute inset-0 z-30 flex items-center justify-center bg-white/10 backdrop-blur-[1px] cursor-pointer"
+                  onClick={() => setFormActive(true)}
+                >
+                  <div className="bg-white text-slate-900 font-semibold px-5 py-3 rounded-full shadow-lg text-sm">
+                    Click to interact with the form
+                  </div>
+                </div>
+              )}
+              {/* ============================= */}
 
               {/* Skeleton */}
               <div
