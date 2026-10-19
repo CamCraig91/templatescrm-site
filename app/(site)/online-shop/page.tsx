@@ -70,13 +70,13 @@ export default function OnlineShopPage() {
         </div>
       </section>
 
-      {/* VISUAL SECTION */}
+      {/* VISUAL SECTION 
       <section className="py-20 bg-gray-50 border-t border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
     <ImageGallery items={galleryItems} />
 
-          {/* TEXT */}
+          {/* TEXT 
           <div>
             <h3 className="text-2xl font-bold mb-4">Built for Real‑World Selling</h3>
             <p className="text-gray-600 mb-4">
@@ -91,7 +91,7 @@ export default function OnlineShopPage() {
           </div>
 
         </div>
-      </section>
+      </section>*/}
 
       {/* VIDEO SECTION (OPTIONAL) 
       <section className="py-20">
