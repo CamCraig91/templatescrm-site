@@ -63,7 +63,7 @@ const items = [
     label: "Working from day one",
     headline: "Prebuilt, connected apps instead of a blank canvas",
     body: "Method provides the platform. Templates provides finished applications with preferred features already built in, connected to each other and to outside tools. You start with working software and fine-tune it, rather than building the foundations from scratch.",
-    trigger: "You get started",
+    trigger: "You start with Templates",
     actions: [
       "Prebuilt apps are already connected",
       "We tailor the details to your business",
@@ -138,12 +138,12 @@ export default function ValueProps() {
 
   return (
     <div>
-      <p className="text-xs md:text-sm font-semibold uppercase tracking-wide text-blue-700 mb-3">
-        Your Connected Business System
-      </p>
-      <h2 className="text-2xl md:text-4xl font-semibold text-gray-900 mb-4 md:mb-6">
-        Less busywork. Fewer mistakes. A system that fits how you work.
+      <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
+        One Connected Business System
       </h2>
+      <p className="text-lg md:text-2xl font-medium text-blue-700 mb-4 md:mb-6">
+        Less busywork. Fewer mistakes. A system that fits how you work.
+      </p>
       <p className="text-gray-600 max-w-2xl mx-auto mb-10 md:mb-12 text-sm md:text-base">
         Templates brings your customers, work, and finances into one adaptable system, so your
         team spends less time on repetitive tasks and your customers get a better experience.
@@ -215,15 +215,12 @@ export default function ValueProps() {
           <p className="text-gray-600 text-sm md:text-base">{current.body}</p>
 
           <div className="mt-6 rounded-xl bg-blue-50 border border-blue-100 p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-3">
-              In practice
-            </p>
             <div
               className={`inline-flex items-center rounded-full bg-blue-600 text-white text-sm font-medium px-4 py-1.5 transition-all duration-500 ${
                 revealed >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
               }`}
             >
-              When: {current.trigger}
+              {current.trigger}
             </div>
             <ul className="mt-3 ml-4 border-l-2 border-blue-200 pl-5 space-y-2">
               {current.actions.map((action, j) => (
@@ -242,31 +239,16 @@ export default function ValueProps() {
         </div>
       </div>
 
-      {/* The original diagram, tucked behind a toggle so it's still available */}
-      <details className="group mt-8 text-center">
-        <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-sm font-medium text-blue-700 hover:text-blue-800 [&::-webkit-details-marker]:hidden">
-          See the full connected system
-          <svg
-            className="h-4 w-4 transition-transform group-open:rotate-180"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <path d="M5 8l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </summary>
-        <div className="mt-6 flex justify-center">
-          <Image
-            src="/ConnectedBusiness5.png"
-            alt="Connected business diagram"
-            width={700}
-            height={400}
-            className="object-contain mx-auto rounded-3xl"
-          />
-        </div>
-      </details>
+      {/* The connected business diagram */}
+      <div className="mt-10 md:mt-12 flex justify-center">
+        <Image
+          src="/ConnectedBusiness5.png"
+          alt="Connected business diagram"
+          width={700}
+          height={400}
+          className="object-contain mx-auto rounded-3xl"
+        />
+      </div>
     </div>
   );
 }
