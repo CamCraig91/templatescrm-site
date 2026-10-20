@@ -183,7 +183,7 @@ export default function ValueProps() {
       </p>
       <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
         Templates joins your website, front end, back end, and outside tools into
-        one system. Enter information once and it flows everywhere it&apos;s needed.
+        one customizable system. Enter information once and it flows everywhere it&apos;s needed.
       </p>
 
       {/* The connected business diagram */}
