@@ -19,7 +19,7 @@ const outcomes = [
   },
   {
     title: "Better customer experience",
-    body: "Portals, online booking, and live updates for your customers.",
+    body: "Portals, online booking & payments, and live updates for your customers.",
   },
 ];
 
@@ -32,8 +32,8 @@ const items = [
     trigger: "Your process changes",
     actions: [
       "Add a custom field or approval step",
-      "Update the screen your team uses",
-      "Keep working, with nothing to replace",
+      "Update the action events on the screen",
+      "Enjoy a refined work flow process",
     ],
   },
   {
@@ -45,7 +45,7 @@ const items = [
       "Email the customer automatically",
       "Check the shipment status",
       "Take the payment",
-      "Send the invoice to QuickBooks",
+      "Sync the invoice to QuickBooks",
     ],
   },
   {
@@ -56,6 +56,7 @@ const items = [
     actions: [
       "It syncs to your accounting software",
       "Customer and payment details match both ways",
+      "A reminder is sent to outstanding balances",
       "No double entry, fewer corrections",
     ],
   },
@@ -76,9 +77,9 @@ const items = [
     body: "We also build external apps and websites that collect or display information and feed it back into your system: locations and geofences, points on a map, or live shipment status shown beside a customer's order.",
     trigger: "A crew member signs in on site",
     actions: [
-      "Their location is recorded",
+      "Work order status is set to In Progress",
       "It's pinned on the work map",
-      "Your team sees it in the office",
+      "Your team can make live comments on the work order that alert your office staff",
     ],
   },
 ];
@@ -183,7 +184,7 @@ export default function ValueProps() {
       </p>
       <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
         Templates joins your website, front end, back end, and outside tools into
-        one customizable system. Enter information once and it flows everywhere it&apos;s needed.
+        one customizable system. Information is entered once, and flows everywhere it&apos;s needed.
       </p>
 
       {/* The connected business diagram */}
