@@ -18,7 +18,9 @@ export default function HeroSection() {
 
           <p className="mt-6 text-lg text-slate-200 max-w-xl">
             Fully adaptable applications that automate your operations,
-            and seamlessly sync from your website to your accounting software.
+            and seamlessly sync from your website to your accounting software. 
+            Keeping you organized, saving you time
+            and money.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
