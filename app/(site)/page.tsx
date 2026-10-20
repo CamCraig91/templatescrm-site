@@ -538,7 +538,7 @@ export default function HomePage() {
                     Prebuilt, ready to use
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {["Google Workspace", "Google Maps", "Zapier", "DHL", "QuickBooks", "Xero"].map(
+                    {["Google Workspace", "Employee sign-in locations","Google Maps", "Zapier", "DHL", "QuickBooks", "Shipment status on your website","Xero"].map(
                       (t) => (
                         <span
                           key={t}
@@ -557,9 +557,7 @@ export default function HomePage() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {[
-                      "Employee sign-in locations",
                       "Maps and geofencing",
-                      "Shipment status on your website",
                       "Barcode scanning",
                       "POS payments",
                       "AI photo reading",
