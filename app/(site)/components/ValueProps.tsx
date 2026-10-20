@@ -191,8 +191,8 @@ export default function ValueProps() {
         <Image
           src="/ConnectedBusiness5.png"
           alt="A website, front end, back end, and integrations connected in one system"
-          width={700}
-          height={400}
+          width={580}
+          height={300}
           className="object-contain mx-auto rounded-3xl"
           priority
         />
