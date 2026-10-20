@@ -35,7 +35,7 @@ export default function Pillars() {
   const cardContent: Record<string, any> = {
     website: {
       title: "Your Digital Storefront",
-      desc: "A modern, responsive website fully connected to your business system.",
+      desc: "The face of your business. We'll work with you to create the image and customer experience that fits your business.",
       features: [
         "Website design",
         "Online forms",
@@ -47,7 +47,7 @@ export default function Pillars() {
     },
     frontend: {
       title: "Everything Your Customers See",
-      desc: "Your customer-facing experience, fully automated and connected.",
+      desc: "We'll help design your website to integrate with your applications. Customer Portal, Take Payments Online, Browse your Services, Reviews, every application can be routed through your site - giving you better control and improving customer experience.",
       features: [
         "Online booking",
         "Customer portal",
@@ -59,7 +59,7 @@ export default function Pillars() {
     },
     backend: {
       title: "Everything Your Team Uses",
-      desc: "Your internal operations, streamlined and automated.",
+      desc: "Your internal operations, streamlined and automated - connecting the work your employees do to your finances.",
       features: [
         "Work orders",
         "Scheduling",
@@ -71,7 +71,7 @@ export default function Pillars() {
     },
     integrations: {
       title: "Connect Your System to the World",
-      desc: "Powerful integrations that extend your business capabilities.",
+      desc: "Powerful integrations that extend your business capabilities, collating information from other softwares into one place - providing meaningful insights, and control over your data.",
       features: [
         "QuickBooks (accounting + taxes)",
         "Shipment tracking",
