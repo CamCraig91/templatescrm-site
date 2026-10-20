@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 
 import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
-import SectionDivider from "./components/SectionDivider";
 import ImageLightbox from "./components/ImageLightbox";
 import IndustriesGrid from "./components/IndustriesGrid";
 import ValueProps from "./components/ValueProps";
@@ -487,11 +486,9 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        <SectionDivider from="white" to="blue" variant="wave" />
-
         {/* CUSTOMIZATION (animated) */}
         <AnimatedSection>
-          <section className="py-20 bg-blue-50">
+          <section className="py-20 bg-blue-50 border-y border-blue-100">
             <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-12">
               <div className="flex-1">
                 <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
@@ -521,8 +518,6 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
-
-        <SectionDivider from="blue" to="white" variant="slant" />
 
         {/* INTEGRATIONS — prebuilt connections and custom-built tools in one section (animated) */}
         <AnimatedSection>
@@ -600,14 +595,12 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        <SectionDivider from="white" to="blue" variant="layers" />
-
         {/* WHY TEMPLATES — compared with staying put or choosing something else (animated).
             The faint dot texture is the backgroundImage below; lower the 0.12 to soften it. */}
         <AnimatedSection>
           <section
             id="why-templates"
-            className="py-20 bg-blue-50 scroll-mt-20"
+            className="py-20 bg-blue-50 border-y border-blue-100 scroll-mt-20"
             style={{
               backgroundImage: "radial-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px)",
               backgroundSize: "20px 20px",
@@ -741,8 +734,6 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        <SectionDivider from="blue" to="white" variant="curve" />
-
         {/* INDUSTRIES — on phones only the first MOBILE_INDUSTRY_COUNT cards show */}
         <AnimatedSection>
           <section className="py-20 bg-white">
@@ -760,12 +751,10 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        <SectionDivider from="white" to="blue" variant="wave" />
-
         {/* TESTIMONIALS — hidden until SHOW_TESTIMONIALS is true */}
         {SHOW_TESTIMONIALS && (
         <AnimatedSection>
-          <section className="py-20 bg-blue-50">
+          <section className="py-20 bg-blue-50 border-y border-blue-100">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-12 text-center">
                 What Clients Say
@@ -787,13 +776,11 @@ export default function HomePage() {
         </AnimatedSection>
         )}
 
-        {SHOW_TESTIMONIALS && <SectionDivider from="blue" to="white" variant="slantReverse" />}
-
         {/* VIDEO (animated) */}
         <AnimatedSection>
           <section
             className={`py-20 ${
-              SHOW_TESTIMONIALS ? "bg-white" : "bg-blue-50"
+              SHOW_TESTIMONIALS ? "bg-white" : "bg-blue-50 border-y border-blue-100"
             }`}
           >
             <div className="max-w-5xl mx-auto px-4 md:px-6 text-center">
@@ -822,17 +809,11 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        <SectionDivider
-          from={SHOW_TESTIMONIALS ? "white" : "blue"}
-          to={SHOW_TESTIMONIALS ? "blue" : "white"}
-          variant="slantReverse"
-        />
-
         {/* FAQ — native <details>, no client JS needed */}
         <AnimatedSection>
           <section
             className={`py-20 ${
-              SHOW_TESTIMONIALS ? "bg-blue-50" : "bg-white"
+              SHOW_TESTIMONIALS ? "bg-blue-50 border-y border-blue-100" : "bg-white"
             }`}
           >
             <div className="max-w-3xl mx-auto px-4 md:px-6">
@@ -868,8 +849,6 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
-
-        {SHOW_TESTIMONIALS && <SectionDivider from="blue" to="white" variant="curve" />}
 
         {/* FINAL CTA */}
         <section className={`bg-white ${SHOW_TESTIMONIALS ? "py-20" : "pt-4 pb-20"}`}>
