@@ -2,6 +2,7 @@ import HeroSection from "./components/HeroSection";
 import Pillars from "./components/Pillars";
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import AnimatedSection from "./components/AnimatedSection";
 import Curve from "./components/Curve";
@@ -83,26 +84,6 @@ const moreApps = [
   { name: "Payroll", slug: "payroll" },
 ];
 
-// Custom tools that live outside the CRM and feed data back into it
-const customTools = [
-  {
-    name: "Location and geofencing",
-    body: "Record where employees sign in, or mark points on a map, like trees for an arborist, and bring that data back into your records.",
-  },
-  {
-    name: "Maps on your website",
-    body: "Show saved coordinates and work locations on a map for your team or your customers.",
-  },
-  {
-    name: "Shipment status on your site",
-    body: "Enter the carrier and tracking number and status updates run on their own, shown beside the customer's order.",
-  },
-  {
-    name: "Less typing, more automation",
-    body: "Scan barcodes for inventory, take point-of-sale payments, or use AI to pick out leads from photographs so less is entered by hand.",
-  },
-];
-
 // Why Templates: the alternatives on the left, Templates highlighted last
 const comparison = [
   {
@@ -159,29 +140,6 @@ const offerings = [
     body: "Websites and portals built to work with your data, such as maps, order and shipment status, and online shops.",
     cta: "See web design",
     href: "/web-design",
-  },
-];
-
-const steps = [
-  {
-    title: "Discovery",
-    body: "We learn your workflows, pain points, and goals.",
-    img: "/discovery1.png",
-  },
-  {
-    title: "Design",
-    body: "We map out screens, workflows, and automations.",
-    img: "/design1.png",
-  },
-  {
-    title: "Build",
-    body: "We develop your custom Method components.",
-    img: "/build.png",
-  },
-  {
-    title: "Launch",
-    body: "We test, refine, and support your rollout.",
-    img: "/launch.png",
   },
 ];
 
@@ -261,6 +219,86 @@ const faqs = [
   },
 ];
 
+// Small icons for the "Why Templates?" cards
+function XBadge() {
+  return (
+    <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white ring-2 ring-white">
+      <svg className="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+        <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+}
+
+function IconFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
+      {children}
+      <XBadge />
+    </div>
+  );
+}
+
+const iconProps = {
+  className: "h-6 w-6",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+function SpreadsheetIcon() {
+  return (
+    <svg {...iconProps}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 10h18M3 15h18M9 4v16M15 4v16" />
+    </svg>
+  );
+}
+
+function FixedSoftwareIcon() {
+  return (
+    <svg {...iconProps}>
+      <rect x="3" y="4" width="18" height="13" rx="2" />
+      <path d="M3 8h18M6 12h5" />
+      <rect x="14" y="13" width="7" height="6" rx="1.5" fill="white" />
+      <path d="M15.5 13v-1.2a2 2 0 014 0V13" />
+    </svg>
+  );
+}
+
+function BlankPlatformIcon() {
+  return (
+    <svg {...iconProps}>
+      <rect x="3" y="4" width="18" height="16" rx="2" strokeDasharray="3 3" />
+      <path d="M12 9v6M9 12h6" />
+    </svg>
+  );
+}
+
+const comparisonIcons = [SpreadsheetIcon, FixedSoftwareIcon, BlankPlatformIcon];
+
+function TemplatesIcon() {
+  return (
+    <div className="relative mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-white">
+      <svg {...iconProps}>
+        <circle cx="6" cy="12" r="2.2" />
+        <circle cx="18" cy="6" r="2.2" />
+        <circle cx="18" cy="18" r="2.2" />
+        <path d="M8 11l8-4M8 13l8 4" />
+      </svg>
+      <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-400 text-white ring-2 ring-blue-600">
+        <svg className="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+          <path d="M4 10.5l4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="bg-white">
@@ -315,10 +353,10 @@ export default function HomePage() {
                   Book your free consultation
                 </Link>
                 <a
-                  href="#how-it-works"
+                  href="#why-templates"
                   className="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg font-medium text-center hover:bg-blue-100 transition"
                 >
-                  See how it works
+                  Why Templates?
                 </a>
               </div>
             </div>
@@ -481,7 +519,7 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        {/* INTEGRATIONS (animated) */}
+        {/* INTEGRATIONS — prebuilt connections and custom-built tools in one section (animated) */}
         <AnimatedSection>
           <section className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row-reverse items-center gap-12">
@@ -490,13 +528,58 @@ export default function HomePage() {
                   Integrations That Connect Your Entire Business
                 </h2>
                 <p className="text-gray-600 text-sm md:text-base mb-6">
-                  Templates connects to Google Workspace, Maps, Zapier, DHL, QuickBooks, Xero, and
-                  dozens of other systems, keeping all your external data synced automatically.
+                  Templates connects to the tools you already use, and we build the ones you
+                  don&apos;t have yet. Some connections are prebuilt and ready to go. Others are
+                  custom made to fit how you work, then feed their data back into your system.
                 </p>
-                <p className="text-gray-600 text-sm md:text-base">
-                  No more switching between apps or manually updating information. Everything
-                  stays synced, organized, and accessible.
-                </p>
+
+                <div className="mb-5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
+                    Prebuilt, ready to use
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Google Workspace", "Google Maps", "Zapier", "DHL", "QuickBooks", "Xero"].map(
+                      (t) => (
+                        <span
+                          key={t}
+                          className="rounded-full bg-blue-50 border border-blue-100 px-3 py-1 text-xs md:text-sm text-blue-800"
+                        >
+                          {t}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-2">
+                    Custom built for you
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "Employee sign-in locations",
+                      "Maps and geofencing",
+                      "Shipment status on your website",
+                      "Barcode scanning",
+                      "POS payments",
+                      "AI photo reading",
+                    ].map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-dashed border-blue-300 px-3 py-1 text-xs md:text-sm text-gray-700"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <Link
+                  href="/ai"
+                  className="text-sm font-medium text-blue-700 hover:text-blue-800 transition"
+                >
+                  See what AI can do for your data entry &rarr;
+                </Link>
               </div>
 
               <div className="flex-1">
@@ -512,55 +595,17 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        {/* CUSTOM TOOLS BEYOND THE CRM (animated) */}
+        {/* WHY TEMPLATES — compared with staying put or choosing something else (animated).
+            The faint dot texture is the backgroundImage below; lower the 0.12 to soften it. */}
         <AnimatedSection>
-          <section className="py-20 bg-blue-50 border-y border-blue-100">
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
-              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
-                Custom Tools That Reach Beyond the CRM
-              </h2>
-              <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-                We also build apps and websites that work with your data, then feed what they
-                collect back into your system.
-              </p>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {customTools.map((tool) => (
-                  <div
-                    key={tool.name}
-                    className="bg-white border border-blue-100 rounded-2xl p-6 text-left shadow-sm"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{tool.name}</h3>
-                    <p className="text-gray-600 text-sm">{tool.body}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* AI TEASER — links to the /ai page */}
-              <div className="mt-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-8 bg-white border border-blue-200 rounded-2xl p-6 md:p-8 text-left shadow-sm">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    AI to cut down manual entry
-                  </h3>
-                  <p className="text-gray-600 text-sm md:text-base">
-                    Method AI is available now, and we&apos;re working on using Google Gemini to
-                    read photos and pull out text, so less information has to be typed in by hand.
-                  </p>
-                </div>
-                <Link
-                  href="/ai"
-                  className="shrink-0 text-center px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
-                >
-                  Explore AI
-                </Link>
-              </div>
-            </div>
-          </section>
-        </AnimatedSection>
-
-        {/* WHY TEMPLATES — compared with staying put or choosing something else (animated) */}
-        <AnimatedSection>
-          <section className="py-20 bg-white">
+          <section
+            id="why-templates"
+            className="py-20 bg-blue-50 border-y border-blue-100 scroll-mt-20"
+            style={{
+              backgroundImage: "radial-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
+            }}
+          >
             <div className="max-w-6xl mx-auto px-4 md:px-6">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
                 Why Templates?
@@ -571,26 +616,40 @@ export default function HomePage() {
               </p>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {comparison.map((option) => (
-                  <div
-                    key={option.name}
-                    className="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-left"
-                  >
-                    <h3 className="text-base font-semibold text-gray-700 mb-4">{option.name}</h3>
-                    <ul className="space-y-3">
-                      {option.points.map((point) => (
-                        <li key={point} className="flex gap-2 text-sm text-gray-600">
-                          <span aria-hidden="true" className="text-gray-400">
-                            &ndash;
-                          </span>
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {comparison.map((option, i) => {
+                  const Icon = comparisonIcons[i];
+                  return (
+                    <div
+                      key={option.name}
+                      className="bg-white border border-gray-200 rounded-2xl p-6 text-left"
+                    >
+                      <IconFrame>
+                        <Icon />
+                      </IconFrame>
+                      <h3 className="text-base font-semibold text-gray-800 mb-4">{option.name}</h3>
+                      <ul className="space-y-3">
+                        {option.points.map((point) => (
+                          <li key={point} className="flex gap-2 text-sm text-gray-600">
+                            <svg
+                              className="mt-0.5 h-4 w-4 shrink-0 text-red-500"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              aria-hidden="true"
+                            >
+                              <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
+                            </svg>
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
 
                 <div className="bg-blue-600 rounded-2xl p-6 text-left shadow-lg">
+                  <TemplatesIcon />
                   <h3 className="text-base font-semibold text-white mb-4">Templates</h3>
                   <ul className="space-y-3">
                     {templatesPoints.map((point) => (
@@ -626,7 +685,7 @@ export default function HomePage() {
                   {offerings.map((o) => (
                     <div
                       key={o.name}
-                      className="flex flex-col bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left"
+                      className="flex flex-col bg-white border border-blue-100 rounded-2xl p-6 text-left shadow-sm"
                     >
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">{o.name}</h4>
                       <p className="text-gray-600 text-sm mb-6">{o.body}</p>
@@ -640,52 +699,14 @@ export default function HomePage() {
                   ))}
                 </div>
               </div>
-            </div>
-          </section>
-        </AnimatedSection>
 
-        {/* HOW IT WORKS — a real sequence, so the steps are numbered */}
-        <AnimatedSection>
-          <section
-            id="how-it-works"
-            className="py-20 bg-blue-50 border-y border-blue-100 scroll-mt-20"
-          >
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
-              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
-                From First Call to Going Live
-              </h2>
-              <p className="text-gray-600 text-center max-w-2xl mx-auto mb-14 text-sm md:text-base">
-                We handle the build from start to finish, so you always know what&apos;s happening
-                and what comes next.
-              </p>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-                {steps.map((step, i) => (
-                  <div key={step.title} className="text-center">
-                    <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full mx-auto mb-4 overflow-hidden bg-white border border-blue-100 shadow-sm">
-                      <Image
-                        src={step.img}
-                        alt={`${step.title} step`}
-                        fill
-                        sizes="160px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
-                      {i + 1}. {step.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm">{step.body}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* REQUIREMENTS NOTICE — kept in amber so it reads as an alert against the blue */}
+              {/* GOOD TO KNOW — a quiet note about what Templates runs on */}
               <div
                 role="note"
-                className="mt-14 max-w-3xl mx-auto flex gap-4 rounded-2xl border border-amber-300 bg-amber-50 px-6 py-5 text-left shadow-sm"
+                className="mt-10 max-w-3xl mx-auto flex gap-3 rounded-2xl border border-blue-200 bg-blue-100/60 px-5 py-4 text-left"
               >
                 <svg
-                  className="mt-0.5 h-6 w-6 shrink-0 text-amber-600"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-blue-600"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -695,24 +716,17 @@ export default function HomePage() {
                   <circle cx="12" cy="12" r="9" />
                   <path d="M12 11v5M12 8h.01" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <div>
-                  <p className="font-semibold text-amber-900">
-                    Before you start: a Method:CRM account is required
+                <div className="text-sm text-blue-950/80">
+                  <p className="font-semibold text-blue-950">Good to know: Templates runs on Method:CRM</p>
+                  <p className="mt-1">
+                    Templates applications are installed in your Method:CRM account, so you&apos;ll
+                    need a Method subscription. Only Method&apos;s base fee is required, and it is
+                    billed by Method. You won&apos;t need Method&apos;s additional packs or basic
+                    applications when you use Templates applications.
                   </p>
-                  <p className="mt-1 text-sm text-amber-900/80">
-                    Templates applications are installed inside Method:CRM, so you&apos;ll need an
-                    active Method subscription. Method&apos;s base fee is required, and it is
-                    billed by Method, separately from Templates.
-                  </p>
-                  <p className="mt-2 text-sm text-amber-900/80">
-                    <span className="font-medium">
-                      You don&apos;t need Method&apos;s additional packs or its basic applications.
-                    </span>{" "}
-                    They aren&apos;t necessary when you use Templates applications.
-                  </p>
-                  <p className="mt-2 text-sm text-amber-900/80">
-                    To use the two-way accounting sync, you&apos;ll also need a QuickBooks account
-                    (Xero works too). We&apos;ll help you get set up during your free consultation.
+                  <p className="mt-2">
+                    For the accounting sync, you&apos;ll also need QuickBooks (Xero works too). We
+                    can help you get set up in your free consultation.
                   </p>
                 </div>
               </div>
