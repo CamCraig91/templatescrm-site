@@ -182,8 +182,7 @@ export default function ValueProps() {
         Less busywork. Fewer mistakes. A system that fits how you work.
       </p>
       <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
-        Most businesses run on a patchwork: a website here, spreadsheets there, accounting
-        somewhere else. Templates joins your website, front end, back end, and outside tools into
+        Templates joins your website, front end, back end, and outside tools into
         one system. Enter information once and it flows everywhere it&apos;s needed.
       </p>
 
