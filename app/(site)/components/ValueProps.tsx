@@ -66,7 +66,7 @@ const items = [
     body: "Method provides the platform. Templates provides finished applications with preferred features already built in, connected to each other and to outside tools. You start with working software and fine-tune it, rather than building the foundations from scratch.",
     trigger: "You start with Templates",
     actions: [
-      "Prebuilt apps are already connected",
+      "Prebuilt apps are installed",
       "We tailor the details to your business",
       "You skip the ground-up build",
     ],
