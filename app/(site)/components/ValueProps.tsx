@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 // The four outcomes customers get. Edit the wording here.
@@ -23,7 +23,7 @@ const outcomes = [
   },
 ];
 
-// How we get there. Each item shows an example "when this happens, that happens" flow.
+// How we get there. Each item shows what happens, then the actions that follow.
 const items = [
   {
     label: "Adapts to you",
@@ -83,7 +83,11 @@ const items = [
   },
 ];
 
-const AUTOPLAY_MS = 8000;
+// Timing (milliseconds). Lower these to speed the animation up.
+const FIRST_DELAY_MS = 150; // before the first line appears
+const STEP_MS = 320; // gap between each line appearing
+const DWELL_MS = 4500; // how long a finished panel stays before moving on
+const HOLD_AFTER_CLICK_MS = 12000; // autoplay stays off this long after a visitor clicks a tab
 
 function CheckIcon() {
   return (
@@ -103,18 +107,43 @@ function CheckIcon() {
 export default function ValueProps() {
   const [active, setActive] = useState(0);
   const [revealed, setRevealed] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [interacted, setInteracted] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [held, setHeld] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const total = items[active].actions.length;
+  const finished = revealed >= total + 1;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduceMotion(mq.matches);
   }, []);
 
-  // Reveal the trigger, then each action in turn, whenever the selected item changes
+  // Only run while the section is on screen, so the panel never advances unseen
   useEffect(() => {
-    const total = items[active].actions.length;
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.2,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (holdTimer.current) clearTimeout(holdTimer.current);
+    };
+  }, []);
+
+  // Show the first line, then each action in turn, whenever the selected item changes
+  useEffect(() => {
     if (reduceMotion) {
       setRevealed(total + 1);
       return;
@@ -122,32 +151,53 @@ export default function ValueProps() {
     setRevealed(0);
     const timers: ReturnType<typeof setTimeout>[] = [];
     for (let i = 0; i <= total; i++) {
-      timers.push(setTimeout(() => setRevealed(i + 1), 250 + i * 450));
+      timers.push(setTimeout(() => setRevealed(i + 1), FIRST_DELAY_MS + i * STEP_MS));
     }
     return () => timers.forEach(clearTimeout);
-  }, [active, reduceMotion]);
+  }, [active, total, reduceMotion]);
 
-  // Rotate through the items until the visitor takes over (hover, focus, or click)
+  // Once a panel has finished showing, wait a moment and move to the next one
   useEffect(() => {
-    if (reduceMotion || paused || interacted) return;
-    const t = setInterval(() => setActive((a) => (a + 1) % items.length), AUTOPLAY_MS);
-    return () => clearInterval(t);
-  }, [reduceMotion, paused, interacted]);
+    if (reduceMotion || !inView || held || !finished) return;
+    const t = setTimeout(() => setActive((a) => (a + 1) % items.length), DWELL_MS);
+    return () => clearTimeout(t);
+  }, [reduceMotion, inView, held, finished, active]);
+
+  function choose(i: number) {
+    setActive(i);
+    // Pause autoplay briefly so the visitor can read, then let it carry on
+    setHeld(true);
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setHeld(false), HOLD_AFTER_CLICK_MS);
+  }
 
   const current = items[active];
 
   return (
-    <div>
-      <h2 className="text-3xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
+    <div ref={rootRef}>
+      <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
         One Connected Business System
       </h2>
-      <p className="text-lg md:text-2xl font-medium text-blue-700 mb-4 md:mb-6">
+      <p className="text-lg md:text-2xl font-medium text-blue-700 mb-4 md:mb-5">
         Less busywork. Fewer mistakes. A system that fits how you work.
       </p>
-      <p className="text-gray-600 max-w-2xl mx-auto mb-10 md:mb-12 text-sm md:text-base">
-        Templates brings your customers, work, and finances into one adaptable system, so your
-        team spends less time on repetitive tasks and your customers get a better experience.
+      <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
+        Most businesses run on a patchwork: a website here, spreadsheets there, accounting
+        somewhere else. Templates joins your website, front end, back end, and outside tools into
+        one system. Enter information once and it flows everywhere it&apos;s needed.
       </p>
+
+      {/* The connected business diagram */}
+      <div className="mt-8 md:mt-10 mb-10 md:mb-12 flex justify-center">
+        <Image
+          src="/ConnectedBusiness5.png"
+          alt="A website, front end, back end, and integrations connected in one system"
+          width={700}
+          height={400}
+          className="object-contain mx-auto rounded-3xl"
+          priority
+        />
+      </div>
 
       {/* The four outcomes */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-10 md:mb-12 text-left">
@@ -162,16 +212,7 @@ export default function ValueProps() {
         ))}
       </div>
 
-      {/* How we get there */}
-      <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-5">How we get there</h3>
-
-      <div
-        className="flex flex-col md:flex-row gap-4 md:gap-6 text-left"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
-        onBlur={() => setPaused(false)}
-      >
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 text-left">
         <div
           role="tablist"
           aria-label="How Templates helps"
@@ -183,10 +224,7 @@ export default function ValueProps() {
               type="button"
               role="tab"
               aria-selected={i === active}
-              onClick={() => {
-                setInteracted(true);
-                setActive(i);
-              }}
+              onClick={() => choose(i)}
               className={`flex items-center gap-3 rounded-xl border px-4 py-2.5 md:py-3 text-sm font-medium text-left transition focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${
                 i === active
                   ? "bg-white border-blue-300 shadow-sm text-gray-900"
@@ -216,7 +254,7 @@ export default function ValueProps() {
 
           <div className="mt-6 rounded-xl bg-blue-50 border border-blue-100 p-5">
             <div
-              className={`inline-flex items-center rounded-full bg-blue-600 text-white text-sm font-medium px-4 py-1.5 transition-all duration-500 ${
+              className={`inline-flex items-center rounded-full bg-blue-600 text-white text-sm font-medium px-4 py-1.5 transition-all duration-300 ${
                 revealed >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
               }`}
             >
@@ -226,7 +264,7 @@ export default function ValueProps() {
               {current.actions.map((action, j) => (
                 <li
                   key={action}
-                  className={`flex items-center gap-2 text-sm text-gray-700 transition-all duration-500 ${
+                  className={`flex items-center gap-2 text-sm text-gray-700 transition-all duration-300 ${
                     revealed >= j + 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                   }`}
                 >
@@ -237,17 +275,6 @@ export default function ValueProps() {
             </ul>
           </div>
         </div>
-      </div>
-
-      {/* The connected business diagram */}
-      <div className="mt-10 md:mt-12 flex justify-center">
-        <Image
-          src="/ConnectedBusiness5.png"
-          alt="Connected business diagram"
-          width={700}
-          height={400}
-          className="object-contain mx-auto rounded-3xl"
-        />
       </div>
     </div>
   );
