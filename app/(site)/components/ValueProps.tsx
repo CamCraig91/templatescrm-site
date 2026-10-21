@@ -184,17 +184,7 @@ export default function ValueProps() {
         one customizable system - resulting in less work and errors, while offering the capabilities of big box softwares. 
       </p>
 
-      {/* The connected business diagram */}
-      <div className="mt-8 md:mt-10 mb-10 md:mb-12 flex justify-center">
-        <Image
-          src="/ConnectedBusiness5.png"
-          alt="A website, front end, back end, and integrations connected in one system"
-          width={580}
-          height={300}
-          className="object-contain mx-auto rounded-3xl"
-          priority
-        />
-      </div>
+    
 
       {/* The four outcomes */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-10 md:mb-12 text-left">
