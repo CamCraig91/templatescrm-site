@@ -176,15 +176,12 @@ export default function ValueProps() {
 
   return (
     <div ref={rootRef}>
-      <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
+      <h2 className="text-3xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
         One Connected Business System
       </h2>
-      <p className="text-lg md:text-2xl font-medium text-blue-700 mb-4 md:mb-5">
-        Less busywork. Fewer mistakes. A system that fits how you work.
-      </p>
       <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
         Templates joins your website, front end, back end, and outside tools into
-        one customizable system. Information is entered once, and flows everywhere it&apos;s needed.
+        one customizable system - resulting in less work and errors, while offering the capabilities of big box softwares. 
       </p>
 
       {/* The connected business diagram */}
