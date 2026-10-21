@@ -45,17 +45,15 @@ export default function HeroSection() {
         {/* RIGHT SIDE IMAGE */}
         <div className="hidden md:block flex-1 flex justify-center md:justify-end">
           <div className="w-full max-w-xl h-[420px] md:h-[500px]">
-            <Image
-              src="/HeroImage7.jpg"
-              alt="Hero section illustration"
-              width={900}
-              height={700}
-              className="rounded-xl shadow-xl object-cover w-full h-full"
-              priority
-            />
-          </div>
-        </div>
-
+        <Image
+          src="/ConnectedBusiness5.png"
+          alt="A website, front end, back end, and integrations connected in one system"
+          width={580}
+          height={300}
+          className="object-contain shadow-1x h-full w-full mx-auto rounded-3xl"
+          priority
+        />
+      </div></div>
       </div>
     </section>
   );
