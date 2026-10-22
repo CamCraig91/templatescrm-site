@@ -21,7 +21,7 @@ export const metadata = {
 // rhythm switch back automatically)
 const SHOW_TESTIMONIALS = false;
 
-// App pages live at /<slug> (e.g. /work-orders). Change this one function if that ever changes
+// App pages liv at /<slug> (e.g. /work-orders). Change this one function if that ever changes
 const appPath = (slug: string) => `/${slug}`;
 
 // How many cards show on phones before the rest are tucked away.
