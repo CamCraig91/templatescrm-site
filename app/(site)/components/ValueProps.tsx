@@ -8,7 +8,7 @@ const items = [
   {
     label: "Adapts to you",
     headline: "Software that changes to fit your business, not the other way around",
-    body: "Your information stays in one place and adapts as your process changes.",
+    body: "Most management software forces you to change your workflow, or to patch the gaps with other tools. Templates keeps your information in one place and adapts to how you work today, and again as your business changes.",
     trigger: "Your process changes",
     actions: [
       "Add a custom field or approval step",
@@ -18,8 +18,8 @@ const items = [
   },
   {
     label: "One home for everything",
-    headline: "Your operations and finances in one place",
-    body: "Every piece of work tracked clearly, and triggers do the busywork for you.",
+    headline: "Your operations and finances in one standard place",
+    body: "We create applications for each part of your business, so every piece of work is tracked clearly and consistently. Spreadsheets that used to be copied into several places live in one, and triggers do real work for you.",
     trigger: "A work order is completed",
     actions: [
       "Email the customer automatically",
@@ -31,7 +31,7 @@ const items = [
   {
     label: "Books that stay accurate",
     headline: "Two-way sync with QuickBooks and Xero",
-    body: "Customers, invoices, and payments stay current on both sides. Keep your accounting system, with no migration.",
+    body: "Customers, invoices, and payments stay current on both sides, so your books are accurate and you spend less time fixing and updating accounts. Keep QuickBooks or Xero as your accounting system, with no migration to a new one.",
     trigger: "An invoice is created",
     actions: [
       "It syncs to your accounting software",
@@ -43,7 +43,7 @@ const items = [
   {
     label: "Working from day one",
     headline: "Prebuilt, connected apps instead of a blank canvas",
-    body: "Method is the platform, a blank canvas on its own. Templates is the finished work on top, so you fine-tune instead of building from scratch.",
+    body: "Method provides the platform, but on its own it is a blank canvas. Templates provides finished applications with preferred features already built in, connected to each other and to outside tools. You start with working software and fine-tune it, rather than building the foundations from scratch.",
     trigger: "You start with Templates",
     actions: [
       "Prebuilt apps are installed",
@@ -55,7 +55,7 @@ const items = [
   {
     label: "Tools beyond the CRM",
     headline: "Custom apps and websites that work with your data",
-    body: "Maps, geofences, and live shipment status that feed back into your system.",
+    body: "We also build external apps and websites that collect or display information and feed it back into your system: locations and geofences, points on a map, or live shipment status shown beside a customer's order.",
     trigger: "A crew member signs in on site",
     actions: [
       "Work order status is set to In Progress",
@@ -182,11 +182,12 @@ export default function ValueProps() {
   return (
     <div ref={rootRef}>
       <h2 className="text-3xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
-        One <Hl>Connected</Hl> Business System
+        <Hl>One Connected</Hl> Business System
       </h2>
       <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg mb-8 md:mb-10">
-        Your website, apps, and outside tools in one customizable system. Less work, fewer
-        errors, and you keep QuickBooks.
+        Templates joins your website, front end, back end, and outside tools into
+        one customizable system, resulting in less work and fewer errors. You get the
+        capabilities of big-box software while keeping QuickBooks as your books.
       </p>
 
       <div className="flex flex-col md:flex-row gap-4 md:gap-6 text-left">
@@ -222,7 +223,7 @@ export default function ValueProps() {
 
         <div
           role="tabpanel"
-          className="flex-1 bg-white border border-blue-100 rounded-2xl shadow-sm p-6 md:p-8 min-h-[22rem] md:min-h-[19rem]"
+          className="flex-1 bg-white border border-blue-100 rounded-2xl shadow-sm p-6 md:p-8 min-h-[26rem] md:min-h-[24rem]"
         >
           <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
             {current.headline}
