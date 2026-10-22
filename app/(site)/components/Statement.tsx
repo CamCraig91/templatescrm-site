@@ -36,13 +36,22 @@ export const darkTexture = {
 };
 
 // The highlighted word with its underline. Colour it with a text-* class via className.
-export function Accent({ children, className = "" }: { children: ReactNode; className?: string }) {
+// underlineClass can recolour just the underline, e.g. "text-yellow-400" under dark text.
+export function Accent({
+  children,
+  className = "",
+  underlineClass = "",
+}: {
+  children: ReactNode;
+  className?: string;
+  underlineClass?: string;
+}) {
   return (
     <span className={`relative inline-block ${className}`}>
       {children}
       <svg
         aria-hidden="true"
-        className="absolute left-0 -bottom-1 md:-bottom-2 h-2 md:h-3 w-full"
+        className={`absolute left-0 -bottom-1 md:-bottom-2 h-2 md:h-3 w-full ${underlineClass}`}
         viewBox="0 0 200 12"
         preserveAspectRatio="none"
         fill="none"
