@@ -50,7 +50,7 @@ export default function HeroSection() {
           alt="A website, front end, back end, and integrations connected in one system"
           width={580}
           height={300}
-          className="object-contain shadow-1x h-full w-full mx-auto rounded-3xl"
+          className="object-contain shadow-1x rounded-3xl"
           priority
         />
       </div></div>
