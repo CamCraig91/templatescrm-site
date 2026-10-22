@@ -1,34 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-
-// The four outcomes customers get. Edit the wording here.
-const outcomes = [
-  {
-    title: "Less repetitive work",
-    body: "Enter information once and let automations handle the rest.",
-  },
-  {
-    title: "Fewer errors",
-    body: "One source of truth, kept in step with your accounting.",
-  },
-  {
-    title: "More capability",
-    body: "Do things your current software simply can't.",
-  },
-  {
-    title: "Better customer experience",
-    body: "Portals, online booking & payments, and live updates for your customers.",
-  },
-];
+import type { ReactNode } from "react";
 
 // How we get there. Each item shows what happens, then the actions that follow.
 const items = [
   {
     label: "Adapts to you",
     headline: "Software that changes to fit your business, not the other way around",
-    body: "Most management software forces you to change your workflow, or to patch the gaps with other tools. Templates keeps your information in one place and adapts to how you work today, and again as your business changes.",
+    body: "Your information stays in one place and adapts as your process changes.",
     trigger: "Your process changes",
     actions: [
       "Add a custom field or approval step",
@@ -38,8 +18,8 @@ const items = [
   },
   {
     label: "One home for everything",
-    headline: "Your operations and finances in one standard place",
-    body: "We create applications for each part of your business, so every piece of work is tracked clearly and consistently. Spreadsheets that used to be copied into several places live in one, and triggers do real work for you.",
+    headline: "Your operations and finances in one place",
+    body: "Every piece of work tracked clearly, and triggers do the busywork for you.",
     trigger: "A work order is completed",
     actions: [
       "Email the customer automatically",
@@ -51,7 +31,7 @@ const items = [
   {
     label: "Books that stay accurate",
     headline: "Two-way sync with QuickBooks and Xero",
-    body: "Customers, invoices, and payments stay current on both sides, so your books are accurate and you spend less time fixing and updating accounts.",
+    body: "Customers, invoices, and payments stay current on both sides. Keep your accounting system, with no migration.",
     trigger: "An invoice is created",
     actions: [
       "It syncs to your accounting software",
@@ -63,10 +43,11 @@ const items = [
   {
     label: "Working from day one",
     headline: "Prebuilt, connected apps instead of a blank canvas",
-    body: "Method provides the platform. Templates provides finished applications with preferred features already built in, connected to each other and to outside tools. You start with working software and fine-tune it, rather than building the foundations from scratch.",
+    body: "Method is the platform, a blank canvas on its own. Templates is the finished work on top, so you fine-tune instead of building from scratch.",
     trigger: "You start with Templates",
     actions: [
       "Prebuilt apps are installed",
+      "We help bring in your existing data",
       "We tailor the details to your business",
       "You skip the ground-up build",
     ],
@@ -74,7 +55,7 @@ const items = [
   {
     label: "Tools beyond the CRM",
     headline: "Custom apps and websites that work with your data",
-    body: "We also build external apps and websites that collect or display information and feed it back into your system: locations and geofences, points on a map, or live shipment status shown beside a customer's order.",
+    body: "Maps, geofences, and live shipment status that feed back into your system.",
     trigger: "A crew member signs in on site",
     actions: [
       "Work order status is set to In Progress",
@@ -89,6 +70,30 @@ const FIRST_DELAY_MS = 150; // before the first line appears
 const STEP_MS = 320; // gap between each line appearing
 const DWELL_MS = 4500; // how long a finished panel stays before moving on
 const HOLD_AFTER_CLICK_MS = 12000; // autoplay stays off this long after a visitor clicks a tab
+
+// Hand-drawn style yellow underline for a key word (decorative)
+function Hl({ children }: { children: ReactNode }) {
+  return (
+    <span className="relative inline-block">
+      {children}
+      <svg
+        aria-hidden="true"
+        className="absolute left-0 -bottom-1 md:-bottom-2 h-2 md:h-3 w-full text-yellow-400"
+        viewBox="0 0 200 12"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <path
+          d="M2 9C45 3 125 3 198 7"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+    </span>
+  );
+}
 
 function CheckIcon() {
   return (
@@ -177,27 +182,12 @@ export default function ValueProps() {
   return (
     <div ref={rootRef}>
       <h2 className="text-3xl md:text-6xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4">
-        One Connected Business System
+        One <Hl>Connected</Hl> Business System
       </h2>
-      <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
-        Templates joins your website, front end, back end, and outside tools into
-        one customizable system - resulting in less work and errors, while offering the capabilities of big box softwares. 
+      <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg mb-8 md:mb-10">
+        Your website, apps, and outside tools in one customizable system. Less work, fewer
+        errors, and you keep QuickBooks.
       </p>
-
-    
-
-      {/* The four outcomes */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-10 md:mb-12 text-left">
-        {outcomes.map((o) => (
-          <div
-            key={o.title}
-            className="bg-white border border-blue-100 rounded-2xl p-4 md:p-5 shadow-sm"
-          >
-            <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-1">{o.title}</h3>
-            <p className="text-gray-600 text-xs md:text-sm">{o.body}</p>
-          </div>
-        ))}
-      </div>
 
       <div className="flex flex-col md:flex-row gap-4 md:gap-6 text-left">
         <div
@@ -232,7 +222,7 @@ export default function ValueProps() {
 
         <div
           role="tabpanel"
-          className="flex-1 bg-white border border-blue-100 rounded-2xl shadow-sm p-6 md:p-8 min-h-[26rem] md:min-h-[24rem]"
+          className="flex-1 bg-white border border-blue-100 rounded-2xl shadow-sm p-6 md:p-8 min-h-[22rem] md:min-h-[19rem]"
         >
           <h4 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
             {current.headline}
