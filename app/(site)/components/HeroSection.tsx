@@ -43,8 +43,8 @@ export default function HeroSection() {
         </div>
 
         {/* RIGHT SIDE IMAGE */}
-        <div className="hidden md:block flex-1 flex justify-center md:justify-end rounded-3xl">
-          <div className="w-full max-w-xl h-[420px] md:h-[500px]">
+        <div className="hidden md:block flex-1 flex justify-center md:justify-end ">
+          <div className="w-full max-w-xl h-[420px] md:h-[500px] rounded-3xl">
         <Image
           src="/ConnectedBusiness5.png"
           alt="A website, front end, back end, and integrations connected in one system"
