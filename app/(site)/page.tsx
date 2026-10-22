@@ -391,7 +391,7 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-10">
             <div className="w-full max-w-3xl lg:max-w-xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
               <div className="mb-4 flex items-center gap-3">
-                <Image src="/logo1.png" alt="" width={64} height={64} className="h-9 w-auto md:h-10" />
+                <Image src="/TemplatesFavicon.png" alt="" width={64} height={64} className="h-9 w-auto md:h-10" />
                 <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
                   What is Templates?
                 </h2>
@@ -908,7 +908,7 @@ export default function HomePage() {
         <section className={`bg-white ${SHOW_TESTIMONIALS ? "py-20" : "pt-4 pb-20"}`}>
           <div className="max-w-5xl mx-auto px-4 md:px-6">
             <div className="bg-blue-600 rounded-3xl px-8 md:px-16 py-14 md:py-16 text-center shadow-lg">
-              <Image src="/logowhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-5 h-8 w-auto" />
+              <Image src="/TemplatesLogoWhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-5 h-8 w-auto" />
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
                 Ready to run your business from one connected system?
               </h2>
