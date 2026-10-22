@@ -97,28 +97,26 @@ const comparison = [
   {
     name: "Fixed off-the-shelf software",
     points: [
-      "You adapt your workflow to the software",
-      "Can mean replacing QuickBooks and a heavy data migration",
-      "Accounting sync can be one-way or limited",
-      "Hard to change as your business grows",
+      "You adapt to the software",
+      "Can mean replacing QuickBooks and a heavy migration",
+      "Hard to change as you grow",
     ],
   },
   {
     name: "A blank platform",
     points: [
-      "Method on its own is a blank canvas, with basic apps that need customizing first",
+      "A blank canvas that needs building first",
       "You pay to build the foundations",
-      "Slow to get to a working system",
+      "Slow to a working system",
     ],
   },
 ];
 
 const templatesPoints = [
   "One adaptable home for operations and finances",
-  "Changes with your business, now and later",
   "Prebuilt, connected apps that work out of the box",
   "Keep QuickBooks or Xero, with two-way sync",
-  "Easier move-over: your books stay put and we help bring your data across",
+  "Easy move-over: books stay put, we bring your data",
   "Custom tools for maps, tracking, and more",
 ];
 
@@ -127,19 +125,19 @@ const templatesPoints = [
 const offerings = [
   {
     name: "Application subscription",
-    body: "Subscribe to the Templates applications you need. Each one is prebuilt, connected to the others, and ready to use.",
+    body: "Prebuilt, connected apps, ready to use.",
     cta: "Browse applications",
     href: "/apps",
   },
   {
     name: "Customization",
-    body: "Tailor screens, workflows, and automations to your business. Choose hourly or pay-per-use work, or a lower-rate dedicated service plan for ongoing support.",
+    body: "Tailor screens, workflows, and automations. Hourly, pay-per-use, or a lower-rate service plan.",
     cta: "See customization",
     href: "/customization",
   },
   {
     name: "Web design",
-    body: "Websites and portals built to work with your data, such as maps, order and shipment status, and online shops.",
+    body: "Websites and portals that work with your data: maps, order status, online shops.",
     cta: "See web design",
     href: "/web-design",
   },
@@ -168,7 +166,7 @@ const industries = [
   },
   {
     name: "Retail and wholesale",
-    body: "Items, orders, and invoices that flow into QuickBooks or Xero automatically.",
+    body: "Items, orders, and invoices that flow into QuickBooks or Xero.",
   },
 ];
 
@@ -301,6 +299,60 @@ function TemplatesIcon() {
   );
 }
 
+// Hand-drawn style yellow underline for a key word in a heading (decorative)
+function Hl({ children }: { children: ReactNode }) {
+  return (
+    <span className="relative inline-block">
+      {children}
+      <svg
+        aria-hidden="true"
+        className="absolute left-0 -bottom-1 h-2 w-full text-yellow-400"
+        viewBox="0 0 200 12"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <path
+          d="M2 9C45 3 125 3 198 7"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+    </span>
+  );
+}
+
+// Hand-drawn style yellow arrow that points down. Size, flip and tilt it with className,
+// e.g. "h-16 w-16 -scale-x-100 rotate-6".
+function ScribbleArrow({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={`pointer-events-none text-yellow-400 ${className}`}
+      viewBox="0 0 100 100"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 8C62 10 82 34 74 78" />
+      <path d="M56 62L74 80L90 60" />
+    </svg>
+  );
+}
+
+// An arrow that straddles the seam between two sections, to lead the eye down the page.
+// Position it sideways with className, e.g. "left-[14%]" or "right-[14%] -scale-x-100".
+function SeamArrow({ className = "" }: { className?: string }) {
+  return (
+    <div aria-hidden="true" className="relative z-10 hidden h-0 md:block">
+      <ScribbleArrow className={`absolute -top-10 h-20 w-20 ${className}`} />
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="bg-white">
@@ -334,18 +386,14 @@ export default function HomePage() {
               </h2>
 
               <p className="text-gray-600 mb-4 text-sm md:text-base">
-                Templates is a suite of customizable business applications built inside
-                Method:CRM. It manages your financial, customer, work, and employee data in one
-                unified system, replacing spreadsheets, disconnected tools, and manual
-                processes.
+                A suite of customizable business apps built inside Method:CRM. Customers, work,
+                finances, and staff in one connected system, replacing spreadsheets and manual
+                steps.
               </p>
 
               <p className="text-gray-600 mb-6 text-sm md:text-base">
-                Powered by Method&apos;s platform, every workflow you create syncs in both
-                directions with QuickBooks, so you keep your accounting system and avoid double
-                entry. As your
-                business grows, Templates adapts with you. Every screen, automation, and
-                workflow can be tailored to fit your evolving needs.
+                Every workflow syncs both ways with QuickBooks, so you keep your accounting and
+                skip double entry. As you grow, every screen and automation adapts.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -365,7 +413,14 @@ export default function HomePage() {
             </div>
 
             {/* Home screen image (hidden on phones). Remove rounded-3xl for flat corners. */}
-            <div className="hidden md:block w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
+            <div className="relative hidden md:block w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-14 left-3 hidden items-start gap-1 lg:flex"
+              >
+                <span className="-rotate-3 pt-1 text-sm italic text-gray-500">Click to enlarge</span>
+                <ScribbleArrow className="h-14 w-14" />
+              </div>
               <ImageLightbox
                 src="/homescreen.png"
                 alt="Templates home screen"
@@ -387,12 +442,10 @@ export default function HomePage() {
         <section className="w-full py-10 md:py-12 bg-blue-50">
           <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-              Two‑way sync with QuickBooks — no double entry, ever.
+              Two‑way sync with QuickBooks — <Hl>no double entry</Hl>, ever.
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-8 md:mb-10 text-sm md:text-base">
-              Your website, workflows, and operations stay aligned with your accounting. Keep
-              QuickBooks or Xero as your books: changes flow in both directions, with no
-              accounting migration and no one-way exports to untangle.
+              Keep QuickBooks or Xero as your books. Changes flow both ways, with no migration.
             </p>
 
             <div className="w-full max-w-3xl mx-auto">
@@ -417,12 +470,12 @@ export default function HomePage() {
           <section className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 text-center">
-                Prebuilt Applications for Every Part of Your Business
+                Prebuilt Apps for <Hl>Every Part</Hl> of Your Business
               </h2>
 
               <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-                Method on its own is a blank canvas. These applications are the finished foundation
-                built on it, ready to use and easy to tailor to the way your business works.
+                Method on its own is a blank canvas. These apps are the finished foundation: ready
+                to use, easy to tailor.
               </p>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -441,7 +494,7 @@ export default function HomePage() {
               </div>
 
               <p className="text-gray-600 text-center mt-12 mb-4 text-sm">
-                Plus more applications, all ready to customize:
+                Plus more, all customizable:
               </p>
 
               <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -478,23 +531,20 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
+        <SeamArrow className="left-[14%]" />
+
         {/* CUSTOMIZATION (animated) */}
         <AnimatedSection>
           <section className="py-20 bg-blue-50 border-y border-blue-100">
             <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-12">
               <div className="flex-1">
                 <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-                  Customized to Match Your Exact Workflows
+                  Customized to Match <Hl>Your Exact Workflows</Hl>
                 </h2>
-                <p className="text-gray-600 text-sm md:text-base mb-6">
-                  Every business operates differently, and your system should reflect that. We
-                  tailor each application to your processes, data structure, automation rules, and
-                  customer experience.
-                </p>
                 <p className="text-gray-600 text-sm md:text-base">
-                  Whether you need custom fields, workflow logic, approval steps, automation
-                  triggers, or industry‑specific UI changes, we adapt Templates to fit your
-                  business perfectly. Because the foundations are already built, your customization budget goes toward what makes your business unique, not rebuilding the basics.
+                  Custom fields, workflow logic, approvals, automations, industry layouts. We
+                  tailor each app to how you work, so your budget goes to what makes you unique,
+                  not rebuilding the basics.
                 </p>
               </div>
 
@@ -511,6 +561,8 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
+        <SeamArrow className="right-[14%] -scale-x-100" />
+
         {/* INTEGRATIONS — prebuilt connections and custom-built tools in one section (animated) */}
         <AnimatedSection>
           <section className="py-20 bg-white">
@@ -520,9 +572,8 @@ export default function HomePage() {
                   Integrations That Connect Your Entire Business
                 </h2>
                 <p className="text-gray-600 text-sm md:text-base mb-6">
-                  Templates connects to the tools you already use, and we build the ones you
-                  don&apos;t have yet. Some connections are prebuilt and ready to go. Others are
-                  custom made to fit how you work, then feed their data back into your system.
+                  We connect the tools you already use and build the ones you don&apos;t. Everything
+                  feeds back into one system.
                 </p>
 
                 <div className="mb-5">
@@ -585,6 +636,8 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
+        <SeamArrow className="left-1/2 -translate-x-1/2" />
+
         {/* WHY TEMPLATES — compared with staying put or choosing something else (animated).
             The faint dot texture is the backgroundImage below; lower the 0.12 to soften it. */}
         <AnimatedSection>
@@ -598,11 +651,11 @@ export default function HomePage() {
           >
             <div className="max-w-6xl mx-auto px-4 md:px-6">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
-                Why Templates?
+                Why <Hl>Templates</Hl>?
               </h2>
               <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-                Whether you&apos;re keeping what you have, weighing up big-name CRMs and suites, or
-                starting from a blank platform, here is how the options compare.{" "}
+                Keeping what you have, weighing big-name CRMs, or starting from a blank platform?
+                Here is how they compare.{" "}
                 <Link
                   href="/why-templates"
                   className="font-medium text-blue-700 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-800 hover:decoration-blue-700"
@@ -644,7 +697,7 @@ export default function HomePage() {
                   );
                 })}
 
-                <div className="bg-blue-600 rounded-2xl p-6 text-left shadow-lg">
+                <div className="bg-blue-600 rounded-2xl p-6 text-left shadow-lg ring-4 ring-yellow-300">
                   <TemplatesIcon />
                   <h3 className="text-base font-semibold text-white mb-4">Templates</h3>
                   <ul className="space-y-3">
@@ -673,8 +726,7 @@ export default function HomePage() {
                   Choose how you want to work with us
                 </h3>
                 <p className="text-gray-600 text-center max-w-2xl mx-auto mb-10 text-sm md:text-base">
-                  Start with the applications, tailor them to your business, or add a website that
-                  works with your data. Many clients use more than one.
+                  Start with the apps, tailor them, or add a website. Many clients do more than one.
                 </p>
 
                 <div className="grid md:grid-cols-3 gap-6">
@@ -715,14 +767,9 @@ export default function HomePage() {
                 <div className="text-sm text-blue-950/80">
                   <p className="font-semibold text-blue-950">Good to know: Templates runs on Method:CRM</p>
                   <p className="mt-1">
-                    Templates applications are installed in your Method:CRM account, so you&apos;ll
-                    need a Method subscription. Only Method&apos;s base fee is required, and it is
-                    billed by Method. You won&apos;t need Method&apos;s additional packs or basic
-                    applications when you use Templates applications.
-                  </p>
-                  <p className="mt-2">
-                    For the accounting sync, you&apos;ll also need QuickBooks (Xero works too). We
-                    can help you get set up in your free consultation.
+                    You&apos;ll need a Method subscription (base fee only, billed by Method) and
+                    QuickBooks or Xero for the sync. No Method add-on packs or basic apps needed.
+                    We&apos;ll help you set up in your free consultation.
                   </p>
                 </div>
               </div>
@@ -738,8 +785,7 @@ export default function HomePage() {
                 Built for Businesses That Run on Jobs, Customers, and Invoices
               </h2>
               <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-                Templates adapts to the way your industry works. Here are a few places it fits
-                well.
+                Templates adapts to your industry. A few places it fits well.
               </p>
 
               <IndustriesGrid industries={industries} mobileCount={MOBILE_INDUSTRY_COUNT} />
@@ -785,7 +831,7 @@ export default function HomePage() {
               </h2>
 
               <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-sm md:text-base">
-                Method provides the platform - we build the applications. See how Method connects all aspects of your business into one seamless business system.
+                Method provides the platform. We build the applications. See how it all connects.
               </p>
 
               {/* YouTube embed (privacy-enhanced domain, loads only when scrolled near) See how Templates connects your website, front end, back end, and integrations
@@ -854,13 +900,13 @@ export default function HomePage() {
                 Ready to run your business from one connected system?
               </h2>
               <p className="text-blue-100 max-w-2xl mx-auto mb-8 text-sm md:text-base">
-                Book a free consultation and tell us how your business works. We&apos;ll show you
-                what Templates can do for it and give you a clear estimate.
+                Book a free consultation. We&apos;ll show you what Templates can do and give you a
+                clear estimate.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
                   href="/book-demo"
-                  className="px-6 py-3 bg-white text-blue-700 rounded-lg font-medium hover:bg-blue-50 transition"
+                  className="px-6 py-3 bg-yellow-300 text-blue-950 rounded-lg font-semibold hover:bg-yellow-200 transition"
                 >
                   Book your free consultation
                 </Link>
