@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import AnimatedSection from "../components/AnimatedSection";
-import Statement, { Accent, darkTexture } from "../components/StatementBand";
+import Statement, { Accent, darkTexture } from "../components/Statement";
 
 export const metadata = {
   title: "Why Templates — Compare and Cost",
@@ -184,7 +184,7 @@ export default function WhyTemplatesPage() {
           className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
         />
         <div className="relative mx-auto max-w-4xl px-4 text-center md:px-6">
-          <Image src="/logowhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-6 h-10 w-auto" />
+          <Image src="/TemplatesLogoWhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-6 h-10 w-auto" />
           <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-blue-200 md:text-sm">
             Why Templates
           </p>
