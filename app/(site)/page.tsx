@@ -9,7 +9,6 @@ import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
 import IndustriesGrid from "./components/IndustriesGrid";
 import ValueProps from "./components/ValueProps";
-import Statement from "./components/Statement";
 
 export const metadata = {
   title: "Templates — Business Management Software",
@@ -21,7 +20,7 @@ export const metadata = {
 // rhythm switch back automatically)
 const SHOW_TESTIMONIALS = false;
 
-// App pages liv at /<slug> (e.g. /work-orders). Change this one function if that ever changes
+// App pages live at /<slug> (e.g. /work-orders). Change this one function if that ever changes
 const appPath = (slug: string) => `/${slug}`;
 
 // How many cards show on phones before the rest are tucked away.
@@ -479,19 +478,6 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
-        {/* STATEMENT BAND 1 */}
-        <Statement
-          variant="dark"
-          tone="amber"
-          align="left"
-          lead="Working from "
-          accent="day one"
-          tail="."
-          sub="Method is the blank canvas. Templates is the finished work on top of it, so there is no ground-up build."
-          href="/why-templates#compare"
-          linkLabel="See how we compare"
-        />
-
         {/* CUSTOMIZATION (animated) */}
         <AnimatedSection>
           <section className="py-20 bg-blue-50 border-y border-blue-100">
@@ -524,19 +510,6 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
-
-        {/* STATEMENT BAND 2 */}
-        <Statement
-          variant="light"
-          tone="emerald"
-          align="right"
-          lead="Built around "
-          accent="you"
-          tail="."
-          sub="Every screen, workflow, and automation can change as your business does."
-          href="/customization"
-          linkLabel="See customization"
-        />
 
         {/* INTEGRATIONS — prebuilt connections and custom-built tools in one section (animated) */}
         <AnimatedSection>
@@ -611,19 +584,6 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
-
-        {/* STATEMENT BAND 3 */}
-        <Statement
-          variant="dark"
-          tone="sky"
-          align="center"
-          lead="Enter it "
-          accent="once"
-          tail="."
-          sub="Customers, invoices, and payments sync both ways, so nothing gets typed twice."
-          href="/why-templates#compare"
-          linkLabel="Compare your options"
-        />
 
         {/* WHY TEMPLATES — compared with staying put or choosing something else (animated).
             The faint dot texture is the backgroundImage below; lower the 0.12 to soften it. */}
@@ -769,19 +729,6 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
-
-        {/* STATEMENT BAND 4 */}
-        <Statement
-          variant="light"
-          tone="amber"
-          align="left"
-          lead="Keep "
-          accent="QuickBooks"
-          tail="."
-          sub="Two-way sync and no accounting migration. Xero works too."
-          href="/why-templates#cost"
-          linkLabel="See what affects your cost"
-        />
 
         {/* INDUSTRIES — on phones only the first MOBILE_INDUSTRY_COUNT cards show */}
         <AnimatedSection>
