@@ -45,7 +45,7 @@ const outcomes = [
 type Mark = "yes" | "part" | "no" | "none";
 type Cell = { mark: Mark; text: string };
 
-const columns = ["Templates", "Method on its own", "Big CRMs and suites", "Fixed industry software"];
+const columns = ["Templates", "Method on its own", "Big CRMs and suites", "DIY"];
 
 const rows: { label: string; cells: Cell[] }[] = [
   {
@@ -372,7 +372,7 @@ export default function WhyTemplatesPage() {
       <section className="bg-white pb-20 pt-4">
         <div className="mx-auto max-w-5xl px-4 md:px-6">
           <div className="rounded-3xl bg-blue-600 px-8 py-14 text-center shadow-lg md:px-16 md:py-16">
-            <Image src="/logowhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-5 h-8 w-auto" />
+            <Image src="/TemplatesLogoWhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-5 h-8 w-auto" />
             <h2 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
               Ready to run your business from one connected system?
             </h2>
