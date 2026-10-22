@@ -63,7 +63,7 @@ const rows: { label: string; cells: Cell[] }[] = [
       { mark: "yes", text: "Customers, invoices, and payments sync both ways" },
       { mark: "yes", text: "Real-time two-way sync" },
       { mark: "part", text: "Depth varies, and some syncs are one-way" },
-      { mark: "no", text: "You dont like your accountant... and he doesnt like you..." },
+      { mark: "no", text: "Hopefully the accountant understands the books" },
     ],
   },
   {
@@ -99,7 +99,7 @@ const rows: { label: string; cells: Cell[] }[] = [
       { mark: "none", text: "Users per Month, plus only the customization you choose" },
       { mark: "none", text: "Users Per Application Per Month, plus a customization plan commitment" },
       { mark: "none", text: "Varies - User fees, onboarding fees, and often consultant fees" },
-      { mark: "none", text: "Pirated Excel give outside parties a close up at your finances" },
+      { mark: "none", text: "Development cost - your time to develop the system and keep it updated" },
     ],
   },
 ];
@@ -141,34 +141,47 @@ function MarkIcon({ mark }: { mark: Mark }) {
 // What affects the cost. "billedBy" tells the reader who sends the invoice.
 // No dollar figures yet: add them here once the pricing is final.
 // ---------------------------------------------------------------------------
-const costFactors = [
+// Each card shows who bills it. A logo is { src, alt }. Until a logo file is added, a text
+// wordmark { text } stands in for it. To use a real logo, drop the file in /public and swap,
+// e.g. { text: "Method" } for { src: "/MethodLogo.png", alt: "Method" }.
+type CostLogo = { src: string; alt: string } | { text: string };
+
+const templatesLogo: CostLogo = { src: "/TemplatesLogo.png", alt: "Templates" };
+
+const costFactors: { billedBy: string; logos: CostLogo[]; title: string; body: string }[] = [
   {
     billedBy: "Billed by Method",
+    logos: [{ text: "Method" }],
     title: "Method base fee",
     body: "Templates runs on Method's entry-level plan, billed by Method per user. You don't need a higher Method tier or its add-on packs, because the extra capability comes from the Templates applications. Method sometimes offers introductory discounts that end after a few months, so budget for the regular rate.",
   },
   {
     billedBy: "Billed by Templates",
+    logos: [templatesLogo],
     title: "Application subscription",
     body: "Each Templates application is prebuilt and connected to the others. Your subscription depends on which applications you choose and how many people use them.",
   },
   {
     billedBy: "Billed by Templates",
+    logos: [templatesLogo],
     title: "Customization",
     body: "Tailoring screens, workflows, and automations is billed hourly or pay-per-use, with a lower-rate dedicated service plan available for ongoing support.",
   },
   {
     billedBy: "Billed by Templates",
+    logos: [templatesLogo],
     title: "Websites and custom builds",
     body: "Web design, maps, shipment tracking pages, and online shops are scoped up front, with an estimate before any build work begins.",
   },
   {
     billedBy: "Billed by your provider",
+    logos: [{ text: "QuickBooks" }, { text: "Xero" }],
     title: "Accounting software",
     body: "Your QuickBooks or Xero subscription stays exactly as it is today, billed by them.",
   },
   {
     billedBy: "Billed by third parties",
+    logos: [{ text: "Payment processor" }],
     title: "Payment processing",
     body: "If you take card payments, your payment processor charges its own fees.",
   },
@@ -189,7 +202,7 @@ export default function WhyTemplatesPage() {
             Why Templates
           </p>
           <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
-            Keep your books. Skip <Accent className="text-amber-300">the rebuild</Accent>.
+            Streamline your <Accent className="text-amber-300">operations</Accent>.
           </h1>
           <p className="mx-auto mt-8 max-w-2xl text-base text-slate-300 md:text-lg">
             Templates gives you finished, connected business apps on top of Method. You keep
@@ -311,7 +324,7 @@ export default function WhyTemplatesPage() {
         tone="sky"
         align="center"
         lead="Method is the canvas. We build the "
-        accent="finished work"
+        accent="apps you use"
         tail="."
         sub="Method gives you a flexible platform. Templates gives you the working applications on top of it, so you start with software that works and fine-tune it."
       />
@@ -340,6 +353,24 @@ export default function WhyTemplatesPage() {
                   key={item.title}
                   className="rounded-2xl border border-blue-100 bg-white p-6 text-left shadow-sm"
                 >
+                  <div className="mb-4 flex h-12 items-center gap-4">
+                    {item.logos.map((logo) =>
+                      "src" in logo ? (
+                        <Image
+                          key={logo.src}
+                          src={logo.src}
+                          alt={logo.alt}
+                          width={400}
+                          height={100}
+                          className="h-12 w-auto"
+                        />
+                      ) : (
+                        <span key={logo.text} className="text-xl font-bold tracking-tight text-gray-800">
+                          {logo.text}
+                        </span>
+                      )
+                    )}
+                  </div>
                   <span className="mb-3 inline-block rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-800">
                     {item.billedBy}
                   </span>
@@ -359,13 +390,14 @@ export default function WhyTemplatesPage() {
 
       {/* STATEMENT */}
       <Statement
+        size="lg"
         variant="light"
         tone="emerald"
         align="left"
-        lead="Pay for what makes you "
-        accent="different"
-        tail="."
-        sub="The foundations are already built, so your budget goes toward what is unique to your business."
+        lead="Build with the "
+        accent="future"
+        tail=" in mind."
+        sub="Templates adapts as your business grows, so the system you set up today still fits tomorrow."
       />
 
       {/* FINAL CTA */}
