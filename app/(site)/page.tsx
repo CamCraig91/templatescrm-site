@@ -9,6 +9,7 @@ import Curve from "./components/Curve";
 import ImageLightbox from "./components/ImageLightbox";
 import IndustriesGrid from "./components/IndustriesGrid";
 import ValueProps from "./components/ValueProps";
+import Statement from "./components/Statement";
 
 export const metadata = {
   title: "Templates — Business Management Software",
@@ -98,14 +99,15 @@ const comparison = [
     name: "Fixed off-the-shelf software",
     points: [
       "You adapt your workflow to the software",
-      "Gaps get patched with other programs",
+      "Can mean replacing QuickBooks and a heavy data migration",
+      "Accounting sync can be one-way or limited",
       "Hard to change as your business grows",
     ],
   },
   {
     name: "A blank platform",
     points: [
-      "Basic apps that need customization first",
+      "Method on its own is a blank canvas, with basic apps that need customizing first",
       "You pay to build the foundations",
       "Slow to get to a working system",
     ],
@@ -116,7 +118,8 @@ const templatesPoints = [
   "One adaptable home for operations and finances",
   "Changes with your business, now and later",
   "Prebuilt, connected apps that work out of the box",
-  "Two-way QuickBooks and Xero sync",
+  "Keep QuickBooks or Xero, with two-way sync",
+  "Easier move-over: your books stay put and we help bring your data across",
   "Custom tools for maps, tracking, and more",
 ];
 
@@ -207,7 +210,7 @@ const faqs = [
   },
   {
     q: "How much does it cost?",
-    a: "Customization is billed hourly, with a pay-per-use option and a lower-rate dedicated service plan for ongoing support. The free consultation helps us scope your project and give you a clear estimate.",
+    a: "Customization is billed hourly, with a pay-per-use option and a lower-rate dedicated service plan for ongoing support. Method's own fee is billed separately by Method, and any introductory discount on it ends after the first few months. The Why Templates page lists everything that affects your total, and the free consultation helps us scope your project and give you a clear estimate.",
   },
   {
     q: "How long does setup take?",
@@ -215,7 +218,7 @@ const faqs = [
   },
   {
     q: "What about the data I already have in spreadsheets or other tools?",
-    a: "Bringing existing data into your new system is part of what we scope in the consultation, so nothing gets left behind.",
+    a: "Your books can stay in QuickBooks or Xero, and bringing your existing spreadsheet and CRM data across is part of what we scope in the consultation. You aren't starting from scratch or replacing your accounting system.",
   },
 ];
 
@@ -339,8 +342,9 @@ export default function HomePage() {
               </p>
 
               <p className="text-gray-600 mb-6 text-sm md:text-base">
-                Powered by Method&apos;s platform, every workflow you create syncs directly
-                with QuickBooks, ensuring clean accounting with no double entry. As your
+                Powered by Method&apos;s platform, every workflow you create syncs in both
+                directions with QuickBooks, so you keep your accounting system and avoid double
+                entry. As your
                 business grows, Templates adapts with you. Every screen, automation, and
                 workflow can be tailored to fit your evolving needs.
               </p>
@@ -387,7 +391,9 @@ export default function HomePage() {
               Two‑way sync with QuickBooks — no double entry, ever.
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-8 md:mb-10 text-sm md:text-base">
-              Your website, workflows, and operations stay perfectly aligned with your accounting.
+              Your website, workflows, and operations stay aligned with your accounting. Keep
+              QuickBooks or Xero as your books: changes flow in both directions, with no
+              accounting migration and no one-way exports to untangle.
             </p>
 
             <div className="w-full max-w-3xl mx-auto">
@@ -416,8 +422,8 @@ export default function HomePage() {
               </h2>
 
               <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-                Start with the applications you need. Each one is ready to use and can be tailored
-                to the way your business works.
+                Method on its own is a blank canvas. These applications are the finished foundation
+                built on it, ready to use and easy to tailor to the way your business works.
               </p>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -430,20 +436,7 @@ export default function HomePage() {
                     }`}
                   >
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{app.name}</h3>
-                    <p className="text-gray-600 text-sm mb-5">{app.blurb}</p>
-                    <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-blue-700 transition-all group-hover:gap-2">
-                      Learn more
-                      <svg
-                        className="h-4 w-4"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        aria-hidden="true"
-                      >
-                        <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
+                    <p className="text-gray-600 text-sm">{app.blurb}</p>
                   </Link>
                 ))}
               </div>
@@ -486,6 +479,19 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
+        {/* STATEMENT BAND 1 */}
+        <Statement
+          variant="dark"
+          tone="amber"
+          align="left"
+          lead="Working from "
+          accent="day one"
+          tail="."
+          sub="Method is the blank canvas. Templates is the finished work on top of it, so there is no ground-up build."
+          href="/why-templates#compare"
+          linkLabel="See how we compare"
+        />
+
         {/* CUSTOMIZATION (animated) */}
         <AnimatedSection>
           <section className="py-20 bg-blue-50 border-y border-blue-100">
@@ -502,7 +508,7 @@ export default function HomePage() {
                 <p className="text-gray-600 text-sm md:text-base">
                   Whether you need custom fields, workflow logic, approval steps, automation
                   triggers, or industry‑specific UI changes, we adapt Templates to fit your
-                  business perfectly.
+                  business perfectly. Because the foundations are already built, your customization budget goes toward what makes your business unique, not rebuilding the basics.
                 </p>
               </div>
 
@@ -518,6 +524,19 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+
+        {/* STATEMENT BAND 2 */}
+        <Statement
+          variant="light"
+          tone="emerald"
+          align="right"
+          lead="Built around "
+          accent="you"
+          tail="."
+          sub="Every screen, workflow, and automation can change as your business does."
+          href="/customization"
+          linkLabel="See customization"
+        />
 
         {/* INTEGRATIONS — prebuilt connections and custom-built tools in one section (animated) */}
         <AnimatedSection>
@@ -593,6 +612,19 @@ export default function HomePage() {
           </section>
         </AnimatedSection>
 
+        {/* STATEMENT BAND 3 */}
+        <Statement
+          variant="dark"
+          tone="sky"
+          align="center"
+          lead="Enter it "
+          accent="once"
+          tail="."
+          sub="Customers, invoices, and payments sync both ways, so nothing gets typed twice."
+          href="/why-templates#compare"
+          linkLabel="Compare your options"
+        />
+
         {/* WHY TEMPLATES — compared with staying put or choosing something else (animated).
             The faint dot texture is the backgroundImage below; lower the 0.12 to soften it. */}
         <AnimatedSection>
@@ -609,8 +641,14 @@ export default function HomePage() {
                 Why Templates?
               </h2>
               <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-                Whether you&apos;re keeping what you have or weighing up other software, here is
-                how the options compare.
+                Whether you&apos;re keeping what you have, weighing up big-name CRMs and suites, or
+                starting from a blank platform, here is how the options compare.{" "}
+                <Link
+                  href="/why-templates"
+                  className="font-medium text-blue-700 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-800 hover:decoration-blue-700"
+                >
+                  Full comparison and cost factors &rarr;
+                </Link>
               </p>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -731,6 +769,19 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+
+        {/* STATEMENT BAND 4 */}
+        <Statement
+          variant="light"
+          tone="amber"
+          align="left"
+          lead="Keep "
+          accent="QuickBooks"
+          tail="."
+          sub="Two-way sync and no accounting migration. Xero works too."
+          href="/why-templates#cost"
+          linkLabel="See what affects your cost"
+        />
 
         {/* INDUSTRIES — on phones only the first MOBILE_INDUSTRY_COUNT cards show */}
         <AnimatedSection>
