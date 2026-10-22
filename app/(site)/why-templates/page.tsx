@@ -151,7 +151,7 @@ const templatesLogo: CostLogo = { src: "/TemplatesLogo.png", alt: "Templates" };
 const costFactors: { billedBy: string; logos: CostLogo[]; title: string; body: string }[] = [
   {
     billedBy: "Billed by Method",
-    logos: [{ text: "Method" }],
+    logos: [{ text: "methodcrmwhite" }],
     title: "Method base fee",
     body: "Templates runs on Method's entry-level plan, billed by Method per user. You don't need a higher Method tier or its add-on packs, because the extra capability comes from the Templates applications. Method sometimes offers introductory discounts that end after a few months, so budget for the regular rate.",
   },
@@ -175,7 +175,7 @@ const costFactors: { billedBy: string; logos: CostLogo[]; title: string; body: s
   },
   {
     billedBy: "Billed by your provider",
-    logos: [{ text: "QuickBooks" }, { text: "Xero" }],
+    logos: [{ text: "quickbooksfullwhite" }, { text: "xero" }],
     title: "Accounting software",
     body: "Your QuickBooks or Xero subscription stays exactly as it is today, billed by them.",
   },
