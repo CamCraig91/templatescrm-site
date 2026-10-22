@@ -1,13 +1,41 @@
 import Link from "next/link";
 
 import AnimatedSection from "../components/AnimatedSection";
-import Statement, { Accent, darkTexture } from "../components/Statement";
+import Statement, { Accent, darkTexture } from "../components/StatementBand";
 
 export const metadata = {
   title: "Why Templates — Compare and Cost",
   description:
     "See how Templates compares with blank platforms, big CRMs, and fixed software, and what goes into the cost of a setup.",
 };
+
+// The four outcomes customers get (moved here from the home page)
+const outcomes = [
+  {
+    lead: "Less ",
+    accent: "repetitive",
+    tail: " work",
+    body: "Enter information once and let automations handle the rest.",
+  },
+  {
+    lead: "Fewer ",
+    accent: "errors",
+    tail: "",
+    body: "One source of truth, kept in step with your accounting.",
+  },
+  {
+    lead: "More ",
+    accent: "capability",
+    tail: "",
+    body: "Do things your current software simply can't.",
+  },
+  {
+    lead: "Better ",
+    accent: "customer",
+    tail: " experience",
+    body: "Portals, online booking & payments, and live updates for your customers.",
+  },
+];
 
 // ---------------------------------------------------------------------------
 // Comparison table. Each cell has a mark (yes / part / no / none) and a short line.
@@ -182,6 +210,24 @@ export default function WhyTemplatesPage() {
           </div>
         </div>
       </section>
+
+      {/* OUTCOMES */}
+      <AnimatedSection>
+        <section className="bg-white pt-16 md:pt-20">
+          <div className="mx-auto grid max-w-6xl gap-10 px-4 text-left sm:grid-cols-2 md:px-6 lg:grid-cols-4">
+            {outcomes.map((o) => (
+              <div key={o.accent}>
+                <h2 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl">
+                  {o.lead}
+                  <Accent underlineClass="text-yellow-400">{o.accent}</Accent>
+                  {o.tail}
+                </h2>
+                <p className="mt-3 text-sm text-gray-600">{o.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </AnimatedSection>
 
       {/* COMPARISON TABLE */}
       <AnimatedSection>
