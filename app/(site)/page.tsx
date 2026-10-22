@@ -87,27 +87,26 @@ const moreApps = [
 // Why Templates: the alternatives on the left, Templates highlighted last
 const comparison = [
   {
-    name: "Spreadsheets and separate tools",
+    name: "DIY setup",
+    subtitle: "Spreadsheets, separate tools, or a blank platform",
     points: [
       "Information copied into several places",
       "Manual re-entry that invites errors",
-      "Every new need becomes another tool",
+      "Takes forever to build the foundations",
+      "More admin time just to keep it running",
+      "Missing features and no real connection between tools",
+      "Patching software together to make it work",
     ],
   },
   {
-    name: "Fixed off-the-shelf software",
+    name: "Other platforms",
+    subtitle: "Big CRMs, suites, and fixed software",
     points: [
-      "You adapt to the software",
-      "Can mean replacing QuickBooks and a heavy migration",
+      "Expensive once seats, onboarding, and add-ons add up",
+      "Lacking the features you actually need",
+      "Not adaptable: you change to fit the software",
       "Hard to change as you grow",
-    ],
-  },
-  {
-    name: "A blank platform",
-    points: [
-      "A blank canvas that needs building first",
-      "You pay to build the foundations",
-      "Slow to a working system",
+      "Can mean replacing QuickBooks and a heavy migration",
     ],
   },
 ];
@@ -270,16 +269,7 @@ function FixedSoftwareIcon() {
   );
 }
 
-function BlankPlatformIcon() {
-  return (
-    <svg {...iconProps}>
-      <rect x="3" y="4" width="18" height="16" rx="2" strokeDasharray="3 3" />
-      <path d="M12 9v6M9 12h6" />
-    </svg>
-  );
-}
-
-const comparisonIcons = [SpreadsheetIcon, FixedSoftwareIcon, BlankPlatformIcon];
+const comparisonIcons = [SpreadsheetIcon, FixedSoftwareIcon];
 
 function TemplatesIcon() {
   return (
@@ -343,6 +333,25 @@ function ScribbleArrow({ className = "" }: { className?: string }) {
   );
 }
 
+// Hand-drawn style yellow arrow that arcs up and points right (used to link the card to the photo).
+function ScribbleArrowRight({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={`pointer-events-none text-yellow-400 ${className}`}
+      viewBox="0 0 100 100"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M8 78C14 30 52 14 88 36" />
+      <path d="M77 17L88 36L66 36" />
+    </svg>
+  );
+}
+
 // An arrow that straddles the seam between two sections, to lead the eye down the page.
 // Position it sideways with className, e.g. "left-[14%]" or "right-[14%] -scale-x-100".
 function SeamArrow({ className = "" }: { className?: string }) {
@@ -381,19 +390,25 @@ export default function HomePage() {
         <section className="relative -mt-16 z-20 pl-4 pr-4 md:pl-12 lg:pl-20 md:pr-6 lg:pr-10 xl:pr-16 pb-6 lg:pb-8">
           <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-10">
             <div className="w-full max-w-3xl lg:max-w-xl lg:shrink-0 bg-white border border-gray-200 rounded-3xl shadow-xl px-8 md:px-12 py-10 md:py-12 text-left">
-              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">
-                What is Templates?
-              </h2>
+              <div className="mb-4 flex items-center gap-3">
+                <Image src="/logo1.png" alt="" width={64} height={64} className="h-9 w-auto md:h-10" />
+                <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                  What is Templates?
+                </h2>
+              </div>
 
               <p className="text-gray-600 mb-4 text-sm md:text-base">
-                A suite of customizable business apps built inside Method:CRM. Customers, work,
-                finances, and staff in one connected system, replacing spreadsheets and manual
-                steps.
+                Templates is a suite of customizable business applications built inside
+                Method:CRM. It manages your financial, customer, work, and employee data in one
+                unified system, replacing spreadsheets, disconnected tools, and manual
+                processes.
               </p>
 
               <p className="text-gray-600 mb-6 text-sm md:text-base">
-                Every workflow syncs both ways with QuickBooks, so you keep your accounting and
-                skip double entry. As you grow, every screen and automation adapts.
+                Powered by Method&apos;s platform, every workflow you create syncs in both
+                directions with QuickBooks, so you keep your accounting system and avoid double
+                entry. As your business grows, Templates adapts with you. Every screen,
+                automation, and workflow can be tailored to fit your evolving needs.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -414,13 +429,7 @@ export default function HomePage() {
 
             {/* Home screen image (hidden on phones). Remove rounded-3xl for flat corners. */}
             <div className="relative hidden md:block w-full max-w-3xl lg:max-w-none lg:flex-1 lg:min-w-0 lg:mt-28">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-14 left-3 hidden items-start gap-1 lg:flex"
-              >
-                <span className="-rotate-3 pt-1 text-sm italic text-gray-500">Click to enlarge</span>
-                <ScribbleArrow className="h-14 w-14" />
-              </div>
+              <ScribbleArrowRight className="absolute -left-14 -top-8 hidden h-14 w-20 lg:block" />
               <ImageLightbox
                 src="/homescreen.png"
                 alt="Templates home screen"
@@ -650,6 +659,7 @@ export default function HomePage() {
             }}
           >
             <div className="max-w-6xl mx-auto px-4 md:px-6">
+              <Image src="/logo1.png" alt="" width={64} height={64} className="mx-auto mb-3 h-10 w-auto" />
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
                 Why <Hl>Templates</Hl>?
               </h2>
@@ -664,7 +674,7 @@ export default function HomePage() {
                 </Link>
               </p>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {comparison.map((option, i) => {
                   const Icon = comparisonIcons[i];
                   return (
@@ -675,7 +685,8 @@ export default function HomePage() {
                       <IconFrame>
                         <Icon />
                       </IconFrame>
-                      <h3 className="text-base font-semibold text-gray-800 mb-4">{option.name}</h3>
+                      <h3 className="text-base font-semibold text-gray-800">{option.name}</h3>
+                      <p className="mt-1 mb-4 text-xs text-gray-500">{option.subtitle}</p>
                       <ul className="space-y-3">
                         {option.points.map((point) => (
                           <li key={point} className="flex gap-2 text-sm text-gray-600">
@@ -697,9 +708,10 @@ export default function HomePage() {
                   );
                 })}
 
-                <div className="bg-blue-600 rounded-2xl p-6 text-left shadow-lg ring-4 ring-yellow-300">
+                <div className="bg-blue-600 rounded-2xl p-6 text-left shadow-lg ring-4 ring-yellow-300 sm:col-span-2 lg:col-span-1">
                   <TemplatesIcon />
-                  <h3 className="text-base font-semibold text-white mb-4">Templates</h3>
+                  <h3 className="text-base font-semibold text-white">Templates</h3>
+                  <p className="mt-1 mb-4 text-xs text-blue-100">Method&apos;s platform, finished for you</p>
                   <ul className="space-y-3">
                     {templatesPoints.map((point) => (
                       <li key={point} className="flex gap-2 text-sm text-blue-50">
@@ -896,6 +908,7 @@ export default function HomePage() {
         <section className={`bg-white ${SHOW_TESTIMONIALS ? "py-20" : "pt-4 pb-20"}`}>
           <div className="max-w-5xl mx-auto px-4 md:px-6">
             <div className="bg-blue-600 rounded-3xl px-8 md:px-16 py-14 md:py-16 text-center shadow-lg">
+              <Image src="/logowhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-5 h-8 w-auto" />
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
                 Ready to run your business from one connected system?
               </h2>
@@ -906,7 +919,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
                   href="/book-demo"
-                  className="px-6 py-3 bg-yellow-300 text-blue-950 rounded-lg font-semibold hover:bg-yellow-200 transition"
+                  className="px-6 py-3 bg-white text-blue-700 rounded-lg font-medium hover:bg-blue-50 transition"
                 >
                   Book your free consultation
                 </Link>
