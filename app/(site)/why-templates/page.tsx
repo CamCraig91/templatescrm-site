@@ -51,10 +51,10 @@ const rows: { label: string; cells: Cell[] }[] = [
   {
     label: "Keep QuickBooks or Xero",
     cells: [
-      { mark: "yes", text: "Yes. Your books stay where they are" },
+      { mark: "yes", text: "Yes" },
       { mark: "yes", text: "Yes" },
       { mark: "part", text: "Often replaced, or linked with an add-on" },
-      { mark: "part", text: "Depends on the product" },
+      { mark: "no", text: "Whats Quickbooks?" },
     ],
   },
   {
@@ -63,43 +63,43 @@ const rows: { label: string; cells: Cell[] }[] = [
       { mark: "yes", text: "Customers, invoices, and payments sync both ways" },
       { mark: "yes", text: "Real-time two-way sync" },
       { mark: "part", text: "Depth varies, and some syncs are one-way" },
-      { mark: "part", text: "Often limited" },
+      { mark: "no", text: "You dont like your accountant... and he doesnt like you..." },
     ],
   },
   {
     label: "Ready to use on day one",
     cells: [
-      { mark: "yes", text: "Prebuilt, connected apps" },
-      { mark: "no", text: "A blank canvas you build on" },
+      { mark: "yes", text: "Prebuilt, connected apps for all aspects of your business" },
+      { mark: "part", text: "Prebuilt apps, but missing key features that require customization" },
       { mark: "part", text: "Generic until configured" },
-      { mark: "yes", text: "Yes, for its one use case" },
+      { mark: "no", text: "Ever coded in Excel? How about PowerBi?" },
     ],
   },
   {
     label: "Fits how you work",
     cells: [
-      { mark: "yes", text: "Tailored to your workflows, now and later" },
-      { mark: "part", text: "Flexible, but you build it" },
-      { mark: "part", text: "Configurable, often with consultants" },
-      { mark: "no", text: "You adapt to the software" },
+      { mark: "yes", text: "Wider range of apps means more of your workflow is already integrated. Consultants are developers and have deep understanding of the applications." },
+      { mark: "yes", text: "Flexible, easier than coding - but often still need consultant help and buy their app packs " },
+      { mark: "part", text: "Configurable, often by expensive consultants" },
+      { mark: "no", text: "You adapt to the software - time consuming, confusing but cheaper!" },
     ],
   },
   {
     label: "Getting started",
     cells: [
-      { mark: "yes", text: "Books stay put, and we help bring your data across" },
-      { mark: "part", text: "Build first, then import" },
-      { mark: "no", text: "Often a full migration project" },
-      { mark: "part", text: "A new system to learn" },
+      { mark: "yes", text: "Book Demo, Sync Quickbooks/Xero, Install Apps, Customize to needs" },
+      { mark: "yes", text: "Book Demo, Sync Quickbooks/Xero, Install Apps, Customize to needs" },
+      { mark: "part", text: "Often a full migration project" },
+      { mark: "no", text: "A new system to learn, unforseen costs, lost opportunities, risk of errors" },
     ],
   },
   {
     label: "Where the cost goes",
     cells: [
-      { mark: "none", text: "Seats, plus only the customization you choose" },
-      { mark: "none", text: "Seats, plus the whole build" },
-      { mark: "none", text: "Seats, onboarding, and often consultants" },
-      { mark: "none", text: "Seats, plus extra tools for the gaps" },
+      { mark: "none", text: "Users per Month, plus only the customization you choose" },
+      { mark: "none", text: "Users Per Application Per Month, plus a customization plan commitment" },
+      { mark: "none", text: "Varies - User fees, onboarding fees, and often consultant fees" },
+      { mark: "none", text: "Pirated Excel give outside parties a close up at your finances" },
     ],
   },
 ];
