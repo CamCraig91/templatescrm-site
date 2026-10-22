@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import AnimatedSection from "./components/AnimatedSection";
-import Statement, { Accent, darkTexture } from "./components/StatementBand";
+import AnimatedSection from "../components/AnimatedSection";
+import Statement, { Accent, darkTexture } from "../components/Statement";
 
 export const metadata = {
   title: "Why Templates — Compare and Cost",
