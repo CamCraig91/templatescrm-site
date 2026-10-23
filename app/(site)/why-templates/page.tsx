@@ -198,7 +198,7 @@ export default function WhyTemplatesPage() {
           className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
         />
         <div className="relative mx-auto max-w-4xl px-4 text-center md:px-6">
-          <p className="mb-4 text-2xl font-semibold uppercase tracking-widest text-blue-200 md:text-sm">
+          <p className="mb-4 text-3xl font-bold uppercase tracking-widest text-blue-200 md:text-3xl">
             Why Templates?
           </p>
           <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
