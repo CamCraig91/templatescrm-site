@@ -176,13 +176,13 @@ const costFactors: { billedBy: string; logos: CostLogo[]; title: string; body: s
   },
   {
     billedBy: "Billed by your provider",
-    logos: ["/quickbooks1.png"],
+    logos: [{src:"/quickbooks1.png", alt:"QuickBooks"}],
     title: "Accounting software",
     body: "Your QuickBooks or Xero subscription stays exactly as it is today, billed by them.",
   },
   {
     billedBy: "Billed by third parties",
-    logos: [Stripe],
+    logos: [{src: "/Stripe.png", alt:"Stripe"}],
     title: "Payment processing",
     body: "If you take card payments, your payment processor charges its own fees.",
   },
