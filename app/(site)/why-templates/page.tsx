@@ -198,7 +198,6 @@ export default function WhyTemplatesPage() {
           className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
         />
         <div className="relative mx-auto max-w-4xl px-4 text-center md:px-6">
-          <Image src="/TemplatesLogoWhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-6 h-10 w-auto" />
           <p className="mb-4 text-2xl font-semibold uppercase tracking-widest text-blue-200 md:text-sm">
             Why Templates?
           </p>
@@ -405,7 +404,6 @@ export default function WhyTemplatesPage() {
       <section className="bg-white pb-20 pt-4">
         <div className="mx-auto max-w-5xl px-4 md:px-6">
           <div className="rounded-3xl bg-blue-600 px-8 py-14 text-center shadow-lg md:px-16 md:py-16">
-            <Image src="/TemplatesLogoWhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-5 h-8 w-auto" />
             <h2 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
               Ready to run your business from one connected system?
             </h2>
