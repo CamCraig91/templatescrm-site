@@ -329,7 +329,7 @@ export default function WhyTemplatesPage() {
         sub="Method gives you a flexible platform. Templates gives you the working applications on top of it, so you start with software that works and fine-tune it."
       />
 
-      {/* COST FACTORS */}
+      {/* COST FACTORS 
       <AnimatedSection>
         <section
           id="cost"
@@ -386,7 +386,7 @@ export default function WhyTemplatesPage() {
             </p>
           </div>
         </section>
-      </AnimatedSection>
+      </AnimatedSection>*/}
 
       {/* STATEMENT */}
       <Statement
