@@ -147,6 +147,9 @@ function MarkIcon({ mark }: { mark: Mark }) {
 type CostLogo = { src: string; alt: string } | { text: string };
 
 const templatesLogo: CostLogo = { src: "/TemplatesLogo.png", alt: "Templates" };
+const methodcrm: CostLogo = { src: "/methodcrm.png", alt: "MethodCRM" };
+const quickbooks1: CostLogo = { src: "/quickbooks1.png", alt: "Quickbooks" };
+const stripe: CostLogo = { src: "/stripe.png", alt: "Stripe" };
 
 const costFactors: { billedBy: string; logos: CostLogo[]; title: string; body: string }[] = [
   {
