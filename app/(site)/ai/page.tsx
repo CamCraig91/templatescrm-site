@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "AI for Your Business System — Templates",
   description:
-    "Use AI to customize your Method:CRM system by conversation and to cut manual data entry. See what is available now and what we are building next.",
+    "AI compliments your business management system by cutting manual entry, interpreting data and helping you adjust customizations without the need of a consultant.",
 };
 
 // status: "Available now" | "Available through partners" | "Planned"
