@@ -199,14 +199,14 @@ export default function WhyTemplatesPage() {
         />
         <div className="relative mx-auto max-w-4xl px-4 text-center md:px-6">
           <Image src="/TemplatesLogoWhite.png" alt="Templates" width={400} height={100} className="mx-auto mb-6 h-10 w-auto" />
-          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-blue-200 md:text-sm">
-            Why Templates
+          <p className="mb-4 text-2xl font-semibold uppercase tracking-widest text-blue-200 md:text-sm">
+            Why Templates?
           </p>
           <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
-            Streamline your <Accent className="text-amber-300">operations</Accent>.
+            Streamline your <Accent className="text-amber-300">operations</Accent>
           </h1>
           <p className="mx-auto mt-8 max-w-2xl text-base text-slate-300 md:text-lg">
-            Templates gives you finished, connected business apps on top of Method. You keep
+            Templates gives you finished, connected business apps within Method. You keep
             QuickBooks or Xero, avoid a heavy migration, and spend your budget on what is unique to
             your business instead of the foundations.
           </p>
