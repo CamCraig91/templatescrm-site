@@ -659,7 +659,7 @@ export default function HomePage() {
             }}
           >
             <div className="max-w-6xl mx-auto px-4 md:px-6">
-              <Image src="/logo1.png" alt="" width={64} height={64} className="mx-auto mb-3 h-10 w-auto" />
+              <Image src="/TemplatesLogo.png" alt="" width={64} height={64} className="mx-auto mb-3 h-10 w-auto" />
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 text-center">
                 Why <Hl>Templates</Hl>?
               </h2>
