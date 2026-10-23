@@ -736,6 +736,7 @@ export default function NavBar() {
                       </Link>
                       <ul className="space-y-1 text-gray-700">
                         {[
+                          { label: "AI", link: "/ai" },
                           { label: "Google Workspace", link: "/google-workspace" },
                           { label: "Shipment Tracking", link: "/shipment-tracking" },
                           { label: "QuickBooks", link: "/quickbooks" },
@@ -813,6 +814,7 @@ export default function NavBar() {
 
     <ul className="space-y-1 text-gray-700">
       {[
+        { label: "Why Templates?", link: "/why-templates" },
         { label: "Setup Guide", link: "/setup" },
         { label: "Best Practices", link: "/best-practices" },
         { label: "Video Library", link: "https://www.youtube.com/@MethodCRM" },
