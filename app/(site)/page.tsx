@@ -399,14 +399,14 @@ export default function HomePage() {
 
               <p className="text-gray-600 mb-4 text-sm md:text-base">
                 Templates is a suite of customizable business applications built inside
-                Method:CRM. It manages your financial, customer, work, and employee data in one
+                Method:CRM offering advanced features and applications not available through stock offerings. They manage your financial, customer, work, and employee data in one
                 unified system, replacing spreadsheets, disconnected tools, and manual
                 processes.
               </p>
 
               <p className="text-gray-600 mb-6 text-sm md:text-base">
                 Powered by Method&apos;s platform, every workflow you create syncs in both
-                directions with QuickBooks, so you keep your accounting system and avoid double
+                directions with QuickBooks/Xero, so you keep your accounting system and avoid double
                 entry. As your business grows, Templates adapts with you. Every screen,
                 automation, and workflow can be tailored to fit your evolving needs.
               </p>
