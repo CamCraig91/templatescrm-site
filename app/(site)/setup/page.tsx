@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 // Paste/replace the web-to-lead form URL here if it ever changes.
-const WEB_TO_LEAD_URL = "https://MIurl.cc/RL5AMVlmI";
+const WEB_TO_LEAD_URL = "https://camcraigconsulting.method.ws/apps/Public.aspx#/1e4729fe-c52a-46d9-90e6-d86f8bca59d3/RkZzZFJYbHVOZHR4bTYwRFpHRTJ1Zy0t";
 
 // Only loads the iframe once it scrolls into view. Embedded forms can grab focus when they
 // load, which scrolls the page down to them; waiting until they're on screen stops that.
@@ -130,12 +130,12 @@ export default function SetupPage() {
 
             <h2 className="text-3xl font-bold mb-6">1. See What&apos;s Right For You!</h2>
             <p className="text-gray-700 mb-6">
-              A demo is a quickest way to see if our software is the right fit for you. Have questions answered in real time by a real agent.
+             Complete an intake form so we know what you need! Already signed up? A demo is a quickest way to see if our software is the right fit for you. Have questions answered in real time by a real agent.
             </p>
 
             <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm">
               <LazyIframe
-                src="https://camcraigconsulting.method.ws/apps/Public.aspx#/1e4729fe-c52a-46d9-90e6-d86f8bca59d3/RkZzZFJYbHVOZHR4bTYwRFpHRTJ1Zy0t"
+                src="https://MIurl.cc/RL5AMVlmI"
                 title="Book a demo"
               />
             </div>
@@ -263,7 +263,7 @@ export default function SetupPage() {
             <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm mb-4">
               <h3 className="text-xl font-semibold mb-2">Tell us about your business</h3>
               <p className="text-gray-600 mb-5">
-                Fill in the form below and we&apos;ll be in touch to confirm which applications to install.
+                Don't know what you're after - or have more questions? Book a demo to speak with a real agent about all your questions. 
               </p>
               <LazyIframe src={WEB_TO_LEAD_URL} title="Sign up form" />
               <p className="text-gray-500 text-sm mt-4">
