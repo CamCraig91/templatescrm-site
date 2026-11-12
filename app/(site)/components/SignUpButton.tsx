@@ -6,7 +6,7 @@ import Link from "next/link";
 //   <SignUpButton variant="onDark" fullWidth />
 //
 // Change DEFAULT_SIGNUP_HREF once if the sign-up destination changes.
-export const DEFAULT_SIGNUP_HREF = "/setup";
+export const DEFAULT_SIGNUP_HREF = "/sign-up";
 
 type Variant = "primary" | "secondary" | "onDark";
 
