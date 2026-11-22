@@ -80,9 +80,10 @@ export default function MapPickerPage() {
   const [userPos,     setUserPos]     = useState<[number,number] | null>(null);
   const [isMobile,    setIsMobile]    = useState(false);
 
-  const [suggestions,  setSuggestions]  = useState<any[]>([]);
-const [showSuggest,  setShowSuggest]  = useState(false);
-const skipSuggestRef = useRef(false);
+  // Address autocomplete
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [showSuggest, setShowSuggest] = useState(false);
+  const skipSuggestRef = useRef(false);
 
   const [sessionId] = useState(() =>
     typeof window !== "undefined"
@@ -207,66 +208,67 @@ const skipSuggestRef = useRef(false);
     } catch { return {}; }
   }, []);
 
-  // ── Turn a Mapbox feature into the same props reverseGeocode returns ──
-const featureToProps = (f: any): Record<string,string> => {
-  const props: Record<string,string> = {};
-  const parts = (f.place_name || "").split(",").map((s: string) => s.trim());
-  const isPoi = f.place_type?.includes("poi");
-  if (isPoi) {
-    props.place_name = f.text || "";
-    props.category   = f.properties?.category || "";
-    props.phone      = f.properties?.tel      || "";
-    props.website    = f.properties?.website  || "";
-    props.address    = f.properties?.address  || parts[1] || "";
-  } else {
-    props.address = parts[0] || "";
-  }
-  props.full_address = f.place_name || "";
-  // Address features carry city/province in context; the feature itself may be the place
-  (f.context || []).forEach((ctx: any) => {
-    const id = ctx.id || "";
-    if (id.startsWith("place"))    props.city     = ctx.text || "";
-    if (id.startsWith("district")) props.district = ctx.text || "";
-    if (id.startsWith("region"))   props.province = ctx.text || "";
-    if (id.startsWith("postcode")) props.postcode = ctx.text || "";
-    if (id.startsWith("country"))  props.country  = ctx.text || "";
-  });
-  return props;
-};
+  // ── Turn a Mapbox feature into the same props reverseGeocode returns ──────
+  const featureToProps = (f: any): Record<string,string> => {
+    const props: Record<string,string> = {};
+    const parts = (f.place_name || "").split(",").map((s: string) => s.trim());
+    const isPoi = f.place_type?.includes("poi");
+    if (isPoi) {
+      props.place_name = f.text || "";
+      props.category   = f.properties?.category || "";
+      props.phone      = f.properties?.tel      || "";
+      props.website    = f.properties?.website  || "";
+      props.address    = f.properties?.address  || parts[1] || "";
+    } else {
+      props.address = parts[0] || "";
+    }
+    props.full_address = f.place_name || "";
+    // Address features carry city/province in context; the feature itself may be the place
+    (f.context || []).forEach((ctx: any) => {
+      const id = ctx.id || "";
+      if (id.startsWith("place"))    props.city     = ctx.text || "";
+      if (id.startsWith("district")) props.district = ctx.text || "";
+      if (id.startsWith("region"))   props.province = ctx.text || "";
+      if (id.startsWith("postcode")) props.postcode = ctx.text || "";
+      if (id.startsWith("country"))  props.country  = ctx.text || "";
+    });
+    return props;
+  };
 
-// ── Debounced autocomplete ──
-useEffect(() => {
-  if (skipSuggestRef.current) { skipSuggestRef.current = false; return; }
-  const q = searchQuery.trim();
-  const key = sessionData?.mapboxKey;
-  if (q.length < 3 || !key) { setSuggestions([]); return; }
-  let cancelled = false;
-  const t = setTimeout(async () => {
-    try {
-      const c = mapInstance.current?.getCenter();
-      const url =
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json` +
-        `?autocomplete=true&types=address,poi&limit=6&access_token=${key}` +
-        (c ? `&proximity=${c.lng},${c.lat}` : "");
-      const json = await (await fetch(url)).json();
-      if (!cancelled) { setSuggestions(json.features || []); setShowSuggest(true); }
-    } catch {}
-  }, 250);
-  return () => { cancelled = true; clearTimeout(t); };
-}, [searchQuery, sessionData]);
+  // ── Debounced autocomplete ────────────────────────────────────────────────
+  useEffect(() => {
+    if (skipSuggestRef.current) { skipSuggestRef.current = false; return; }
+    const q   = searchQuery.trim();
+    const key = sessionData?.mapboxKey;
+    if (q.length < 3 || !key) { setSuggestions([]); return; }
+    let cancelled = false;
+    const t = setTimeout(async () => {
+      try {
+        const c = mapInstance.current?.getCenter();
+        const url =
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json` +
+          `?autocomplete=true&types=address,poi&limit=6&access_token=${key}` +
+          (c ? `&proximity=${c.lng},${c.lat}` : "");
+        const json = await (await fetch(url)).json();
+        if (!cancelled) { setSuggestions(json.features || []); setShowSuggest(true); }
+      } catch {}
+    }, 250);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [searchQuery, sessionData]);
 
-const selectSuggestion = (f: any) => {
-  const [lng, lat] = f.center;
-  skipSuggestRef.current = true;
-  setSearchQuery(f.place_name);
-  setSuggestions([]); setShowSuggest(false);
-  setSelectedIdx(null); setSidebarOpen(false); setDraftPin(null);
-  const map = mapInstance.current;
-  if (!map) return;
-  map.setView([lat, lng], 17, { animate: false });
-  const pt = map.latLngToContainerPoint([lat, lng]);
-  setGeoPopup({ lat, lng, screenX: pt.x, screenY: pt.y, props: featureToProps(f), loading: false });
-};
+  const selectSuggestion = (f: any) => {
+    const [lng, lat] = f.center;
+    skipSuggestRef.current = true;
+    setSearchQuery(f.place_name);
+    setSuggestions([]); setShowSuggest(false);
+    setSelectedIdx(null); setSidebarOpen(false); setDraftPin(null);
+    const map = mapInstance.current;
+    if (!map) return;
+    map.setView([lat, lng], 17, { animate: false });
+    const pt = map.latLngToContainerPoint([lat, lng]);
+    setGeoPopup({ lat, lng, screenX: pt.x, screenY: pt.y, props: featureToProps(f), loading: false });
+  };
+
   // ── Leaflet ───────────────────────────────────────────────────────────────
   useEffect(() => {
     (async () => {
@@ -463,15 +465,15 @@ const selectSuggestion = (f: any) => {
     window.close();
   };
 
- const handleSearch = async () => {
-  if (suggestions.length) { selectSuggestion(suggestions[0]); return; }
-  if (!searchQuery.trim() || !sessionData?.mapboxKey) return;
-  try {
-    const res  = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json?types=address,poi&limit=1&access_token=${sessionData.mapboxKey}`);
-    const json = await res.json();
-    if (json.features?.length) selectSuggestion(json.features[0]);
-  } catch {}
-};
+  const handleSearch = async () => {
+    if (suggestions.length) { selectSuggestion(suggestions[0]); return; }
+    if (!searchQuery.trim() || !sessionData?.mapboxKey) return;
+    try {
+      const res  = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json?types=address,poi&limit=1&access_token=${sessionData.mapboxKey}`);
+      const json = await res.json();
+      if (json.features?.length) selectSuggestion(json.features[0]);
+    } catch {}
+  };
 
   // ── Field renderer ────────────────────────────────────────────────────────
   const renderField = (field: Field, value: any, editable: boolean, onChange: (v:any)=>void) => {
@@ -504,6 +506,32 @@ const selectSuggestion = (f: any) => {
     if (isDraft) discardDraft();
     else { setSidebarOpen(false); setSelectedIdx(null); }
   };
+
+  // ── Search box with address dropdown (shared desktop/mobile) ──────────────
+  const renderSearch = (style: React.CSSProperties) => (
+    <div style={{position:"relative", ...style}}>
+      <input type="text" placeholder="Search address..." value={searchQuery}
+        onChange={e=>{ setSearchQuery(e.target.value); setShowSuggest(true); }}
+        onFocus={()=>setShowSuggest(true)}
+        onBlur={()=>setTimeout(()=>setShowSuggest(false),150)}
+        onKeyDown={e=>e.key==="Enter"&&handleSearch()}
+        style={{width:"100%",boxSizing:"border-box",padding:"7px 10px",borderRadius:"5px",border:"none",fontSize:"13px",background:"#fff",color:"#1a1a1a",outline:"none"}}
+      />
+      {showSuggest && suggestions.length>0 && (
+        <div style={{position:"absolute",top:"100%",left:0,right:0,marginTop:4,background:"#fff",borderRadius:8,boxShadow:"0 4px 20px rgba(0,0,0,0.25)",zIndex:1000,overflow:"hidden",minWidth:260}}>
+          {suggestions.map(f=>(
+            <div key={f.id} onMouseDown={e=>{e.preventDefault(); selectSuggestion(f);}}
+              style={{padding:"9px 12px",fontSize:13,color:"#1a1a1a",cursor:"pointer",borderBottom:"1px solid #f0f0f0"}}
+              onMouseEnter={e=>(e.currentTarget.style.background="#f0f6ff")}
+              onMouseLeave={e=>(e.currentTarget.style.background="#fff")}>
+              <div style={{fontWeight:600}}>{f.text}</div>
+              <div style={{fontSize:11,color:"#777"}}>{(f.place_name||"").split(",").slice(1).join(",").trim()}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   // ── Sidebar content (shared mobile/desktop) ───────────────────────────────
   const SidebarContent = activePinData ? (
@@ -568,31 +596,7 @@ const selectSuggestion = (f: any) => {
       </div>
     </div>
   ) : null;
-const renderSearch = (style: React.CSSProperties) => (
-  <div style={{position:"relative", ...style}}>
-    <input type="text" placeholder="Search address..." value={searchQuery}
-      onChange={e=>{ setSearchQuery(e.target.value); setShowSuggest(true); }}
-      onFocus={()=>setShowSuggest(true)}
-      onBlur={()=>setTimeout(()=>setShowSuggest(false),150)}
-      onKeyDown={e=>e.key==="Enter"&&handleSearch()}
-      style={{width:"100%",boxSizing:"border-box",padding:"7px 10px",borderRadius:"5px",border:"none",fontSize:"13px",background:"#fff",color:"#1a1a1a",outline:"none"}}
-    />
-    {showSuggest && suggestions.length>0 && (
-      <div style={{position:"absolute",top:"100%",left:0,right:0,marginTop:4,background:"#fff",borderRadius:8,boxShadow:"0 4px 20px rgba(0,0,0,0.25)",zIndex:1000,overflow:"hidden",minWidth:260}}>
-        {suggestions.map(f=>(
-          <div key={f.id} onMouseDown={e=>{e.preventDefault(); selectSuggestion(f);}}
-            style={{padding:"9px 12px",fontSize:13,color:"#1a1a1a",cursor:"pointer",borderBottom:"1px solid #f0f0f0"}}
-            onMouseEnter={e=>(e.currentTarget.style.background="#f0f6ff")}
-            onMouseLeave={e=>(e.currentTarget.style.background="#fff")}>
-            <div style={{fontWeight:600}}>{f.text}</div>
-            <div style={{fontSize:11,color:"#777"}}>{(f.place_name||"").split(",").slice(1).join(",").trim()}</div>
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-);
-  
+
   return (
     <div style={{width:"100%",height:"100vh",position:"relative",overflow:"hidden",fontFamily:"system-ui,sans-serif"}}>
 
@@ -603,9 +607,7 @@ const renderSearch = (style: React.CSSProperties) => (
         {!allowNewPins&&!viewOnly&&<span style={{fontSize:"11px",color:"#78909C",border:"1px solid #78909C",borderRadius:"4px",padding:"2px 6px",fontWeight:600,whiteSpace:"nowrap"}}>READ ONLY</span>}
         <div style={{flex:1}}/>
         {/* Collapse search on very small screens */}
-        {!isMobile && (
-         {!isMobile && renderSearch({width:"280px"})}
-        )}
+        {!isMobile && renderSearch({width:"280px"})}
         <button onClick={handleSearch} style={{padding:"5px 10px",background:"#1976D2",color:"#fff",border:"none",borderRadius:"5px",fontSize:"12px",cursor:"pointer",fontWeight:600,whiteSpace:"nowrap"}}>
           {isMobile ? "🔍" : "Search"}
         </button>
@@ -620,7 +622,11 @@ const renderSearch = (style: React.CSSProperties) => (
       </div>
 
       {/* Mobile search bar below header */}
-      {isMobile && {renderSearch({flex:1})} }
+      {isMobile && (
+        <div style={{background:"#0A1A2F",padding:"0 14px 10px",display:"flex",gap:"8px"}}>
+          {renderSearch({flex:1})}
+        </div>
+      )}
 
       {/* ── Map area ── */}
       <div style={{position:"relative",height:isMobile?`calc(100vh - ${sidebarOpen?"35vh":0}px - ${isMobile?92:52}px)`:"calc(100vh - 52px)",transition:"height 0.3s"}}>
