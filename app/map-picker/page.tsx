@@ -47,6 +47,14 @@ function resolveColor(raw: string): string {
   return DEFAULT_COLORS[raw.toLowerCase()] || raw;
 }
 
+// Distance in metres between two lat/lng points
+function distM(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371000, toRad = (d: number) => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1), dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
 const FALLBACK_COLORS: Record<string,string> = {
   "Completed":"#43A047","Approved":"#43A047","Accepted":"#43A047","Done":"#43A047",
   "In Progress":"#1976D2","Active":"#1976D2","Started":"#1976D2","Shift Start":"#1976D2",
@@ -84,6 +92,12 @@ export default function MapPickerPage() {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggest, setShowSuggest] = useState(false);
   const skipSuggestRef = useRef(false);
+
+  // Business hover / click
+  const [hoverPoi, setHoverPoi] = useState<any>(null);
+  const hoverPoiRef    = useRef<any>(null);
+  const hoverLayerRef  = useRef<any>(null);
+  const clickSeqRef    = useRef(0);
 
   const [sessionId] = useState(() =>
     typeof window !== "undefined"
@@ -209,7 +223,7 @@ export default function MapPickerPage() {
   }, []);
 
   // ── Turn a Mapbox feature into the same props reverseGeocode returns ──────
-  const featureToProps = (f: any): Record<string,string> => {
+  const featureToProps = useCallback((f: any): Record<string,string> => {
     const props: Record<string,string> = {};
     const parts = (f.place_name || "").split(",").map((s: string) => s.trim());
     const isPoi = f.place_type?.includes("poi");
@@ -233,7 +247,66 @@ export default function MapPickerPage() {
       if (id.startsWith("country"))  props.country  = ctx.text || "";
     });
     return props;
-  };
+  }, []);
+
+  // ── Find the business (POI) under a point using the Tilequery API ─────────
+  const findPoiAt = useCallback(async (lat: number, lng: number, zoom: number) => {
+    const key = sessionRef.current?.mapboxKey;
+    if (!key) return null;
+    // ~18px search radius converted to metres at this latitude/zoom
+    const metresPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+    const radius = Math.max(5, Math.round(metresPerPx * 18));
+    try {
+      const res  = await fetch(
+        `https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/${lng},${lat}.json` +
+        `?layers=poi_label&radius=${radius}&limit=5&dedupe=true&access_token=${key}`
+      );
+      const json = await res.json();
+      const f = (json.features || []).find((x: any) => x.properties?.name && x.geometry?.coordinates);
+      if (!f) return null;
+      return {
+        name:     String(f.properties.name),
+        category: String(f.properties.category_en || f.properties.class || ""),
+        lat:      f.geometry.coordinates[1] as number,
+        lng:      f.geometry.coordinates[0] as number,
+      };
+    } catch { return null; }
+  }, []);
+
+  // ── Enrich a clicked business with address / phone / etc. ─────────────────
+  const lookupBusiness = useCallback(async (poi: {name:string; category:string; lat:number; lng:number}) => {
+    const key = sessionRef.current?.mapboxKey;
+    let props: Record<string,string> = {};
+    if (key) {
+      try {
+        const res  = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(poi.name)}.json` +
+          `?types=poi&limit=5&proximity=${poi.lng},${poi.lat}&access_token=${key}`
+        );
+        const json = await res.json();
+        const n = poi.name.toLowerCase();
+        const best = (json.features || [])
+          .map((f: any) => ({ f, d: distM(poi.lat, poi.lng, f.center[1], f.center[0]) }))
+          .filter((x: any) => {
+            const t = String(x.f.text || "").toLowerCase();
+            return x.d < 200 && (t.includes(n) || n.includes(t));
+          })
+          .sort((a: any, b: any) => a.d - b.d)[0];
+        if (best) props = featureToProps(best.f);
+      } catch {}
+    }
+    if (!props.address) {
+      // Fall back to reverse geocoding the business location for the address
+      const rev = await reverseGeocode(poi.lat, poi.lng);
+      if (rev.place_name && rev.place_name.toLowerCase() !== poi.name.toLowerCase()) {
+        delete rev.phone; delete rev.website;   // belonged to a different nearby place
+      }
+      props = { ...rev, ...props };
+    }
+    props.place_name = poi.name;
+    if (!props.category && poi.category) props.category = poi.category;
+    return props;
+  }, [featureToProps, reverseGeocode]);
 
   // ── Debounced autocomplete ────────────────────────────────────────────────
   useEffect(() => {
@@ -349,20 +422,83 @@ export default function MapPickerPage() {
       { maxZoom: 19, tileSize: 512, zoomOffset: -1 }
     ).addTo(mapInstance.current);
 
+    // Hover: highlight the business under the cursor (debounced)
+    let hoverTimer: any = null;
+    let hoverSeq = 0;
+    const clearHover = () => { clearTimeout(hoverTimer); hoverSeq++; setHoverPoi(null); };
+    mapInstance.current.on("mousemove", (e: any) => {
+      const s = sessionRef.current;
+      if (!s || s.allowNewPins === false || s.viewOnly === true) return;
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(async () => {
+        const map = mapInstance.current;
+        if (!map) return;
+        const zoom = map.getZoom();
+        if (zoom < 15) { setHoverPoi(null); return; }
+        const seq = ++hoverSeq;
+        const poi = await findPoiAt(e.latlng.lat, e.latlng.lng, zoom);
+        if (seq !== hoverSeq) return;
+        setHoverPoi((prev: any) =>
+          prev && poi && prev.name === poi.name && prev.lat === poi.lat && prev.lng === poi.lng ? prev : poi
+        );
+      }, 120);
+    });
+    mapInstance.current.on("mouseout zoomstart movestart", clearHover);
+
+    // Click: business if there is one under the click, otherwise plain location
     mapInstance.current.on("click", async (e: any) => {
       if (!sessionRef.current) return;
       if (sessionRef.current.allowNewPins === false) return;
       if (sessionRef.current.viewOnly === true) return;
+      const map = mapInstance.current;
+      const mySeq = ++clickSeqRef.current;
       const { lat, lng } = e.latlng;
-      const pt = mapInstance.current.latLngToContainerPoint([lat, lng]);
+      const pt = map.latLngToContainerPoint([lat, lng]);
       setGeoPopup({ lat, lng, screenX: pt.x, screenY: pt.y, props: {}, loading: true });
       setSelectedIdx(null);
       setSidebarOpen(false);
       setDraftPin(null);
+
+      // Use the hovered business if it's close to the click; otherwise look one up (touch screens)
+      let poi = hoverPoiRef.current;
+      if (poi) {
+        const a = map.latLngToContainerPoint([poi.lat, poi.lng]);
+        if (Math.hypot(a.x - pt.x, a.y - pt.y) > 30) poi = null;
+      }
+      if (!poi && map.getZoom() >= 15) poi = await findPoiAt(lat, lng, map.getZoom());
+      if (mySeq !== clickSeqRef.current) return;
+
+      if (poi) {
+        const p2 = map.latLngToContainerPoint([poi.lat, poi.lng]);
+        setGeoPopup({ lat: poi.lat, lng: poi.lng, screenX: p2.x, screenY: p2.y, props: {}, loading: true });
+        const props = await lookupBusiness(poi);
+        if (mySeq !== clickSeqRef.current) return;
+        setGeoPopup(prev => prev ? { ...prev, props, loading: false } : null);
+        return;
+      }
+
       const props = await reverseGeocode(lat, lng);
+      if (mySeq !== clickSeqRef.current) return;
       setGeoPopup(prev => prev ? { ...prev, props, loading: false } : null);
     });
-  }, [L, sessionData, reverseGeocode]);
+  }, [L, sessionData, reverseGeocode, findPoiAt, lookupBusiness]);
+
+  // ── Hover highlight ring + name label ─────────────────────────────────────
+  useEffect(() => {
+    hoverPoiRef.current = hoverPoi;
+    const map = mapInstance.current;
+    if (!map || !L) return;
+    if (hoverLayerRef.current) { map.removeLayer(hoverLayerRef.current); hoverLayerRef.current = null; }
+    if (mapRef.current) mapRef.current.style.cursor = hoverPoi ? "pointer" : "";
+    if (!hoverPoi) return;
+    const label = document.createElement("span");
+    label.textContent = hoverPoi.name;
+    const ring = L.circleMarker([hoverPoi.lat, hoverPoi.lng], {
+      radius: 16, color: "#1976D2", weight: 3, fillColor: "#1976D2", fillOpacity: 0.18, interactive: false,
+    }).addTo(map);
+    ring.bindTooltip(label, { permanent: true, direction: "top", offset: [0, -14] });
+    hoverLayerRef.current = ring;
+  }, [hoverPoi, L]);
 
   // ── Fit bounds ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -635,7 +771,7 @@ export default function MapPickerPage() {
         {/* Hint */}
         {allowNewPins&&!viewOnly&&pins.length===0&&!loading&&(
           <div style={{position:"absolute",top:12,left:"50%",transform:"translateX(-50%)",zIndex:800,background:"rgba(10,26,47,0.8)",color:"#fff",padding:"6px 16px",borderRadius:"20px",fontSize:"12px",pointerEvents:"none",whiteSpace:"nowrap"}}>
-            Click the map to explore a location
+            Hover a business to highlight it, click to see details
           </div>
         )}
 
